@@ -1,0 +1,40 @@
+<!-- THIS IS JUST A PLACEHOLDER -->
+
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{{ url_for('home') }}">NYC Museums</a>
+
+        <!-- Navbar Toggle for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Navigation Links -->
+            <ul class="navbar-nav me-auto">
+            </ul>
+
+            <!-- Right-aligned Buttons -->
+            <div class="d-flex">
+                <!-- Add Museum Button -->
+                <a class="btn btn-secondary me-2" href="{{ url_for('add_museum') }}" data-bs-toggle="tooltip" title="Add Museum">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+
+                <!-- Search Form -->
+                <form class="d-flex" id="search-form">
+                    <input class="form-control me-2" type="search" id="search-input" placeholder="Search museums" aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>

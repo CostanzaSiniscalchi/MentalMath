@@ -1,0 +1,28 @@
+:root {
+	--bs-primary: rgb(24, 23, 38);  /* Base color */
+	--bs-secondary: rgb(229, 0, 45); /* Accent color */
+	--bs-light-grey: rgb(235, 235, 235); /* Light grey */
+	--bs-dark-grey: rgb(31, 31, 31);  /* Dark grey */
+}
+
+body {
+	background-color: var(--bs-light-grey);
+}
+
+.btn-primary {
+	background-color: var(--bs-primary);
+	border-color: var(--bs-primary);
+}
+
+.btn-secondary {
+	background-color: var(--bs-secondary);
+	border-color: var(--bs-secondary);
+}
+
+.text-dark {
+	color: var(--bs-dark-grey);
+}
+
+.text-light {
+	color: var(--bs-light-grey);
+}

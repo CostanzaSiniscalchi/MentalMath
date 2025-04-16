@@ -1,0 +1,72 @@
+.navbar {
+    background-color: var(--bs-primary) !important; /* Dark base color */
+    position: fixed; /* Keeps navbar at top */
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    padding: 10px 0;
+}
+
+body {
+    padding-top: 70px; /* Adjust based on navbar height */
+}
+
+/* Navbar brand */
+.navbar-brand {
+    color: var(--bs-light-grey) !important;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Navbar links */
+.navbar-nav .nav-link {
+    color: var(--bs-light-grey) !important;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--bs-secondary) !important;
+}
+
+/* Navbar Toggle Icon */
+.navbar-toggler {
+    border-color: var(--bs-light-grey);
+}
+
+.navbar-toggler-icon {
+    filter: invert(100%);
+}
+
+/* Search form */
+#search-form input {
+    background-color: var(--bs-dark-grey);
+    color: white;
+    border: 1px solid var(--bs-light-grey);
+}
+
+#search-form input::placeholder {
+    color: var(--bs-light-grey);
+}
+
+#search-form button {
+    background-color: var(--bs-secondary);
+    color: white;
+    border: none;
+}
+
+#search-form button:hover {
+    background-color: rgb(180, 0, 36);
+}
+
+/* Add Museum Button */
+.btn-secondary {
+    background-color: var(--bs-secondary) !important;
+    border-color: var(--bs-secondary) !important;
+    color: var(--bs-light-grey) !important;
+}
+
+.btn-secondary:hover {
+    background-color: rgb(180, 0, 36) !important;
+    border-color: rgb(180, 0, 36) !important;
+}
