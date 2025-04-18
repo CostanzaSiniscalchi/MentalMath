@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ unit_title }} - Mental Math App{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/unit.css') }}?v=1">
+{% endblock %}
+
+{% block content %}
+<section class="hero-section py-5">
+  <div class="container text-center">
+    <div class="unit-card p-4 mx-auto">
+      <h2 class="fw-bold mb-4">{{ unit_title }}</h2>
+
+      <!-- Progress Bar -->
+      <div class="custom-progress bg-dark">
+        <div class="custom-progress-fill bg-secondary" style="width: {{ xp_progress }}%">
+          <span class="progress-label">XP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Action Panels -->
+<section class="container-lg my-5">
+  <div class="row g-4 justify-content-center">
+    <!-- Practice -->
+    <div class="col-md-6 col-lg-4">
+      <div class="panel-card p-4 h-100">
+        <h5 class="fw-bold mb-3">Practice</h5>
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-dark">Easy</button>
+          <button class="btn btn-outline-dark">Medium</button>
+          <button class="btn btn-outline-dark">Hard</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Learn -->
+    <div class="col-md-6 col-lg-4">
+      <div class="panel-card p-4 h-100">
+        <h5 class="fw-bold mb-3">Learn</h5>
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-dark">Pretest and Tutorial</button>
+          <button class="btn btn-outline-dark">Test your Mastery</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
