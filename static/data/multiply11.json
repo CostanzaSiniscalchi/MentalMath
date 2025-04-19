@@ -1,0 +1,50 @@
+{
+  "easy": [
+    { "problem": "11 × 21", "answer": 231 },
+    { "problem": "11 × 32", "answer": 352 },
+    { "problem": "11 × 43", "answer": 473 },
+    { "problem": "11 × 54", "answer": 594 },
+    { "problem": "11 × 13", "answer": 143},
+    { "problem": "11 × 15", "answer": 165},
+    { "problem": "11 × 81", "answer": 891 },
+    { "problem": "11 × 10", "answer": 110 },
+    { "problem": "11 × 11", "answer": 121 },
+    { "problem": "11 × 20", "answer": 220 }
+  ],
+  "medium": [
+    { "problem": "11 × 29", "answer": 319 },
+    { "problem": "11 × 38", "answer": 418 },
+    { "problem": "11 × 47", "answer": 517 },
+    { "problem": "11 × 56", "answer": 616 },
+    { "problem": "11 × 39", "answer": 429 },
+    { "problem": "11 × 48", "answer": 528 },
+    { "problem": "11 × 59", "answer": 649 },
+    { "problem": "11 × 67", "answer": 737 },
+    { "problem": "11 × 75", "answer": 825 },
+    { "problem": "11 × 89", "answer": 979 }
+  ],
+  "hard": [
+    { "problem": "11 × 101", "answer": 1111 },
+    { "problem": "11 × 121", "answer": 1331 },
+    { "problem": "11 × 130", "answer": 1430 },
+    { "problem": "11 × 145", "answer": 1595 },
+    { "problem": "11 × 212", "answer": 2332 },
+    { "problem": "11 × 303", "answer": 3333 },
+    { "problem": "11 × 410", "answer": 4510 },
+    { "problem": "11 × 111", "answer": 1221 },
+    { "problem": "11 × 123", "answer": 1353 },
+    { "problem": "11 × 231", "answer": 2541 }
+  ],
+  "test": [
+    { "problem": "11 × 29", "answer": 319 },
+    { "problem": "11 × 38", "answer": 418 },
+    { "problem": "11 × 12", "answer": 132 },
+    { "problem": "11 × 67", "answer": 737 },
+    { "problem": "11 × 145", "answer": 1595 },
+    { "problem": "11 × 21", "answer": 231 },
+    { "problem": "11 × 56", "answer": 616 },
+    { "problem": "11 × 303", "answer": 3333 },
+    { "problem": "11 × 75", "answer": 825 },
+    { "problem": "11 × 121", "answer": 1331 }
+  ]
+}
