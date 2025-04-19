@@ -4,16 +4,15 @@ import json
 from pdf2image import convert_from_path
 from PIL import Image, ImageDraw, ImageFont
 
-def generate_11x_gif(num, pdf_path="11trick.pdf", output_dir="."):
+def generate_11x_gif(num, pdf_path="11trick.pdf", pdf_path_hard = "11trick_hard.pdf", output_dir="."):
     if not (10 <= num <= 999):
         raise ValueError("Only supports numbers from 10 to 999.")
-    
-    template_frames = convert_from_path(pdf_path)
     
     digits = [int(d) for d in str(num)]
     n = len(digits)
 
     if n == 2:
+        template_frames = convert_from_path(pdf_path)
         d1, d2 = digits
         digit_sum = d1 + d2
         if digit_sum > 9:
@@ -29,24 +28,38 @@ def generate_11x_gif(num, pdf_path="11trick.pdf", output_dir="."):
             { "text": f"{d1_final}      {mid_digit}      {d2}", "center": (980, 515) },
         ]
     elif n == 3:
+        template_frames= convert_from_path(pdf_path_hard)
         d1, d2, d3 = digits
+
+        # Step 1: Sum adjacent digits
         mid1 = d1 + d2
         mid2 = d2 + d3
-        digits_final = []
-        carry = 0
-        for part in [mid1, mid2]:
-            if part + carry > 9:
-                c, v = divmod(part + carry, 10)
-                digits_final.append(v)
-                carry = c
-            else:
-                digits_final.append(part + carry)
-                carry = 0
-        d1_final = d1 + carry
+
+        # Step 2: Apply carries from right to left
+        # Right-most mid2 first
+        if mid2 > 9:
+            c2, v2 = divmod(mid2, 10)
+        else:
+            c2, v2 = 0, mid2
+
+        # Now apply c2 to mid1
+        mid1 += c2
+        if mid1 > 9:
+            c1, v1 = divmod(mid1, 10)
+        else:
+            c1, v1 = 0, mid1
+
+        # Carry to d1
+        d1_final = d1 + c1
+
         overlay_core = [
-            { "text": f"{d1}                 {d2}                {d3}", "center": (980, 515) },
-            { "text": f"{d1}   {mid1}   {mid2}   {d3}", "center": (980, 515) },
-            { "text": f"{d1_final}   {digits_final[0]}   {digits_final[1]}   {d3}", "center": (980, 515) },
+            # Step 1: Display digits
+            { "text": f"{d1}                                   {d3}", "center": (980, 545) },
+            # Step 2: Show sum of adjacent digits
+            { "text": f"{d1}  {d1}   {d2}       {d2}   {d3}   {d3}", "center": (980, 545) },
+            { "text": f"{d1}        {mid1}       {mid2}        {d3}", "center": (980, 545) },
+            # Step 3: Show final digits with carry handled
+            { "text": f"{d1_final}   {v1}   {v2}   {d3}", "center": (980, 545) },
         ]
     else:
         raise ValueError("Only supports 2 or 3 digit numbers.")
@@ -101,7 +114,7 @@ for difficulty, problems in problems_data.items():
         num_str = item["problem"].split("×")[1].strip()
         num = int(num_str)
         try:
-            gif_path = generate_11x_gif(num, pdf_path="11trick.pdf", output_dir=f"mult11gifs/{difficulty}")
+            gif_path = generate_11x_gif(num, pdf_path="11trick.pdf", pdf_path_hard = "11trick_hard.pdf", output_dir=f"mult11gifs/{difficulty}")
             print(f"✓ {item['problem']} → {gif_path}")
         except Exception as e:
             print(f"✗ Failed on {item['problem']}: {e}")
