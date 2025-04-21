@@ -1,0 +1,16 @@
+:root {
+	--bs-primary: rgb(193, 216, 249);
+	--bs-secondary: rgb(49, 111, 225);
+	--bs-light-grey: rgb(255, 255, 255);
+	--bs-dark-grey: rgb(222, 229, 238);
+  }
+  
+  body {
+	background-color: var(--bs-dark-grey);
+  }
+  
+  .answer-btn:hover {
+	background-color: var(--bs-secondary);
+	color: white;
+  }
+  

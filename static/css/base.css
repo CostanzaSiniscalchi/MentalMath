@@ -1,28 +1,49 @@
 :root {
-	--bs-primary: rgb(24, 23, 38);  /* Base color */
-	--bs-secondary: rgb(229, 0, 45); /* Accent color */
-	--bs-light-grey: rgb(235, 235, 235); /* Light grey */
-	--bs-dark-grey: rgb(31, 31, 31);  /* Dark grey */
-}
-
-body {
+	--bs-primary: rgb(193, 216, 249);
+	--bs-secondary: rgb(49, 111, 225);
+	--bs-light-grey: rgb(255, 255, 255);
+	--bs-dark-grey: rgb(222, 229, 238);
+  }
+  
+  /* Apply global background */
+  body {
+	background-color: var(--bs-dark-grey);
+	color: #333;
+  }
+  
+  /* Hero Section */
+  .hero-section {
 	background-color: var(--bs-light-grey);
-}
-
-.btn-primary {
-	background-color: var(--bs-primary);
-	border-color: var(--bs-primary);
-}
-
-.btn-secondary {
+  }
+  
+  .hero-section h1 span {
+	color: var(--bs-secondary);
+  }
+  
+  /* Buttons */
+  .btn-primary {
 	background-color: var(--bs-secondary);
+	border: none;
+  }
+  
+  .btn-primary:hover {
+	background-color: rgb(38, 90, 190);
+  }
+  
+  .btn-outline-secondary {
 	border-color: var(--bs-secondary);
-}
-
-.text-dark {
-	color: var(--bs-dark-grey);
-}
-
-.text-light {
-	color: var(--bs-light-grey);
-}
+	color: var(--bs-secondary);
+  }
+  
+  .btn-outline-secondary:hover {
+	background-color: var(--bs-primary);
+	border-color: var(--bs-secondary);
+  }
+  
+  /* Panels */
+  .panel-card {
+	background-color: var(--bs-light-grey);
+	border-radius: 1rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  

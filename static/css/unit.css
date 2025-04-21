@@ -1,0 +1,67 @@
+:root {
+	--bs-primary: rgb(193, 216, 249);   /* Light Blue */
+	--bs-secondary: rgb(49, 111, 225);  /* Main Blue */
+	--bs-light-grey: rgb(255, 255, 255);
+	--bs-dark-grey: rgb(222, 229, 238);
+  }
+  
+  body {
+	background-color: var(--bs-dark-grey);
+  }
+  
+  .hero-section {
+	background-color: var(--bs-light-grey);
+  }
+  
+  .unit-card {
+	background-color: var(--bs-light-grey);
+	border-radius: 1.5rem;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+	max-width: 700px;
+  }
+  
+  /* Progress Bar */
+  .custom-progress {
+	height: 2rem;
+	background-color: #ccc; /* Gray track */
+	border-radius: 1rem;
+	overflow: hidden;
+	position: relative;
+  }
+  
+  .custom-progress-fill {
+	background-color: var(--bs-secondary); /* Blue fill */
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	font-weight: bold;
+	transition: width 0.5s ease-in-out;
+  }
+  
+  .progress-label {
+	position: absolute;
+	left: 1rem;
+  }
+  
+  /* Cards */
+  .panel-card {
+	background-color: var(--bs-light-grey);
+	border-radius: 1.5rem;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  }
+  
+  /* Buttons */
+  .btn-outline-dark {
+	border-color: #333;
+	color: #111;
+	transition: background-color 0.3s ease;
+  }
+  
+  .btn-outline-dark:hover {
+	background-color: var(--bs-secondary);
+	color: white;
+	border-color: var(--bs-secondary);
+  }
+  

@@ -10,6 +10,12 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
+@app.route('/unit')
+def unit():
+	unit_title = "Addition Basics"
+	xp_progress = 36  # Example progress in percentage
+	return render_template('unit.html', unit_title=unit_title, xp_progress=xp_progress)
+
 @app.route('/learn')
 def learn():
 	return render_template('learn.html')
@@ -20,7 +26,18 @@ def practice():
 
 @app.route('/quiz')
 def quiz():
-	return render_template('quiz.html')
+    question = "What is 11 × 13?"
+    options = ["143", "123", "153"]
+    progress = 20  # For example, 20% through the quiz
+    time_left = 300  # 5 minutes in seconds
+
+    return render_template(
+        'quiz.html',  # or 'lightning_round.html'
+        question=question,
+        options=options,
+        progress=progress,
+        time_left=time_left
+    )
 
 @app.route('/review')
 def review():

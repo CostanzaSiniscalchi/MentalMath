@@ -55,9 +55,6 @@ body {
     border: none;
 }
 
-#search-form button:hover {
-    background-color: rgb(180, 0, 36);
-}
 
 /* Add Museum Button */
 .btn-secondary {
