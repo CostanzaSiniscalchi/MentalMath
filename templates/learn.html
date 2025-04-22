@@ -1,16 +1,40 @@
 {% extends "base.html" %}
 
-{% block title %}EXAMPLE TEXT HERE{% endblock %}
+{% block title %}{{ unit_id|capitalize }} – Learn{% endblock %}
 
 {% block styles %}
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=2"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}">
 {% endblock %}
 
-
 {% block content %}
+<section class="container-lg px-4 py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-11">
+      <div class="card p-4 instruction-card">
+        <h4 class="fw-bold">{{ unit_name|capitalize }} – How Does it Work?</h4>
+        <p id="instruction-text" class="text-secondary mt-2 mb-3"></p>
 
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+          <div class="learn-diagram mb-3">
+            <img id="diagram-img" src="" alt="Diagram" class="img-fluid rounded">
+          </div>
+
+          <div class="text-end">
+            <button id="next-btn" class="btn btn-primary px-4 py-2 fw-bold">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Dynamic script variables -->
+<script>
+  const tutorialSteps = {{ steps | tojson }};
+  const imgBaseUrl = "{{ img_base_url }}";
+</script>
 {% endblock %}
 
 {% block scripts %}
-    <!-- <script src="{{ url_for('static', filename='js/homepage.js') }}" defer></script> -->
+<script src="{{ url_for('static', filename='js/learn.js') }}"></script>
 {% endblock %}
