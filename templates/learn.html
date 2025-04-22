@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Unit 1 – How Does it Work?{% endblock %}
+{% block title %}{{ unit_id|capitalize }} – Learn{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}?v=2">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -11,66 +11,30 @@
   <div class="row justify-content-center">
     <div class="col-lg-11">
       <div class="card p-4 instruction-card">
-        <h4 class="fw-bold">Multiplication by 11 – How Does it Work?</h4>
-        <p id="instruction-text" class="text-secondary mt-2 mb-3">
-          Take the first and last digit of the number you’re trying to multiply.
-          These will make the first and last digit of your result.
-        </p>
+        <h4 class="fw-bold">{{ unit_name|capitalize }} – How Does it Work?</h4>
+        <p id="instruction-text" class="text-secondary mt-2 mb-3"></p>
 
         <div class="d-flex flex-wrap align-items-center justify-content-between">
-          <!-- Left: Diagram -->
           <div class="learn-diagram mb-3">
-            <img id="diagram-img" src="{{ url_for('static', filename='data/learn/multiply11/step1.jpg') }}" alt="Step 1" class="img-fluid rounded">
+            <img id="diagram-img" src="" alt="Diagram" class="img-fluid rounded">
           </div>
 
-          <!-- Right: Button -->
           <div class="text-end">
-            <button id="next-btn" class="btn btn-primary px-4 py-2 fw-bold">Try It Out</button>
+            <button id="next-btn" class="btn btn-primary px-4 py-2 fw-bold">Next</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Dynamic script variables -->
+<script>
+  const tutorialSteps = {{ steps | tojson }};
+  const imgBaseUrl = "{{ img_base_url }}";
+</script>
 {% endblock %}
 
 {% block scripts %}
-<script>
-  const steps = [
-    {
-      text: "Take the first and last digit of the number you’re trying to multiply. These will make the first and last digit of your result.",
-      img: "{{ url_for('static', filename='data/learn/multiply11/step1.jpg') }}",
-      button: "Try It Out"
-    },
-    {
-      text: "The middle digit is the sum of the first and last digits!",
-      img: "{{ url_for('static', filename='data/learn/multiply11/step2.jpg') }}",
-      button: "Now you try"
-    },
-    {
-      text: "Now you try:",
-      img: "{{ url_for('static', filename='data/learn/multiply11/you_try.jpg') }}",
-      button: "See answer"
-    },
-    {
-      text: "Now you try:",
-      img: "{{ url_for('static', filename='img/step4.jpg') }}",
-      button: "Next"
-    }
-  ];
-
-  let currentStep = 0;
-
-  document.getElementById("next-btn").addEventListener("click", () => {
-    currentStep++;
-    if (currentStep < steps.length) {
-      document.getElementById("instruction-text").innerText = steps[currentStep].text;
-      document.getElementById("diagram-img").src = steps[currentStep].img;
-      document.getElementById("next-btn").innerText = steps[currentStep].button;
-    } else {
-      // Redirect or hide tutorial
-      window.location.href = "{{ url_for('practice') }}";
-    }
-  });
-</script>
+<script src="{{ url_for('static', filename='js/learn.js') }}"></script>
 {% endblock %}

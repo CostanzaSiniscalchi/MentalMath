@@ -1,7 +1,8 @@
 # Metal Math App
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for
-
+import json
+import os
 import math_data
 
 app = Flask(__name__)
@@ -10,21 +11,31 @@ data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 
 		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0},
 		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
 		}
+json_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/unit/<unit_id>', methods=['GET'])
+@app.route('/learn/<unit_id>', methods=['GET'])
+def learn(unit_id):
+	with open(json_path) as f:
+		tutorial_data = json.load(f)
+		steps = tutorial_data.get(unit_id)
+		if not steps:
+			return "Unit not found", 404
+	if unit_id not in data:
+		return "Unit not found", 404
+	unit_name = data[unit_id]["unit"]
+	img_base_url = url_for('static', filename=f'data/learn/{unit_id}/')
+	return render_template('learn.html', unit_id=unit_id, unit_name = unit_name, steps=steps, img_base_url=img_base_url)
+
+@app.route('/unit/<unit_id>')
 def unit(unit_id):
 	unit = data[unit_id]
-	unit_title = unit["unit"]
+	unit_name = unit["unit"]
 	xp_progress = unit["progress"]
-	return render_template('unit.html', unit_title=unit_title, xp_progress=xp_progress)
-
-@app.route('/learn')
-def learn():
-	return render_template('learn.html')
+	return render_template('unit.html', unit_id=unit_id, unit_name = unit_name, xp_progress = xp_progress)
 
 @app.route('/practice')
 def practice():
