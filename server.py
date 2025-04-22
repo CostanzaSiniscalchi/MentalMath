@@ -6,14 +6,20 @@ import math_data
 
 app = Flask(__name__)
 
+data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0},
+		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0},
+		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
+		}
+
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/unit')
-def unit():
-	unit_title = "Addition Basics"
-	xp_progress = 36  # Example progress in percentage
+@app.route('/unit/<unit_id>', methods=['GET'])
+def unit(unit_id):
+	unit = data[unit_id]
+	unit_title = unit["unit"]
+	xp_progress = unit["progress"]
 	return render_template('unit.html', unit_title=unit_title, xp_progress=xp_progress)
 
 @app.route('/learn')
