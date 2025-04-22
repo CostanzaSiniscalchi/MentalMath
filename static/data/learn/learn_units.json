@@ -1,0 +1,42 @@
+{
+    "1": [
+      {
+        "text": "Take the first and last digit of the number you’re trying to multiply. These will make the first and last digit of your result.",
+        "img": "step1.png",
+        "button": "Next"
+      },
+      {
+        "text": "The middle digit is the sum of the first and last digits!",
+        "img": "step2.png",
+        "button": "Now you try"
+      },
+      {
+        "text": "Now you try:",
+        "img": "you_try.png",
+        "button": "See answer"
+      },
+      {
+        "text": "Now you try:",
+        "img": "11x36_sol.gif",
+        "button": "Next"
+      },
+      {
+        "text": "What happens when the middle digits sum to more than 9?",
+        "img": "q2_1.png",
+        "button": "Next"
+      },
+      {
+        "text": "What happens when the middle digits sum to more than 9? \n You carry the digit!",
+        "img": "11x57_sol.gif",
+        "button": "Let's practice!"
+      }
+    ],
+    "2": [
+      {
+        "text": "Welcome to Unit 2! We'll show you another trick.",
+        "img": "unit2_step1.png",
+        "button": "Start"
+      }
+    ]
+  }
+  

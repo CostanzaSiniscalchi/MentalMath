@@ -1,0 +1,28 @@
+.instruction-card {
+    background-color: var(--bs-light-grey);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  }
+  
+  .learn-diagram {
+    flex: 1 1 60%;
+    padding-right: 2rem;
+  }
+  
+  .learn-diagram img {
+    max-width: 100%;
+    border-radius: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  
+  #instruction-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+  
+  #next-btn {
+    border-radius: 0.75rem;
+    font-size: 1.1rem;
+  }
+  
