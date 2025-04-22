@@ -17,37 +17,49 @@
     <button class="btn btn-primary px-4 py-2 mt-2">Daily Challenge</button>
   </div>
 </section>
-
-<!-- Progress + Actions -->
 <section class="container-lg my-5">
   <div class="row g-4 justify-content-center">
-    <!-- Progress Panel -->
+    
+    <!-- Progress + Actions -->
     <div class="col-lg-6">
       <div class="p-4 panel-card h-100">
-        <h5>Multiplication by 11</h5>
-        <div class="progress mb-3">
-          <div class="progress-bar bg-primary" style="width: 25%">Mastery</div>
-        </div>
-        <h5>Unit 2</h5>
-        <div class="progress mb-3">
-          <div class="progress-bar bg-primary" style="width: 30%">Mastery</div>
-        </div>
-        <h5>Unit 3</h5>
-        <div class="progress">
-          <div class="progress-bar bg-primary" style="width: 40%">Mastery</div>
-        </div>
+        <!-- Item 1 -->
+        <a href="{{ url_for('learn', topic='multiplication_by_11') }}" class="progress-row text-decoration-none text-dark d-block p-3 mb-3 rounded">
+          <h5 class="mb-2">Multiplication by 11</h5>
+          <div class="progress">
+            <div class="progress-bar bg-primary" style="width: 25%">Mastery</div>
+          </div>
+        </a>
+        
+        <!-- Item 2 -->
+        <a href="{{ url_for('learn', topic='unit_2') }}" class="progress-row text-decoration-none text-dark d-block p-3 mb-3 rounded">
+          <h5 class="mb-2">Unit 2</h5>
+          <div class="progress">
+            <div class="progress-bar bg-primary" style="width: 30%">Mastery</div>
+          </div>
+        </a>
+        
+        <!-- Item 3 -->
+        <a href="{{ url_for('learn', topic='unit_3') }}" class="progress-row text-decoration-none text-dark d-block p-3 mb-3 rounded">
+          <h5 class="mb-2">Unit 3</h5>
+          <div class="progress">
+            <div class="progress-bar bg-primary" style="width: 40%">Mastery</div>
+          </div>
+        </a>
       </div>
     </div>
 
     <!-- Action Buttons -->
     <div class="col-lg-4">
       <div class="p-4 panel-card d-flex flex-column gap-3 h-100 justify-content-center">
-        <button class="btn btn-outline-secondary w-100">Summary Stats</button>
+        <button class="btn btn-outline-secondary w-100" onclick="window.location.href='/summary'">Summary Stats</button>
         <button class="btn btn-outline-secondary w-100">Practice All Units</button>
       </div>
     </div>
-  </div>
+
+  </div> <!-- closes .row -->
 </section>
+
 
 {% endblock %}
 

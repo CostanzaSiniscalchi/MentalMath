@@ -33,6 +33,10 @@ def quiz():
     options = ["143", "123", "153"]
     progress = 20  # For example, 20% through the quiz
     time_left = 300  # 5 minutes in seconds
+	
+
+    # return render_template("quiz.html", question="17 × 11 = ?", options=["187", "181", "177", "170"], progress=20, time_left=270)
+
 
     return render_template(
         'quiz.html',  # or 'lightning_round.html'
@@ -41,6 +45,16 @@ def quiz():
         progress=progress,
         time_left=time_left
     )
+
+@app.route('/next_question', methods=['POST'])
+def next_question():
+    # Simulate fetching the next question
+    next_question = "What is 12 × 14?"
+    next_options = ["168", "174", "162"]
+    return jsonify({
+        'question': next_question,
+        'options': next_options
+    })
 
 @app.route('/review')
 def review():
