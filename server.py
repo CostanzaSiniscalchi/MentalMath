@@ -11,7 +11,7 @@ data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 
 		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0},
 		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
 		}
-json_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
+learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 
 @app.route('/')
 def home():
@@ -19,7 +19,7 @@ def home():
 
 @app.route('/learn/<unit_id>', methods=['GET'])
 def learn(unit_id):
-	with open(json_path) as f:
+	with open(learn_path) as f:
 		tutorial_data = json.load(f)
 		steps = tutorial_data.get(unit_id)
 		if not steps:
