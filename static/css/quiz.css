@@ -4,13 +4,19 @@
 	--bs-light-grey: rgb(255, 255, 255);
 	--bs-dark-grey: rgb(222, 229, 238);
   }
-  
-  body {
-	background-color: var(--bs-dark-grey);
-  }
-  
+
   .answer-btn:hover {
 	background-color: var(--bs-secondary);
 	color: white;
+  }
+
+  .alert-true {
+        color: #155724;
+        font-weight: bold;
+  }
+
+    .alert-false {
+        color: red;
+        font-weight: bold;
   }
   
