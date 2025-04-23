@@ -116,6 +116,29 @@ def next_practice():
         progress=progress
     )
 
+@app.route('/practice_summary')
+def practice_summary():
+    data = session['practice_data']
+    score = data['score']
+    unit_id = data['unit_id']
+    mode = data['mode']
+    xp = 3 if score >= 3 else 1
+    data_dict = data  # optionally store review info
+
+    # update XP progress for that unit
+    data[unit_id] = data.get(unit_id, {})
+    data[unit_id]['progress'] = min(data[unit_id].get('progress', 0) + xp * 5, 100)
+
+    session.modified = True
+    return render_template(
+        'practice_summary.html',
+        score=score,
+        xp=xp,
+        unit_id=unit_id,
+        mode=mode,
+        xp_progress=data[unit_id]['progress']
+    )
+
 
 @app.route('/quiz')
 def quiz():
