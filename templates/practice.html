@@ -4,7 +4,7 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=2">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}?v=2">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/practice.css') }}?v=2">
 {% endblock %}
 
 {% block content %}
@@ -28,7 +28,7 @@
     <h3 id="question" class="fw-semibold mb-4">{{ question }}</h3>
 
     <!-- Answer Form -->
-    <form id='quiz-form' method="POST" class="col-6 mx-auto">
+    <form id="practice-form" method="POST">
       <div class="mb-3">
         <input
           type="text"
@@ -40,7 +40,7 @@
         >
       </div>
       <div class="text-center mt-4">
-        <button id="quizsubmit" type="submit" class="btn btn-primary px-5 py-2 fs-5 rounded-3">Submit</button>
+        <button id="practice-submit" type="submit" class="btn btn-primary px-5 py-2 fs-5 rounded-3">Submit</button>
       </div>
     </form>
   </div>
@@ -50,7 +50,7 @@
 
   <!-- Next Button -->
   <div class="d-flex justify-content-end">
-    <form action="{{ url_for('practice', unit_id=unit_id, mode=mode) }}" method="GET">
+    <form action="{{ url_for('next_practice') }}" method="GET">
         <button type="submit" class="btn btn-primary px-4 py-2" id="nextBtn" disabled>Next Question</button>
 
     </form>

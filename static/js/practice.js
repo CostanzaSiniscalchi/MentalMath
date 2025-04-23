@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("quiz-form");
+    const form = document.getElementById("practice-form");
     const feedbackBox = document.getElementById("feedback");
     const nextButton = document.getElementById("nextBtn");
   
@@ -8,10 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
   
         const formData = new FormData(form);
-        const response = await fetch("/submit_answer", {
-          method: "POST",
-          body: formData
-        });
+        const response = await fetch("/submit_practice_answer", {
+            method: "POST",
+            body: formData
+          });
   
         if (!response.ok) {
           feedbackBox.className = "alert alert-danger";
