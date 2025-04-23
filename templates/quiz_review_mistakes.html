@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Review Mistakes{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/review_mistakes.css') }}?v=2">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-center">
+      <div class="rounded-4 p-4 shadow" style="background-color: white; width: 100%; max-width: 500px;">
+        <h2 class="text-center mb-4">Review Mistakes</h2>
+
+
+{% for item in review_data %}
+  <div class="d-flex justify-content-between align-items-center border rounded-3 p-3 mb-3 shadow-sm unit-box">
+    <div>
+      <button class="btn btn-outline-primary fw-semibold">
+        {{ item['problem-data']['problem'] }}
+      </button>
+    </div>
+    <div class="text-end">
+      <div class="text-danger fw-semibold">❌ {{item['user-response']['user-answer']}}</div>
+      <a href="/quiz_problem_review/{{item['problem-data']['id']}}" class="btn btn-outline-info btn-sm mt-1">View Question</a>
+    </div>
+  </div>
+{% endfor %}
+<!-- Finish Review Button Here -->
+<div class="d-flex justify-content-center mt-4">
+  <a href="{{ url_for('clear_quiz_session') }}" class="btn btn-success px-4 py-2">
+    Finish Review
+  </a>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+  
+
+{% endblock %}
+
+{% block scripts %}
+    <!-- <script src="{{ url_for('static', filename='js/homepage.js') }}" defer></script> -->
+{% endblock %}

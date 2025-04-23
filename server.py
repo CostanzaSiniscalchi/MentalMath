@@ -23,7 +23,6 @@ def home():
 
 @app.route('/learn/<unit_id>', methods=['GET'])
 def learn(unit_id):
-	with open(learn_path) as f:
 	with open(learn_path, encoding='utf-8') as f:
 		tutorial_data = json.load(f)
 		steps = tutorial_data.get(unit_id)
@@ -47,7 +46,6 @@ def practice(unit_id, mode):
     unit_name = data[unit_id]['unit']
     question_path = data[unit_id]['q_path']
 
-    with open(question_path) as f:
     with open(question_path, encoding='utf-8') as f:
         all_questions = json.load(f)[mode]
     
@@ -124,7 +122,7 @@ def practice_summary():
     score = data['score']
     unit_id = data['unit_id']
     mode = data['mode']
-    xp = 3 if score >= 3 else 1
+    xp = 3 if score >= 3 else 1 # TODO: refreshing causing continuous addition of XP
     data_dict = data  # optionally store review info
 
     # update XP progress for that unit
@@ -144,26 +142,27 @@ def practice_summary():
 
 @app.route('/quiz')
 def quiz():
-    if not 'quiz-data' in session:
-        quiz_data = {
-            'start-time': datetime.utcnow().isoformat(),
-            'unit': 1, # TODO: implement unit selection
-            'question-data': list(math_data.math_problems[i] for i in range(5)), # TODO: select questions at random; not hard! np.choice()!
-            'quiz-responses': list()
-        }
-        session['quiz-data']= quiz_data
+    question_path = data['1']['q_path']
     with open(question_path, encoding='utf-8') as f:
+        all_questions = json.load(f)['test']
+        print(all_questions)
+        if not 'quiz-data' in session:
+            quiz_data = {
+                'start-time': datetime.utcnow().isoformat(),
+                'unit-id': 1, # TODO: implement unit selection
+                'question-data': sample(all_questions, 5),
+                'quiz-responses': list()
+            }
+            session['quiz-data']= quiz_data
 
     quiz_data = session['quiz-data']
-    for thing in quiz_data:
-        print(thing, quiz_data[thing])
     # TODO: init session somewhere!
 
     if len(quiz_data['quiz-responses']) == len(quiz_data['question-data']):
-        return redirect(url_for('summary')) # this should actually be results, but we'll use summary as placeholder
+        return redirect(url_for('quiz_results')) # this should actually be results, but we'll use summary as placeholder
 
     unit = None # this might be vestigial - we'll see if this is removed, keep for now
-    question = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['question']
+    question = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['problem']
     answer = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['answer']
     progress = int(100 * len(quiz_data['quiz-responses'])/max(len(quiz_data['question-data']), 1))  # For example, 20% through the quiz
 
@@ -180,15 +179,6 @@ def quiz():
         time_left=time_left,
     )
 
-@app.route('/next_question', methods=['POST'])
-def next_question():
-    # Simulate fetching the next question
-    next_question = "What is 12 × 14?"
-    next_options = ["168", "174", "162"]
-    return jsonify({
-        'question': next_question,
-        'options': next_options
-    })
 @app.route('/submit_answer', methods=['POST'])
 def submit_answer():
     user_answer = request.form['user-answer']
@@ -196,17 +186,79 @@ def submit_answer():
     user_data = {'user-answer': user_answer, 'time-answered': datetime.utcnow().isoformat()}
     quiz_data['quiz-responses'].append(user_data)
     session['quiz-data'] = quiz_data
-    correct = int(session['quiz-data']['quiz-responses'][-1]['user-answer']) == int(session['quiz-data']['question-data'][len(session['quiz-data']['quiz-responses'])-1]['answer'])
+
+    curr_question = quiz_data['question-data'][len(quiz_data['quiz-responses'])-1]
+    correct = is_question_correct(curr_question, user_data)
 
     message = 'Great job!'
     if not correct:
         message = 'Good try, we can review this later.'
     return jsonify(correct=correct, message=message)
 
+@app.route('/quiz_results')
+def quiz_results():
+    data = session['quiz-data']
+    score = 0
 
-@app.route('/review')
-def review():
-	return render_template('review_mistakes.html')
+    for idx, user_response in enumerate(data['quiz-responses']):
+        score += is_question_correct(data['question-data'][idx], user_response)
+    unit_id = data['unit-id']
+    #mode = data['mode']
+    xp = 3 if score >= 3 else 1 # TODO: refreshing causing continuous addition of XP
+    data_dict = data  # optionally store review info
+
+    # update XP progress for that unit
+    data[unit_id] = data.get(unit_id, {}) 
+    data[unit_id]['progress'] = min(data[unit_id].get('progress', 0) + xp * 5, 100)
+
+    #TODO: delete? #session.modified = True
+    #session.modified = True
+    return render_template(
+        'quiz_results.html',
+        score=score,
+        xp=xp,
+        unit_id=unit_id,
+        xp_progress=data[unit_id]['progress']
+    )
+
+@app.route('/clear_quiz_session')
+def clear_quiz_session(redirect_url='home'):
+    # can save data here, perhaps thru pickling so we dont need a DBMS
+    session.pop('quiz-data')
+    return redirect(url_for('home'))
+
+@staticmethod
+def is_question_correct(question_datum, user_response): # takes in an element from question_data, and a user_response dict
+    user_answer = user_response['user-answer']
+    if not user_answer.isdigit():
+        return False
+    return int(user_answer) == int(question_datum['answer'])
+
+
+
+@app.route('/quiz_review_mistakes')
+def quiz_review_mistakes():
+    mistakes = []
+    quiz_data = session['quiz-data']
+
+    for idx, response in enumerate(quiz_data['quiz-responses']):
+        if not is_question_correct(quiz_data['question-data'][idx], response):
+            mistakes.append({'user-response': response, 'problem-data': quiz_data['question-data'][idx]})
+    return render_template('quiz_review_mistakes.html', review_data=mistakes)
+
+@app.route('/quiz_problem_review/<qid>')
+def quiz_problem_review(qid):
+    all_questions = None
+    question_path = data['1']['q_path']
+    with open(question_path, encoding='utf-8') as f:
+        all_questions = json.load(f)['test']
+    question_data = None
+    for q in all_questions:
+        if str(q['id']) == qid:
+            question_data = q
+            break
+    print(question_data)
+    return render_template('quiz_problem_review.html', gif_url=question_data['solution_gif'][6:])
 
 @app.route('/summary')
 def summary():
