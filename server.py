@@ -1,7 +1,7 @@
 # Metal Math App
 
-from flask import Flask, render_template, request, jsonify, redirect, session, url_for
-
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from random import sample # used for sampling questions
 import secrets # used for session secret key
 from datetime import datetime # used for tracking time left on the backend
 import json
@@ -10,9 +10,9 @@ import math_data
 
 app = Flask(__name__)
 
-data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0},
-		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0},
-		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
+data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0, "q_path": "static/data/multiply11.json"},
+		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0, "q_path": "static/data/squared5.json"},
+		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0, "q_path": "static/data/midpoint.json"}
 		}
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 
@@ -41,9 +41,82 @@ def unit(unit_id):
 	xp_progress = unit["progress"]
 	return render_template('unit.html', unit_id=unit_id, unit_name = unit_name, xp_progress = xp_progress)
 
-@app.route('/practice')
-def practice():
-	return render_template('practice.html')
+@app.route('/practice/<unit_id>/<mode>', methods=['GET'])
+def practice(unit_id, mode):
+    unit_name = data[unit_id]['unit']
+    question_path = data[unit_id]['q_path']
+
+    with open(question_path) as f:
+        all_questions = json.load(f)[mode]
+    
+    # Sample 5 unique questions
+    question_batch = sample(all_questions, 5)
+
+    # Store in session
+    session['practice_data'] = {
+        'unit_id': unit_id,
+        'mode': mode,
+        'unit_name': unit_name,
+        'questions': question_batch,
+        'current_index': 0,
+        'responses': [],
+        'score': 0
+    }
+
+    question = question_batch[0]['problem']
+    return render_template(
+        'practice.html',
+        unit_id=unit_id,
+        unit_name=unit_name,
+        mode=mode,
+        question=question,
+        progress=0
+    )
+@app.route('/submit_practice_answer', methods=['POST'])
+def submit_practice_answer():
+    user_answer = request.form['user-answer']
+    data = session['practice_data']
+    idx = data['current_index']
+    correct_answer = data['questions'][idx]['answer']
+
+    # Track score
+    is_correct = str(user_answer).strip() == str(correct_answer).strip()
+    if is_correct:
+        data['score'] += 1
+
+    # Save response
+    data['responses'].append({
+        'question': data['questions'][idx]['problem'],
+        'your_answer': user_answer,
+        'correct_answer': correct_answer,
+        'correct': is_correct
+    })
+
+    session['practice_data'] = data  # update
+
+    return jsonify(correct=is_correct, message="Nice!" if is_correct else f"Oops! The correct answer was {correct_answer}")
+@app.route('/next_practice')
+def next_practice():
+    data = session['practice_data']
+    data['current_index'] += 1
+
+    if data['current_index'] >= len(data['questions']):
+        return redirect(url_for('practice_summary'))
+
+    session['practice_data'] = data
+    question = data['questions'][data['current_index']]['problem']
+    progress = int(100 * data['current_index'] / len(data['questions']))
+
+    return render_template(
+        'practice.html',
+        unit_id=data['unit_id'],
+        unit_name=data['unit_name'],
+        mode=data['mode'],
+        question=question,
+        progress=progress
+    )
+
+
 @app.route('/quiz')
 def quiz():
     question = "What is 11 × 13?"
