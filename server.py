@@ -142,7 +142,6 @@ def practice_summary():
 
 @app.route('/quiz')
 def quiz():
-
     if not 'quiz-data' in session:
         quiz_data = {
             'start-time': datetime.utcnow().isoformat(),
@@ -191,9 +190,10 @@ def next_question():
 def submit_answer():
     user_answer = request.form['user-answer']
     quiz_data = session['quiz-data']
-    quiz_data['quiz-responses'].append(user_answer)
+    user_data = {'user-answer': user_answer, 'time-answered': datetime.utcnow().isoformat()}
+    quiz_data['quiz-responses'].append(user_data)
     session['quiz-data'] = quiz_data
-    correct = int(session['quiz-data']['quiz-responses'][-1]) == int(session['quiz-data']['question-data'][len(session['quiz-data']['quiz-responses'])-1]['answer'])
+    correct = int(session['quiz-data']['quiz-responses'][-1]['user-answer']) == int(session['quiz-data']['question-data'][len(session['quiz-data']['quiz-responses'])-1]['answer'])
 
     message = 'Great job!'
     if not correct:
