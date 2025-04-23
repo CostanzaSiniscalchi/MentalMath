@@ -127,7 +127,7 @@ def quiz():
 
     # return render_template("quiz.html", question="17 × 11 = ?", options=["187", "181", "177", "170"], progress=20, time_left=270)
 
-    if len(session) == 0:
+    if not 'quiz-data' in session:
         session['start-time'] = datetime.utcnow().isoformat()
         session['unit'] = 1
         session['total'] = 5
