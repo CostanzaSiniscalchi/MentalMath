@@ -142,32 +142,29 @@ def practice_summary():
 
 @app.route('/quiz')
 def quiz():
-    question = "What is 11 × 13?"
-    options = ["143", "123", "153"]
-    progress = 20  # For example, 20% through the quiz
-    time_left = 300  # 5 minutes in seconds
-	
-
-    # return render_template("quiz.html", question="17 × 11 = ?", options=["187", "181", "177", "170"], progress=20, time_left=270)
 
     if not 'quiz-data' in session:
-        session['start-time'] = datetime.utcnow().isoformat()
-        session['unit'] = 1
-        session['total'] = 5
-        session['quiz-data'] = list(math_data.math_problems[i] for i in range(5))
-        session['quiz-responses'] = list()
+        quiz_data = {
+            'start-time': datetime.utcnow().isoformat(),
+            'unit': 1, # TODO: implement unit selection
+            'question-data': list(math_data.math_problems[i] for i in range(5)), # TODO: select questions at random; not hard! np.choice()!
+            'quiz-responses': list()
+        }
+        session['quiz-data']= quiz_data
+
+    quiz_data = session['quiz-data']
 
     # TODO: init session somewhere!
 
-    if len(session['quiz-responses']) == len(session['quiz-data']):
+    if len(quiz_data['quiz-responses']) == len(quiz_data['question-data']):
         return redirect(url_for('summary')) # this should actually be results, but we'll use summary as placeholder
 
     unit = None # this might be vestigial - we'll see if this is removed, keep for now
-    question = session['quiz-data'][len(session['quiz-responses'])]['question']
-    answer = session['quiz-data'][len(session['quiz-responses'])]['answer']
-    progress = int(100 * len(session['quiz-responses'])/max(len(session['quiz-data']), 1))  # For example, 20% through the quiz
+    question = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['question']
+    answer = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['answer']
+    progress = int(100 * len(quiz_data['quiz-responses'])/max(len(quiz_data['question-data']), 1))  # For example, 20% through the quiz
 
-    start_time = datetime.fromisoformat(session['start-time'])
+    start_time = datetime.fromisoformat(quiz_data['start-time'])
     elapsed = (datetime.utcnow() - start_time).total_seconds()
     time_left = max(0, int(300 - elapsed))  # this makes it so refreshing a page doesn't mess up time
 
@@ -192,11 +189,10 @@ def next_question():
 @app.route('/submit_answer', methods=['POST'])
 def submit_answer():
     user_answer = request.form['user-answer']
-    responses = session['quiz-responses']
+    responses = session['quiz_data']['quiz-responses']
     responses.append(user_answer)
-    session['quiz-responses'] = responses
-
-    correct = int(session['quiz-responses'][-1]) == int(session['quiz-data'][len(session['quiz-responses'])-1]['answer'])
+    session['quiz_data']['quiz-responses'] = responses
+    correct = int(session['quiz_data']['quiz-responses'][-1]) == int(session['quiz_data']['question-data'][len(session['quiz_data']['quiz-responses'])-1]['answer'])
 
     message = 'Great job!'
     if not correct:
