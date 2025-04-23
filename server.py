@@ -24,6 +24,7 @@ def home():
 @app.route('/learn/<unit_id>', methods=['GET'])
 def learn(unit_id):
 	with open(learn_path) as f:
+	with open(learn_path, encoding='utf-8') as f:
 		tutorial_data = json.load(f)
 		steps = tutorial_data.get(unit_id)
 		if not steps:
@@ -47,6 +48,7 @@ def practice(unit_id, mode):
     question_path = data[unit_id]['q_path']
 
     with open(question_path) as f:
+    with open(question_path, encoding='utf-8') as f:
         all_questions = json.load(f)[mode]
     
     # Sample 5 unique questions
@@ -150,6 +152,7 @@ def quiz():
             'quiz-responses': list()
         }
         session['quiz-data']= quiz_data
+    with open(question_path, encoding='utf-8') as f:
 
     quiz_data = session['quiz-data']
     for thing in quiz_data:
