@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentStep < tutorialSteps.length) {
       renderStep(currentStep);
     } else {
-      window.location.href = "/practice";  // TODO: customize per unit if needed
+      window.location.href = `/practice/${unitId}/easy`; // or make difficulty dynamic
     }
   });
 });

@@ -1,19 +1,64 @@
 {% extends "base.html" %}
 
-{% block title %}EXAMPLE TEXT HERE{% endblock %}
+{% block title %}{{ unit_name }} – Practice Mode{% endblock %}
 
 {% block styles %}
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=2"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=2">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}?v=2">
 {% endblock %}
 
-
 {% block content %}
+<div class="p-4">
 
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">{{ unit_name }} – Practice Mode – {{ mode }}</h2>
+    <div class="flex-grow-1 ms-4" style="max-width: 300px;">
+      <div class="progress" style="height: 1.5rem;">
+        <div id="pracProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
+          {{ progress }}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Section -->
+  <div class="text-center mb-5">
+    <!-- Question Display -->
+    <h3 id="question" class="fw-semibold mb-4">{{ question }}</h3>
+
+    <!-- Answer Form -->
+    <form id='quiz-form' method="POST" class="col-6 mx-auto">
+      <div class="mb-3">
+        <input
+          type="text"
+          name="user-answer"
+          class="form-control form-control-lg text-center"
+          placeholder="Type your answer here"
+          autocomplete="off"
+          required
+        >
+      </div>
+      <div class="text-center mt-4">
+        <button id="quizsubmit" type="submit" class="btn btn-primary px-5 py-2 fs-5 rounded-3">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Feedback Message -->
+  <div id='feedback' class="alert text-center py-2 mb-3" style="display: none;"></div>
+
+  <!-- Next Button -->
+  <div class="d-flex justify-content-end">
+    <form action="{{ url_for('practice', unit_id=unit_id, mode=mode) }}" method="GET">
+        <button type="submit" class="btn btn-primary px-4 py-2" id="nextBtn" disabled>Next Question</button>
+
+    </form>
+  </div>
+
+</div>
 {% endblock %}
 
 {% block scripts %}
-    <!-- <script src="{{ url_for('static', filename='js/homepage.js') }}" defer></script> -->
+<script src="{{ url_for('static', filename='js/practice.js') }}" defer></script>
 {% endblock %}
-
-
-<!-- need to link in workspace found in separate file -->
