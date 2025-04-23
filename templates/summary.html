@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}EXAMPLE TEXT HERE{% endblock %}
+{% block title %}Summary{% endblock %}
 
 {% block styles %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/summary.css') }}?v=2">
@@ -16,9 +16,9 @@
         🎉 You’ve leveled up!
       </div>
   
-      <button class="btn btn-outline-info my-4 px-4 py-2 rounded-pill">
-        Review Mistakes
-      </button>
+    <button class="btn btn-outline-info my-4 px-4 py-2 rounded-pill" onclick="window.location.href='{{ url_for('review') }}'">
+      Review Mistakes
+    </button>
   
       <h4 class="mt-5">Badges Earned</h4>
       <div class="d-flex justify-content-center flex-wrap gap-4 mt-3">
