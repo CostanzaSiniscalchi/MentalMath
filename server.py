@@ -10,9 +10,9 @@ import math_data
 
 app = Flask(__name__)
 
-data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0},
-		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0},
-		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
+data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0, "q_path": "static/data/multiply11.json"},
+		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0, "q_path": "static/data/squared5.json"},
+		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0, "q_path": "static/data/midpoint.json"}
 		}
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 
@@ -41,9 +41,19 @@ def unit(unit_id):
 	xp_progress = unit["progress"]
 	return render_template('unit.html', unit_id=unit_id, unit_name = unit_name, xp_progress = xp_progress)
 
-@app.route('/practice')
-def practice():
-	return render_template('practice.html')
+@app.route('/practice/<unit_id>/<mode>', methods=['GET'])
+def practice(unit_id, mode):
+	print(unit_id, mode)
+	unit_name = data[unit_id]['unit']
+	question_path = data[unit_id]['q_path']
+	with open(question_path) as f:
+		questions = json.load(f)
+		questions = questions[mode]
+		question = questions[0]["problem"]
+		print(question)
+		if not questions:
+			return "Unit not found", 404	
+	return render_template('practice.html', unit_id = unit_id, unit_name = unit_name, mode = mode, question = question, progress = 0)
 @app.route('/quiz')
 def quiz():
     if len(session) == 0:

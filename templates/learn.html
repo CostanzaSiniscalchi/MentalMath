@@ -28,10 +28,11 @@
   </div>
 </section>
 
-<!-- Dynamic script variables -->
+<!-- Pass dynamic vars to JS -->
 <script>
   const tutorialSteps = {{ steps | tojson }};
   const imgBaseUrl = "{{ img_base_url }}";
+  const unitId = "{{ unit_id }}";
 </script>
 {% endblock %}
 
