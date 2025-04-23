@@ -36,15 +36,25 @@
     { "problem": "11 × 231", "answer": 2541, "solution_gif": "static/data/mult11gifs/hard/11x231_sol.gif"}
   ],
   "test": [
-    { "problem": "11 × 29", "answer": 319, "solution_gif": "static/data/mult11gifs/test/11x29_sol.gif"},
-    { "problem": "11 × 38", "answer": 418, "solution_gif": "static/data/mult11gifs/test/11x38_sol.gif"},
-    { "problem": "11 × 12", "answer": 132, "solution_gif": "static/data/mult11gifs/test/11x12_sol.gif"},
-    { "problem": "11 × 67", "answer": 737, "solution_gif": "static/data/mult11gifs/test/11x67_sol.gif"},
-    { "problem": "11 × 145", "answer": 1595, "solution_gif": "static/data/mult11gifs/test/11x145_sol.gif"},
-    { "problem": "11 × 21", "answer": 231, "solution_gif": "static/data/mult11gifs/test/11x21_sol.gif"},
-    { "problem": "11 × 56", "answer": 616, "solution_gif": "static/data/mult11gifs/test/11x56_sol.gif"},
-    { "problem": "11 × 303", "answer": 3333, "solution_gif": "static/data/mult11gifs/test/11x303_sol.gif"},
-    { "problem": "11 × 75", "answer": 825, "solution_gif": "static/data/mult11gifs/test/11x75_sol.gif"},
-    { "problem": "11 × 121", "answer": 1331, "solution_gif": "static/data/mult11gifs/test/11x121_sol.gif"}
+    { "problem": "11 × 29", "answer": 319, "solution_gif": "static/data/mult11gifs/test/11x29_sol.gif",
+      "id": 1},
+    { "problem": "11 × 38", "answer": 418, "solution_gif": "static/data/mult11gifs/test/11x38_sol.gif",
+      "id": 2},
+    { "problem": "11 × 12", "answer": 132, "solution_gif": "static/data/mult11gifs/test/11x12_sol.gif",
+      "id": 3},
+    { "problem": "11 × 67", "answer": 737, "solution_gif": "static/data/mult11gifs/test/11x67_sol.gif",
+      "id": 4},
+    { "problem": "11 × 145", "answer": 1595, "solution_gif": "static/data/mult11gifs/test/11x145_sol.gif",
+      "id": 5},
+    { "problem": "11 × 21", "answer": 231, "solution_gif": "static/data/mult11gifs/test/11x21_sol.gif",
+      "id": 6},
+    { "problem": "11 × 56", "answer": 616, "solution_gif": "static/data/mult11gifs/test/11x56_sol.gif",
+      "id": 7},
+    { "problem": "11 × 303", "answer": 3333, "solution_gif": "static/data/mult11gifs/test/11x303_sol.gif",
+      "id": 8},
+    { "problem": "11 × 75", "answer": 825, "solution_gif": "static/data/mult11gifs/test/11x75_sol.gif",
+      "id": 9},
+    { "problem": "11 × 121", "answer": 1331, "solution_gif": "static/data/mult11gifs/test/11x121_sol.gif",
+      "id": 10}
   ]
 }
