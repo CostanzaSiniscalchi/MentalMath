@@ -153,7 +153,8 @@ def quiz():
         session['quiz-data']= quiz_data
 
     quiz_data = session['quiz-data']
-
+    for thing in quiz_data:
+        print(thing, quiz_data[thing])
     # TODO: init session somewhere!
 
     if len(quiz_data['quiz-responses']) == len(quiz_data['question-data']):
@@ -189,10 +190,10 @@ def next_question():
 @app.route('/submit_answer', methods=['POST'])
 def submit_answer():
     user_answer = request.form['user-answer']
-    responses = session['quiz_data']['quiz-responses']
-    responses.append(user_answer)
-    session['quiz_data']['quiz-responses'] = responses
-    correct = int(session['quiz_data']['quiz-responses'][-1]) == int(session['quiz_data']['question-data'][len(session['quiz_data']['quiz-responses'])-1]['answer'])
+    quiz_data = session['quiz-data']
+    quiz_data['quiz-responses'].append(user_answer)
+    session['quiz-data'] = quiz_data
+    correct = int(session['quiz-data']['quiz-responses'][-1]) == int(session['quiz-data']['question-data'][len(session['quiz-data']['quiz-responses'])-1]['answer'])
 
     message = 'Great job!'
     if not correct:
