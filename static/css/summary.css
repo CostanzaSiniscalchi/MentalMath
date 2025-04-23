@@ -1,0 +1,8 @@
+.badge-img {
+	height: 100px;
+	transition: transform 0.2s ease-in-out;
+  }
+  .badge-img:hover {
+	transform: scale(1.1);
+  }
+  

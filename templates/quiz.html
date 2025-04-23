@@ -1,94 +1,66 @@
 {% extends "base.html" %}
 
-{% block title %}EXAMPLE TEXT HERE{% endblock %}
+{% block title %}Quiz{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=2">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}?v=2">
+    <!-- Optional additional styles -->
 {% endblock %}
 
 {% block content %}
+<body class="p-4">
 
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Lightning Round</h2>
 
+    <div id="timer" class="fs-4 text-danger fw-semibold">5:00</div>
 
-<div class="p-4">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="fw-bold mb-0">Lightning Round</h2>
-  
-      <div id="timer" class="fs-4 text-danger fw-semibold">{{ time_left // 60 }}:{{ '%02d' % (time_left % 60) }}</div>
-  
-      <div class="flex-grow-1 ms-4" style="max-width: 300px;">
-        <div class="progress" style="height: 1.5rem;">
-          <div id="quizProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
-            {{ progress }}%
-          </div>
+    <div class="flex-grow-1 ms-4">
+      <div class="progress" style="height: 1.5rem;">
+        <div id="quizProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
+          {{ progress }}%
         </div>
       </div>
     </div>
-  
-    <!-- Question Section -->
-    <div class="text-center mb-5">
-      <h3 id="question" class="fw-semibold mb-4">{{ question }}</h3>
-
-        <form id='quiz-form'  method="POST" class="col-6 mx-auto">
-          <div class="mb-3">
-            <input
-              type="text"
-              name="user-answer"
-              class="form-control form-control-lg text-center"
-              placeholder="Type your answer here"
-              autocomplete="off"
-              required
-            >
-          </div>
-            <div class="text-center mt-4">
-              <button id="quizsubmit" type="submit" class="btn btn-primary px-5 py-2 fs-5 rounded-3">Submit</button>
-            </div>
-        </form>
-
-    </div>
-
-    <div id='feedback' class="alert text-center py-2 mb-3">
-
-    </div>
-
-
-
-    <!-- Next Button -->
-    <div class="d-flex justify-content-end">
-      <form action="" method="GET">
-        <button type="submit" id="nextButton" action="{{ url_for('quiz') }}" class="btn btn-primary px-4 py-2" id="nextBtn">Next Question</button>
-      </form>
-    </div>
-
-
-    <script>
-      // Countdown Timer
-      let timeLeft = {{ time_left}};
-      const timerEl = document.getElementById("timer");
-  
-      const timerInterval = setInterval(() => {
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          timerEl.textContent = "Time's up!";
-          return;
-        }
-        timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = String(timeLeft % 60).padStart(2, '0');
-        timerEl.textContent = `${minutes}:${seconds}`;
-      }, 1000);
-    </script>
-
   </div>
 
+  <!-- Question Section -->
+  <div class="text-center mb-5">
+    <h3 id="question" class="fw-semibold mb-4">{{ question }}</h3>
 
+    <div class="d-grid gap-3 col-6 mx-auto">
+      {% for option in options %}
+        <button class="btn btn-outline-dark answer-btn">{{ option }}</button>
+      {% endfor %}
+    </div>
+  </div>
 
+  <!-- Next Button -->
+  <div class="d-flex justify-content-end">
+    <form action="{{ url_for('next_question') }}" method="POST">
+      <button type="submit" class="btn btn-primary px-4 py-2" id="nextBtn">Next Question</button>
+    </form>
+  </div>
 
+</body>
 {% endblock %}
 
 {% block scripts %}
-    <!-- <script src="{{ url_for('static', filename='js/homepage.js') }}" defer></script> -->
-  <script src="{{ url_for('static', filename='js/quiz.js') }}" defer></script>
+<script>
+  // Countdown Timer
+  let timeLeft = {{ time_left | default(300) }};
+  const timerEl = document.getElementById("timer");
+
+  const timerInterval = setInterval(() => {
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      timerEl.textContent = "Time's up!";
+      return;
+    }
+    timeLeft--;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = String(timeLeft % 60).padStart(2, '0');
+    timerEl.textContent = `${minutes}:${seconds}`;
+  }, 1000);
+</script>
 {% endblock %}

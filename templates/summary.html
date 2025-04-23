@@ -3,12 +3,33 @@
 {% block title %}EXAMPLE TEXT HERE{% endblock %}
 
 {% block styles %}
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=2"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/summary.css') }}?v=2">
 {% endblock %}
 
 
 {% block content %}
-
+<div class="container my-5">
+    <div class="card shadow-lg rounded-4 p-5 text-center" style="background-color: #ffffff;">
+      <h2 class="mb-4">Summary</h2>
+  
+      <div class="alert alert-success rounded-pill fs-5 w-50 mx-auto">
+        🎉 You’ve leveled up!
+      </div>
+  
+      <button class="btn btn-outline-info my-4 px-4 py-2 rounded-pill">
+        Review Mistakes
+      </button>
+  
+      <h4 class="mt-5">Badges Earned</h4>
+      <div class="d-flex justify-content-center flex-wrap gap-4 mt-3">
+        <!-- Repeat for each badge -->
+        <img src="{{ url_for('static', filename='/img/addition_wiz.png') }}" alt="3 in a row badge" class="badge-img">
+        <img src="{{ url_for('static', filename='/img/addition_wiz.png') }}" alt="Accuracy badge" class="badge-img">
+        <!-- Add more badge imgs as needed -->
+      </div>
+    </div>
+  </div>
+  
 {% endblock %}
 
 {% block scripts %}

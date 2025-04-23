@@ -1,0 +1,23 @@
+[
+	{
+		"id": 1,
+		"question": "What is 11 × 13?",
+		"answer": 143,
+		"difficulty": "medium",
+		"category": ["multiplication"]
+	},
+	{
+		"id": 2,
+		"question": "What is 15% of 80?",
+		"answer": 12,
+		"difficulty": "medium",
+		"category": ["percentages"]
+	},
+	{
+		"id": 3,
+		"question": "Is 0.25 equal to 1/4?",
+		"answer": true,
+		"difficulty": "easy",
+		"category": ["fractions", "decimals"]
+	}
+]
