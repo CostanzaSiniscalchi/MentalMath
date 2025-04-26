@@ -1,0 +1,50 @@
+{
+  "easy": [
+    { "problem": "24 × 26", "answer": 624, "solution_gif": "static/data/midpointgifs/easy/24x26.gif" },
+    { "problem": "34 × 36", "answer": 1224, "solution_gif": "static/data/midpointgifs/easy/34x36.gif" },
+    { "problem": "44 × 46", "answer": 2024, "solution_gif": "static/data/midpointgifs/easy/44x46.gif" },
+    { "problem": "54 × 56", "answer": 3024, "solution_gif": "static/data/midpointgifs/easy/54x56.gif" },
+    { "problem": "64 × 66", "answer": 4224, "solution_gif": "static/data/midpointgifs/easy/64x66.gif" },
+    { "problem": "74 × 76", "answer": 5624, "solution_gif": "static/data/midpointgifs/easy/74x76.gif" },
+    { "problem": "84 × 86", "answer": 7224, "solution_gif": "static/data/midpointgifs/easy/84x86.gif" },
+    { "problem": "94 × 96", "answer": 9024, "solution_gif": "static/data/midpointgifs/easy/94x96.gif" },
+    { "problem": "14 × 16", "answer": 224, "solution_gif": "static/data/midpointgifs/easy/14x16.gif" },
+    { "problem": "104 × 106", "answer": 11024, "solution_gif": "static/data/midpointgifs/easy/104x106.gif" }
+  ],
+  "medium": [
+    { "problem": "22 × 28", "answer": 616, "solution_gif": "static/data/midpointgifs/medium/22x28.gif" },
+    { "problem": "18 × 32", "answer": 576, "solution_gif": "static/data/midpointgifs/medium/18x32.gif" },
+    { "problem": "42 × 48", "answer": 2016, "solution_gif": "static/data/midpointgifs/medium/42x48.gif" },
+    { "problem": "62 × 68", "answer": 4216, "solution_gif": "static/data/midpointgifs/medium/62x68.gif" },
+    { "problem": "82 × 88", "answer": 7216, "solution_gif": "static/data/midpointgifs/medium/82x88.gif" },
+    { "problem": "32 × 38", "answer": 1216, "solution_gif": "static/data/midpointgifs/medium/32x38.gif" },
+    { "problem": "52 × 58", "answer": 3016, "solution_gif": "static/data/midpointgifs/medium/52x58.gif" },
+    { "problem": "72 × 78", "answer": 5616, "solution_gif": "static/data/midpointgifs/medium/72x78.gif" },
+    { "problem": "92 × 98", "answer": 9016, "solution_gif": "static/data/midpointgifs/medium/92x98.gif" },
+    { "problem": "112 × 118", "answer": 13216, "solution_gif": "static/data/midpointgifs/medium/112x118.gif" }
+  ],
+  "hard": [
+    { "problem": "12 × 38", "answer": 456, "solution_gif": "static/data/midpointgifs/hard/12x38.gif" },
+    { "problem": "62 × 88", "answer": 5456, "solution_gif": "static/data/midpointgifs/hard/62x88.gif" },
+    { "problem": "102 × 108", "answer": 11016, "solution_gif": "static/data/midpointgifs/hard/102x108.gif" },
+    { "problem": "152 × 158", "answer": 24016, "solution_gif": "static/data/midpointgifs/hard/152x158.gif" },
+    { "problem": "122 × 128", "answer": 15616, "solution_gif": "static/data/midpointgifs/hard/122x128.gif" },
+    { "problem": "182 × 188", "answer": 34216, "solution_gif": "static/data/midpointgifs/hard/182x188.gif" },
+    { "problem": "202 × 208", "answer": 42016, "solution_gif": "static/data/midpointgifs/hard/202x208.gif" },
+    { "problem": "222 × 228", "answer": 49216, "solution_gif": "static/data/midpointgifs/hard/222x228.gif" },
+    { "problem": "242 × 248", "answer": 60016, "solution_gif": "static/data/midpointgifs/hard/242x248.gif" },
+    { "problem": "262 × 268", "answer": 72016, "solution_gif": "static/data/midpointgifs/hard/262x268.gif" }
+  ],
+  "test": [
+    { "problem": "24 × 26", "answer": 624, "solution_gif": "static/data/midpointgifs/test/24x26.gif" },
+    { "problem": "34 × 36", "answer": 1224, "solution_gif": "static/data/midpointgifs/test/34x36.gif" },
+    { "problem": "44 × 46", "answer": 2024, "solution_gif": "static/data/midpointgifs/test/44x46.gif" },
+    { "problem": "22 × 28", "answer": 616, "solution_gif": "static/data/midpointgifs/test/22x28.gif" },
+    { "problem": "62 × 68", "answer": 4216, "solution_gif": "static/data/midpointgifs/test/62x68.gif" },
+    { "problem": "32 × 38", "answer": 1216, "solution_gif": "static/data/midpointgifs/test/32x38.gif" },
+    { "problem": "72 × 78", "answer": 5616, "solution_gif": "static/data/midpointgifs/test/72x78.gif" },
+    { "problem": "92 × 98", "answer": 9016, "solution_gif": "static/data/midpointgifs/test/92x98.gif" },
+    { "problem": "112 × 118", "answer": 13216, "solution_gif": "static/data/midpointgifs/test/112x118.gif" },
+    { "problem": "122 × 128", "answer": 15616, "solution_gif": "static/data/midpointgifs/test/122x128.gif" }
+  ]
+}
