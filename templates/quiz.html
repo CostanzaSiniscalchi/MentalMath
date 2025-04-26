@@ -10,45 +10,41 @@
 {% block content %}
 
 
-<div class="p-4">
+<div class="container-fluid pt-0 px-4" style="margin-top: -16px;">
+  <div class="d-flex justify-content-between align-items-center mb-4">
 
-  <!-- Header -->
-  <div class="container mb-5">
-    <div class="row align-items-center">
-
-      <!-- Left: Lightning Round -->
-      <div class="col-4 text-start">
-        <h2 class="fw-bold mb-0">Lightning Round</h2>
-      </div>
-
-      <!-- Center: Timer and Question (stacked vertically) -->
-      <div class="col-4 text-center">
-        <div id="timer" class="fs-4 text-danger fw-semibold mb-2">
-          {{ time_left // 60 }}:{{ '%02d' % (time_left % 60) }}
-        </div>
-        <h3 id="question" class="fw-semibold mb-0">
-          {{ question }}
-        </h3>
-      </div>
-
-      <!-- Right: Progress Bar -->
-      <div class="col-4 text-end">
-        <div class="d-inline-block" style="width: 300px;">
-          <div id='outerProgress' class="progress" style="height: 1.5rem;">
-            <div id="quizProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
-              {{ progress }}%
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <!-- Left: Lightning Round -->
+    <div class="text-start">
+      <h2 class="fw-bold mb-0">Lightning Round</h2>
     </div>
+
+    <!-- Center: Timer and Question (stacked vertically) -->
+    <div class="text-center flex-grow-1">
+      <div id="timer" class="fs-4 text-danger fw-semibold mb-4">
+        {{ time_left // 60 }}:{{ '%02d' % (time_left % 60) }}
+      </div>
+      <h3 id="question" class="fw-semibold mb-0">
+        {{ question }}
+      </h3>
+    </div>
+
+    <!-- Right: Progress Bar -->
+    <div class="text-end" style="min-width: 300px;">
+      <div id='outerProgress' class="progress" style="height: 1.5rem;">
+        <div id="quizProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
+          {{ progress }}%
+        </div>
+      </div>
+    </div>
+
   </div>
+</div>
+
 
   <!-- Form below -->
   <div class="text-center mb-5">
     <form id='quiz-form' method="POST">
-      <div class="mb-3">
+      <div class="mb-3 px-4">
         <input
           type="text"
           name="user-answer"
