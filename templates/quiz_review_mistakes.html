@@ -13,8 +13,7 @@
     <div class="d-flex justify-content-center">
       <div class="rounded-4 p-4 shadow" style="background-color: white; width: 100%; max-width: 500px;">
         <h2 class="text-center mb-4">Review Mistakes</h2>
-
-
+          
 {% for item in review_data %}
   <div class="d-flex justify-content-between align-items-center border rounded-3 p-3 mb-3 shadow-sm unit-box">
     <div>
@@ -23,7 +22,8 @@
       </button>
     </div>
     <div class="text-end">
-      <div class="text-danger fw-semibold">❌ {{item['user-response']['user-answer']}}</div>
+        <div class="text-info fw-semibold"> You spent ⏳ {{item['user-response']['time-data']['time-taken']}} seconds</div>
+      <div class="text-danger fw-semibold">You answered ❌ {{item['user-response']['user-answer']}}</div>
       <a href="/quiz_problem_review/{{item['problem-data']['id']}}" class="btn btn-outline-info btn-sm mt-1">View Question</a>
     </div>
   </div>
