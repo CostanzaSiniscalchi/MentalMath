@@ -19,4 +19,20 @@
         color: red;
         font-weight: bold;
   }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#outerProgress {
+    height: 1.5rem;
+    border: 1px solid #888;
+}
   
