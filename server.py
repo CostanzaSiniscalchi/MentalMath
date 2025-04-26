@@ -162,7 +162,7 @@ def quiz():
         return redirect(url_for('quiz_results')) # this should actually be results, but we'll use summary as placeholder
 
     unit = None # this might be vestigial - we'll see if this is removed, keep for now
-    question = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['problem']
+    question = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['problem'] # TODO: i was so tired making this, should change using negative indices
     answer = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['answer']
     progress = int(100 * len(quiz_data['quiz-responses'])/max(len(quiz_data['question-data']), 1))  # For example, 20% through the quiz
 
@@ -183,7 +183,14 @@ def quiz():
 def submit_answer():
     user_answer = request.form['user-answer']
     quiz_data = session['quiz-data']
-    user_data = {'user-answer': user_answer, 'time-answered': datetime.utcnow().isoformat()}
+    print(session)
+    timestamp = datetime.utcnow().isoformat()
+    time_taken = (datetime.utcnow() - datetime.fromisoformat(quiz_data['start-time'])).total_seconds()
+    if len(quiz_data['quiz-responses']) > 0:
+        time_taken = (datetime.utcnow() - datetime.fromisoformat(quiz_data['quiz-responses'][-1]['time-data']['timestamp'])).total_seconds()
+    time_taken = round(time_taken, 1)
+
+    user_data = {'user-answer': user_answer, 'time-data': {'timestamp': timestamp, 'time-taken': time_taken}}
     quiz_data['quiz-responses'].append(user_data)
     session['quiz-data'] = quiz_data
 

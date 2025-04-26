@@ -28,7 +28,10 @@
 </section>
 
 <!-- Pass dynamic vars to JS -->
+{% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/learn.js') }}"></script>
 {% endblock %}
 
 
