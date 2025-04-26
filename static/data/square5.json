@@ -1,0 +1,51 @@
+{
+    "easy": [
+      { "problem": "15²", "answer": 225, "solution_gif": "static/data/square5gifs/easy/15_sq.gif" },
+      { "problem": "25²", "answer": 625, "solution_gif": "static/data/square5gifs/easy/25_sq.gif" },
+      { "problem": "35²", "answer": 1225, "solution_gif": "static/data/square5gifs/easy/35_sq.gif" },
+      { "problem": "45²", "answer": 2025, "solution_gif": "static/data/square5gifs/easy/45_sq.gif" },
+      { "problem": "55²", "answer": 3025, "solution_gif": "static/data/square5gifs/easy/55_sq.gif" },
+      { "problem": "65²", "answer": 4225, "solution_gif": "static/data/square5gifs/easy/65_sq.gif" },
+      { "problem": "75²", "answer": 5625, "solution_gif": "static/data/square5gifs/easy/75_sq.gif" },
+      { "problem": "85²", "answer": 7225, "solution_gif": "static/data/square5gifs/easy/85_sq.gif" },
+      { "problem": "95²", "answer": 9025, "solution_gif": "static/data/square5gifs/easy/95_sq.gif" },
+      { "problem": "105²", "answer": 11025, "solution_gif": "static/data/square5gifs/easy/105_sq.gif" }
+    ],
+    "medium": [
+      { "problem": "115²", "answer": 13225, "solution_gif": "static/data/square5gifs/medium/115_sq.gif" },
+      { "problem": "125²", "answer": 15625, "solution_gif": "static/data/square5gifs/medium/125_sq.gif" },
+      { "problem": "135²", "answer": 18225, "solution_gif": "static/data/square5gifs/medium/135_sq.gif" },
+      { "problem": "145²", "answer": 21025, "solution_gif": "static/data/square5gifs/medium/145_sq.gif" },
+      { "problem": "155²", "answer": 24025, "solution_gif": "static/data/square5gifs/medium/155_sq.gif" },
+      { "problem": "165²", "answer": 27225, "solution_gif": "static/data/square5gifs/medium/165_sq.gif" },
+      { "problem": "175²", "answer": 30625, "solution_gif": "static/data/square5gifs/medium/175_sq.gif" },
+      { "problem": "185²", "answer": 34225, "solution_gif": "static/data/square5gifs/medium/185_sq.gif" },
+      { "problem": "195²", "answer": 38025, "solution_gif": "static/data/square5gifs/medium/195_sq.gif" },
+      { "problem": "205²", "answer": 42025, "solution_gif": "static/data/square5gifs/medium/205_sq.gif" }
+    ],
+    "hard": [
+      { "problem": "215²", "answer": 46225, "solution_gif": "static/data/square5gifs/hard/215_sq.gif" },
+      { "problem": "225²", "answer": 50625, "solution_gif": "static/data/square5gifs/hard/225_sq.gif" },
+      { "problem": "235²", "answer": 55225, "solution_gif": "static/data/square5gifs/hard/235_sq.gif" },
+      { "problem": "245²", "answer": 60025, "solution_gif": "static/data/square5gifs/hard/245_sq.gif" },
+      { "problem": "255²", "answer": 65025, "solution_gif": "static/data/square5gifs/hard/255_sq.gif" },
+      { "problem": "265²", "answer": 70225, "solution_gif": "static/data/square5gifs/hard/265_sq.gif" },
+      { "problem": "275²", "answer": 75625, "solution_gif": "static/data/square5gifs/hard/275_sq.gif" },
+      { "problem": "285²", "answer": 81225, "solution_gif": "static/data/square5gifs/hard/285_sq.gif" },
+      { "problem": "295²", "answer": 87025, "solution_gif": "static/data/square5gifs/hard/295_sq.gif" },
+      { "problem": "305²", "answer": 93025, "solution_gif": "static/data/square5gifs/hard/305_sq.gif" }
+    ],
+    "test": [
+      { "problem": "35²", "answer": 1225, "solution_gif": "static/data/square5gifs/test/35_sq.gif" },
+      { "problem": "65²", "answer": 4225, "solution_gif": "static/data/square5gifs/test/65_sq.gif" },
+      { "problem": "85²", "answer": 7225, "solution_gif": "static/data/square5gifs/test/85_sq.gif" },
+      { "problem": "125²", "answer": 15625, "solution_gif": "static/data/square5gifs/test/125_sq.gif" },
+      { "problem": "155²", "answer": 24025, "solution_gif": "static/data/square5gifs/test/155_sq.gif" },
+      { "problem": "185²", "answer": 34225, "solution_gif": "static/data/square5gifs/test/185_sq.gif" },
+      { "problem": "215²", "answer": 46225, "solution_gif": "static/data/square5gifs/test/215_sq.gif" },
+      { "problem": "245²", "answer": 60025, "solution_gif": "static/data/square5gifs/test/245_sq.gif" },
+      { "problem": "275²", "answer": 75625, "solution_gif": "static/data/square5gifs/test/275_sq.gif" },
+      { "problem": "305²", "answer": 93025, "solution_gif": "static/data/square5gifs/test/305_sq.gif" }
+    ]
+  }
+  
