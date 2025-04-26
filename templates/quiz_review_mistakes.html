@@ -17,9 +17,9 @@
 {% for item in review_data %}
   <div class="d-flex justify-content-between align-items-center border rounded-3 p-3 mb-3 shadow-sm unit-box">
     <div>
-      <button class="btn btn-outline-primary fw-semibold">
+      <div class="fw-semibold text-primary fs-4">
         {{ item['problem-data']['problem'] }}
-      </button>
+      </div>
     </div>
     <div class="text-end">
         <div class="text-info fw-semibold"> You spent ⏳ {{item['user-response']['time-data']['time-taken']}} seconds</div>
