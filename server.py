@@ -1,5 +1,4 @@
 # Metal Math App
-
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from random import sample # used for sampling questions
 import secrets # used for session secret key
@@ -10,12 +9,13 @@ import math_data
 
 app = Flask(__name__)
 
-data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0, "q_path": "static/data/multiply11.json"},
-		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0, "q_path": "static/data/squared5.json"},
-		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0, "q_path": "static/data/midpoint.json"}
+data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0},
+		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0},
+		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
 		}
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
-
+question_path = os.path.join('static', 'data', 'full_data.json')
+covered_questions = set()
 
 @app.route('/')
 def home():
@@ -44,26 +44,27 @@ def unit(unit_id):
 @app.route('/practice/<unit_id>/<mode>', methods=['GET'])
 def practice(unit_id, mode):
     unit_name = data[unit_id]['unit']
-    question_path = data[unit_id]['q_path']
-
     with open(question_path, encoding='utf-8') as f:
-        all_questions = json.load(f)[mode]
+        all_questions = json.load(f)[unit_id][mode]
+        print(all_questions.keys())
     
     # Sample 5 unique questions
-    question_batch = sample(all_questions, 5)
-
+    question_batch = sample(list(set(all_questions.keys()) - covered_questions), 5)
+    print(question_batch)
+    q_id = question_batch[0]
+    question = all_questions[q_id]['problem']
+    print("practice: ", q_id, question)
     # Store in session
     session['practice_data'] = {
         'unit_id': unit_id,
         'mode': mode,
         'unit_name': unit_name,
         'questions': question_batch,
+        'all_questions': all_questions,
         'current_index': 0,
         'responses': [],
         'score': 0
     }
-
-    question = question_batch[0]['problem']
     return render_template(
         'practice.html',
         unit_id=unit_id,
@@ -77,7 +78,10 @@ def submit_practice_answer():
     user_answer = request.form['user-answer']
     data = session['practice_data']
     idx = data['current_index']
-    correct_answer = data['questions'][idx]['answer']
+    q_id = data['questions'][idx]
+    all_questions = data['all_questions']
+    print("submit: current question: ", q_id, all_questions[q_id])
+    correct_answer = all_questions[q_id]['answer']
 
     # Track score
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
@@ -86,7 +90,7 @@ def submit_practice_answer():
 
     # Save response
     data['responses'].append({
-        'question': data['questions'][idx]['problem'],
+        'question': all_questions[q_id]['problem'],
         'your_answer': user_answer,
         'correct_answer': correct_answer,
         'correct': is_correct
@@ -98,15 +102,19 @@ def submit_practice_answer():
 @app.route('/next_practice')
 def next_practice():
     data = session['practice_data']
+    question_batch = data['questions']
     data['current_index'] += 1
-
-    if data['current_index'] >= len(data['questions']):
+    
+    if data['current_index'] >= len(question_batch):
+        # End of questions, redirect to summary
         return redirect(url_for('practice_summary'))
-
+	
+    q_id = question_batch[data['current_index']]
     session['practice_data'] = data
-    question = data['questions'][data['current_index']]['problem']
-    progress = int(100 * data['current_index'] / len(data['questions']))
-
+    question = data['all_questions'][q_id]['problem']
+    print("next: ", q_id, question)
+    progress = int(100 * data['current_index'] / len(question_batch))
+    
     return render_template(
         'practice.html',
         unit_id=data['unit_id'],
