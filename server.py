@@ -17,9 +17,25 @@ learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 question_path = os.path.join('static', 'data', 'full_data.json')
 covered_questions = set()
 
+def init_xp_tracking():
+    if 'xp_total' not in session:
+        session['xp_total'] = 0
+    if 'unit_xp' not in session:
+        session['unit_xp'] = {unit_id: 0 for unit_id in data.keys()}
+
+
 @app.route('/')
 def home():
-    return render_template('home.html')
+    init_xp_tracking()
+    updated_data = {}
+    for unit_id, unit_info in data.items():
+        updated_data[unit_id] = {
+            "unit": unit_info["unit"],
+            "difficulty": unit_info["difficulty"],
+            "progress": session['unit_xp'].get(unit_id, 0)
+        }
+    return render_template('home.html', data=updated_data, xp_total=session['xp_total'])
+
 
 @app.route('/learn/<unit_id>', methods=['GET'])
 def learn(unit_id):
@@ -36,10 +52,12 @@ def learn(unit_id):
 
 @app.route('/unit/<unit_id>')
 def unit(unit_id):
-	unit = data[unit_id]
-	unit_name = unit["unit"]
-	xp_progress = unit["progress"]
-	return render_template('unit.html', unit_id=unit_id, unit_name = unit_name, xp_progress = xp_progress)
+    init_xp_tracking()
+    unit = data[unit_id]
+    unit_name = unit["unit"]
+    xp_progress = session['unit_xp'].get(unit_id, 0)
+    return render_template('unit.html', unit_id=unit_id, unit_name=unit_name, xp_progress=xp_progress)
+
 
 @app.route('/practice/<unit_id>/<mode>', methods=['GET'])
 def practice(unit_id, mode):
@@ -128,25 +146,35 @@ def next_practice():
 
 @app.route('/practice_summary')
 def practice_summary():
-    data = session['practice_data']
-    score = data['score']
-    unit_id = data['unit_id']
-    mode = data['mode']
-    xp = 3 if score >= 3 else 1 # TODO: refreshing causing continuous addition of XP
+    init_xp_tracking()
+    data_ = session['practice_data']
+    score = data_['score']
+    unit_id = data_['unit_id']
+    mode = data_['mode']
 
-    # update XP progress for that unit
-    data[unit_id] = data.get(unit_id, {})
-    data[unit_id]['progress'] = min(data[unit_id].get('progress', 0) + xp * 5, 100)
+    # XP logic
+    xp_earned = 3 if score >= 3 else 1
+    unit_xp_gain = xp_earned * 5
+
+    # Update unit XP
+    old_unit_xp = session['unit_xp'].get(unit_id, 0)
+    session['unit_xp'][unit_id] = min(old_unit_xp + unit_xp_gain, 100)
+
+    # Update total XP
+    old_total_xp = session['xp_total']
+    session['xp_total'] = min(old_total_xp + unit_xp_gain, 100)
 
     session.modified = True
     return render_template(
         'practice_summary.html',
         score=score,
-        xp=xp,
+        xp=xp_earned,
         unit_id=unit_id,
         mode=mode,
-        xp_progress=data[unit_id]['progress']
+        xp_progress=session['unit_xp'][unit_id],
+        xp_total=session['xp_total']
     )
+
 
 
 @app.route('/quiz/<unit_id>')
@@ -249,23 +277,32 @@ def next_quiz():
 
 @app.route('/quiz_results')
 def quiz_results():
-    data = session['quiz_data']
-    score = data['score']
-    unit_id = data['unit_id']
-    xp = 3 if score >= 3 else 1
+    init_xp_tracking()
+    data_ = session['quiz_data']
+    score = data_['score']
+    unit_id = data_['unit_id']
 
-    # Update XP
-    data[unit_id] = data.get(unit_id, {})
-    data[unit_id]['progress'] = min(data[unit_id].get('progress', 0) + xp * 5, 100)
+    xp_earned = 3 if score >= 3 else 1
+    unit_xp_gain = xp_earned * 5
+
+    # Update unit XP
+    old_unit_xp = session['unit_xp'].get(unit_id, 0)
+    session['unit_xp'][unit_id] = min(old_unit_xp + unit_xp_gain, 100)
+
+    # Update total XP
+    old_total_xp = session['xp_total']
+    session['xp_total'] = min(old_total_xp + unit_xp_gain, 100)
+
     session.modified = True
-
     return render_template(
         'quiz_results.html',
         score=score,
-        xp=xp,
+        xp=xp_earned,
         unit_id=unit_id,
-        xp_progress=data[unit_id]['progress']
+        xp_progress=session['unit_xp'][unit_id],
+        xp_total=session['xp_total']
     )
+
 
 
 @app.route('/clear_quiz_session')
