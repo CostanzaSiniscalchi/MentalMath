@@ -56,9 +56,9 @@
 
     <!-- Next Button -->
     <div class="d-flex justify-content-end">
-      <form action="" method="GET">
-        <button type="submit" id="nextButton" action="{{ url_for('quiz') }}" class="btn btn-primary px-4 py-2" id="nextBtn">Next Question</button>
-      </form>
+      <form action="{{ url_for('next_quiz') }}" method="GET">
+        <button type="submit" id="nextBtn" class="btn btn-primary px-4 py-2">Next Question</button>
+      </form>      
     </div>
 
 

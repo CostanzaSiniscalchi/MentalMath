@@ -87,6 +87,8 @@ def submit_practice_answer():
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
     if is_correct:
         data['score'] += 1
+        
+    covered_questions.add(q_id)  # Mark question as covered
 
     # Save response
     data['responses'].append({
@@ -148,79 +150,112 @@ def practice_summary():
     )
 
 
-@app.route('/quiz')
-def quiz():
-    question_path = data['1']['q_path']
+@app.route('/quiz/<unit_id>')
+def quiz(unit_id):
     with open(question_path, encoding='utf-8') as f:
-        all_questions = json.load(f)['test']
-        print(all_questions)
-        if not 'quiz-data' in session:
-            quiz_data = {
-                'start-time': datetime.utcnow().isoformat(),
-                'unit-id': 1, # TODO: implement unit selection
-                'question-data': sample(all_questions, 5),
-                'quiz-responses': list()
-            }
-            session['quiz-data']= quiz_data
+        all_questions = json.load(f)[unit_id]['test']  # Use the passed-in unit_id
 
-    quiz_data = session['quiz-data']
-    # TODO: init session somewhere!
+    if 'quiz_data' not in session or session['quiz_data'].get('unit_id') != unit_id:
+        # Sample 5 random questions
+        question_batch = sample(list(all_questions.keys()), 5)
 
-    if len(quiz_data['quiz-responses']) == len(quiz_data['question-data']):
-        return redirect(url_for('quiz_results')) # this should actually be results, but we'll use summary as placeholder
+        session['quiz_data'] = {
+            'unit_id': unit_id,
+            'questions': question_batch,
+            'all_questions': all_questions,
+            'current_index': 0,
+            'responses': [],
+            'score': 0,
+            'start_time': datetime.utcnow().isoformat()
+        }
 
-    unit = None # this might be vestigial - we'll see if this is removed, keep for now
-    question = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['problem']
-    answer = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['answer']
-    progress = int(100 * len(quiz_data['quiz-responses'])/max(len(quiz_data['question-data']), 1))  # For example, 20% through the quiz
+    data = session['quiz_data']
 
-    start_time = datetime.fromisoformat(quiz_data['start-time'])
+    if data['current_index'] >= len(data['questions']):
+        return redirect(url_for('quiz_results'))
+
+    q_id = data['questions'][data['current_index']]
+    question = data['all_questions'][q_id]['problem']
+    progress = int(100 * data['current_index'] / len(data['questions']))
+    start_time = datetime.fromisoformat(data['start_time'])
     elapsed = (datetime.utcnow() - start_time).total_seconds()
-    time_left = max(0, int(300 - elapsed))  # this makes it so refreshing a page doesn't mess up time
+    time_left = max(0, int(300 - elapsed))
 
     return render_template(
-        'quiz.html',  # or 'lightning_round.html',
-        unit=unit,
+        'quiz.html',
+        unit_id=unit_id,
         question=question,
-        answer=answer,
         progress=progress,
-        time_left=time_left,
+        time_left=time_left
     )
+
+
 
 @app.route('/submit_answer', methods=['POST'])
 def submit_answer():
     user_answer = request.form['user-answer']
-    quiz_data = session['quiz-data']
-    user_data = {'user-answer': user_answer, 'time-answered': datetime.utcnow().isoformat()}
-    quiz_data['quiz-responses'].append(user_data)
-    session['quiz-data'] = quiz_data
+    data = session['quiz_data']
+    idx = data['current_index']
+    q_id = data['questions'][idx]
+    correct_answer = data['all_questions'][q_id]['answer']
 
-    curr_question = quiz_data['question-data'][len(quiz_data['quiz-responses'])-1]
-    correct = is_question_correct(curr_question, user_data)
+    # Check if correct
+    is_correct = str(user_answer).strip() == str(correct_answer).strip()
+    if is_correct:
+        data['score'] += 1
 
-    message = 'Great job!'
-    if not correct:
-        message = 'Good try, we can review this later.'
-    return jsonify(correct=correct, message=message)
+    # Save user response
+    data['responses'].append({
+        'question': data['all_questions'][q_id]['problem'],
+        'your_answer': user_answer,
+        'correct_answer': correct_answer,
+        'correct': is_correct
+    })
+
+    session['quiz_data'] = data
+
+    return jsonify(correct=is_correct, message="Nice!" if is_correct else f"Oops! The correct answer was {correct_answer}")
+
+@app.route('/next_quiz')
+def next_quiz():
+    if 'quiz_data' not in session:
+        return redirect(url_for('home'))
+
+    data = session['quiz_data']
+    data['current_index'] += 1
+
+    if data['current_index'] >= len(data['questions']):
+        return redirect(url_for('quiz_results'))
+
+    q_id = data['questions'][data['current_index']]
+    question = data['all_questions'][q_id]['problem']
+    print("next: ", q_id, question)
+    progress = int(100 * data['current_index'] / len(data['questions']))
+    start_time = datetime.fromisoformat(data['start_time'])
+    elapsed = (datetime.utcnow() - start_time).total_seconds()
+    time_left = max(0, int(300 - elapsed))
+
+    session['quiz_data'] = data
+    return render_template(
+        'quiz.html',
+        unit_id=data['unit_id'],
+        question=question,
+        progress=progress,
+        time_left=time_left
+    )
 
 @app.route('/quiz_results')
 def quiz_results():
-    data = session['quiz-data']
-    score = 0
+    data = session['quiz_data']
+    score = data['score']
+    unit_id = data['unit_id']
+    xp = 3 if score >= 3 else 1
 
-    for idx, user_response in enumerate(data['quiz-responses']):
-        score += is_question_correct(data['question-data'][idx], user_response)
-    unit_id = data['unit-id']
-    #mode = data['mode']
-    xp = 3 if score >= 3 else 1 # TODO: refreshing causing continuous addition of XP
-    data_dict = data  # optionally store review info
-
-    # update XP progress for that unit
-    data[unit_id] = data.get(unit_id, {}) 
+    # Update XP
+    data[unit_id] = data.get(unit_id, {})
     data[unit_id]['progress'] = min(data[unit_id].get('progress', 0) + xp * 5, 100)
+    session.modified = True
 
-    #TODO: delete? #session.modified = True
-    #session.modified = True
     return render_template(
         'quiz_results.html',
         score=score,
@@ -229,10 +264,11 @@ def quiz_results():
         xp_progress=data[unit_id]['progress']
     )
 
+
 @app.route('/clear_quiz_session')
 def clear_quiz_session(redirect_url='home'):
     # can save data here, perhaps thru pickling so we dont need a DBMS
-    session.pop('quiz-data')
+    session.pop('quiz_data')
     return redirect(url_for('home'))
 
 @staticmethod
@@ -247,26 +283,20 @@ def is_question_correct(question_datum, user_response): # takes in an element fr
 @app.route('/quiz_review_mistakes')
 def quiz_review_mistakes():
     mistakes = []
-    quiz_data = session['quiz-data']
+    quiz_data = session['quiz_data']
 
-    for idx, response in enumerate(quiz_data['quiz-responses']):
-        if not is_question_correct(quiz_data['question-data'][idx], response):
-            mistakes.append({'user-response': response, 'problem-data': quiz_data['question-data'][idx]})
+    for response in quiz_data['responses']:
+        if not response['correct']:
+            mistakes.append({
+                'user-response': response,
+                'problem-data': {
+                    'problem': response['question'],
+                    'correct_answer': response['correct_answer']
+                }
+            })
+
     return render_template('quiz_review_mistakes.html', review_data=mistakes)
 
-@app.route('/quiz_problem_review/<qid>')
-def quiz_problem_review(qid):
-    all_questions = None
-    question_path = data['1']['q_path']
-    with open(question_path, encoding='utf-8') as f:
-        all_questions = json.load(f)['test']
-    question_data = None
-    for q in all_questions:
-        if str(q['id']) == qid:
-            question_data = q
-            break
-    print(question_data)
-    return render_template('quiz_problem_review.html', gif_url=question_data['solution_gif'][6:])
 
 @app.route('/summary')
 def summary():
