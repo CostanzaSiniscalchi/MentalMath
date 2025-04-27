@@ -35,3 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// auto hover the next button
+window.addEventListener('DOMContentLoaded', (event) => {
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) {
+      nextBtn.focus();
+  }
+});

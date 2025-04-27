@@ -169,7 +169,14 @@ def quiz(unit_id):
             'start_time': datetime.utcnow().isoformat()
         }
 
+<<<<<<< HEAD
     data = session['quiz_data']
+=======
+    unit = None # this might be vestigial - we'll see if this is removed, keep for now
+    question = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['problem'] # TODO: i was so tired making this, should change using negative indices
+    answer = quiz_data['question-data'][len(quiz_data['quiz-responses'])]['answer']
+    progress = int(100 * len(quiz_data['quiz-responses'])/max(len(quiz_data['question-data']), 1))  # For example, 20% through the quiz
+>>>>>>> main
 
     if data['current_index'] >= len(data['questions']):
         return redirect(url_for('quiz_results'))
@@ -194,10 +201,24 @@ def quiz(unit_id):
 @app.route('/submit_answer', methods=['POST'])
 def submit_answer():
     user_answer = request.form['user-answer']
+<<<<<<< HEAD
     data = session['quiz_data']
     idx = data['current_index']
     q_id = data['questions'][idx]
     correct_answer = data['all_questions'][q_id]['answer']
+=======
+    quiz_data = session['quiz-data']
+    print(session)
+    timestamp = datetime.utcnow().isoformat()
+    time_taken = (datetime.utcnow() - datetime.fromisoformat(quiz_data['start-time'])).total_seconds()
+    if len(quiz_data['quiz-responses']) > 0:
+        time_taken = (datetime.utcnow() - datetime.fromisoformat(quiz_data['quiz-responses'][-1]['time-data']['timestamp'])).total_seconds()
+    time_taken = round(time_taken, 1)
+
+    user_data = {'user-answer': user_answer, 'time-data': {'timestamp': timestamp, 'time-taken': time_taken}}
+    quiz_data['quiz-responses'].append(user_data)
+    session['quiz-data'] = quiz_data
+>>>>>>> main
 
     # Check if correct
     is_correct = str(user_answer).strip() == str(correct_answer).strip()

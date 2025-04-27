@@ -10,49 +10,59 @@
 {% block content %}
 
 
+<div class="container-fluid pt-0 px-4" style="margin-top: -16px;">
+  <div class="d-flex justify-content-between align-items-center mb-4">
 
-<div class="p-4">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Left: Lightning Round -->
+    <div class="text-start">
       <h2 class="fw-bold mb-0">Lightning Round</h2>
+    </div>
 
-      <div id="timer" class="fs-4 text-danger fw-semibold">{{ time_left // 60 }}:{{ '%02d' % (time_left % 60) }}</div>
+    <!-- Center: Timer and Question (stacked vertically) -->
+    <div class="text-center flex-grow-1">
+      <div id="timer" class="fs-4 text-danger fw-semibold mb-4">
+        {{ time_left // 60 }}:{{ '%02d' % (time_left % 60) }}
+      </div>
+      <h3 id="question" class="fw-semibold mb-0">
+        {{ question }}
+      </h3>
+    </div>
 
-      <div class="flex-grow-1 ms-4" style="max-width: 300px;">
-        <div class="progress" style="height: 1.5rem;">
-          <div id="quizProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
-            {{ progress }}%
-          </div>
+    <!-- Right: Progress Bar -->
+    <div class="text-end" style="min-width: 300px;">
+      <div id='outerProgress' class="progress" style="height: 1.5rem;">
+        <div id="quizProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
+          {{ progress }}%
         </div>
       </div>
     </div>
 
-    <!-- Question Section -->
-    <div class="text-center mb-5">
-      <h3 id="question" class="fw-semibold mb-4">{{ question }}</h3>
-        <form id='quiz-form'  method="POST">
-          <div class="mb-3">
-            <input
-              type="text"
-              name="user-answer"
-              class="form-control form-control-lg text-center"
-              placeholder="Type your answer here"
-              autocomplete="off"
-              required
-            >
-          </div>
-            <div class="text-center mt-4">
-              <button id="quizsubmit" type="submit" class="btn btn-primary px-5 py-2 fs-5 rounded-3">Submit</button>
-            </div>
-        </form>
-
-    </div>
-
-    <div id='feedback' class="alert text-center py-2 mb-3">
-
-    </div>
+  </div>
+</div>
 
 
+  <!-- Form below -->
+  <div class="text-center mb-5">
+    <form id='quiz-form' method="POST">
+      <div class="mb-3 px-4">
+        <input
+          type="number"
+          name="user-answer"
+          class="form-control form-control-lg text-center"
+          placeholder="Type your answer here"
+          autocomplete="off"
+          required
+          autofocus
+        >
+      </div>
+      <div class="text-center mt-4">
+        <button id="quizsubmit" type="submit" class="btn btn-primary px-5 py-2 fs-5 rounded-3">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Feedback -->
+  <div id='feedback' class="alert text-center py-2 mb-3"></div>
 
     <!-- Next Button -->
     <div class="d-flex justify-content-end">
