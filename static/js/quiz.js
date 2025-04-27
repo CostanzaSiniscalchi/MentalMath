@@ -1,94 +1,59 @@
-FormSubmitted = false;
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('quiz-form');
+  const submitBtn = document.getElementById('quizsubmit');
+  const nextBtn = document.getElementById('nextBtn');
+  const feedbackDiv = document.getElementById('feedback');
+  const answerInput = document.getElementById('user-answer');
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('quiz-form');
+  let submitted = false;
 
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
+  // Autofocus input when page loads
+  if (answerInput) {
+      answerInput.focus();
+  }
+
+  form.addEventListener('submit', function (e) {
+      e.preventDefault();
 
       const formData = new FormData(form);
 
       fetch('/submit_answer', {
-        method: 'POST',
-        body: formData
+          method: 'POST',
+          body: formData
       })
       .then(response => response.json())
       .then(data => {
-        document.getElementById('feedback').innerHTML = `
-          <span class="alert alert-${data.correct}">
-            ${data.message}
-            ${data.correct}
-          </span>
-        `;
+          feedbackDiv.style.display = 'block';
+          feedbackDiv.classList.remove('alert-success', 'alert-warning');
+          if (data.correct) {
+              feedbackDiv.classList.add('alert-success');
+              feedbackDiv.textContent = data.message;
+          } else {
+              feedbackDiv.classList.add('alert-warning');
+              feedbackDiv.textContent = data.message;
+          }
 
-        feedbackBox = document.getElementById('feedback')
-        const result = data // loaned code
-        console.log(result)
-        feedbackBox.className = result.correct
-          ? "alert alert-success"
-          : "alert alert-warning";
-        feedbackBox.innerText = result.message;
-        feedbackBox.style.display = "block";
+          // Disable submit button and input field
+          submitBtn.disabled = true;
+          answerInput.disabled = true;
 
-        // Optionally disable the form so users can't re-submit
-        form.querySelector("input[name='user-answer']").disabled = true;
-        form.querySelector("button[type='submit']").disabled = true;
-
-        // Enable "Next Question" button
-        nextButton.disabled = false;
-
-
-
-
+          // Enable next button
+          nextBtn.disabled = false;
+          submitted = true;
+      })
+      .catch(error => {
+          console.error('Error submitting answer:', error);
       });
-    });
   });
 
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('quiz-form');
-  const submitBtn = form.querySelector('button[type="submit"]');
-  const inputField = form.querySelector('input[name="user-answer"]');
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    submitFormElements(submitBtn, inputField)
-
-    const formData = new FormData(form);
-
-    fetch('/submit_answer', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-     /*
-      document.getElementById('feedback').innerHTML = `
-        <div class="alert alert-${data.status} mt-3">${data.message}</div>
-      `;
-        */
-      document.getElementById('nextButton').focus();
-
-    })
-    .catch(err => {
-      console.error('Error:', err);
-      submitBtn.disabled = false;
-      inputField.disabled = false;
-    });
+  document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+          e.preventDefault();
+          if (!submitted) {
+              submitBtn.click();
+          } else {
+              nextBtn.click();
+          }
+      }
   });
 });
-
-$(document).ready(function () {
-  // Your code here
-    $('#nextButton').hide()
-});
-
-function submitFormElements(submitBtn, inputField) { // function to clear buttons and show correct feedback text
-    // Disable form controls after first submission
-    $('#nextButton').show();
-    //submitBtn.style.visibility = 'hidden';
-    submitBtn.disabled = true;
-    //inputField.disabled = true;
-}
-
-

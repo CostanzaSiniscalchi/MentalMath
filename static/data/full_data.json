@@ -1,0 +1,632 @@
+{
+    "1": {
+        "easy": {
+            "0": {
+                "problem": "11 × 21",
+                "answer": 231,
+                "solution_gif": "static/data/mult11gifs/easy/11x21_sol.gif"
+            },
+            "1": {
+                "problem": "11 × 32",
+                "answer": 352,
+                "solution_gif": "static/data/mult11gifs/easy/11x32_sol.gif"
+            },
+            "2": {
+                "problem": "11 × 43",
+                "answer": 473,
+                "solution_gif": "static/data/mult11gifs/easy/11x43_sol.gif"
+            },
+            "3": {
+                "problem": "11 × 54",
+                "answer": 594,
+                "solution_gif": "static/data/mult11gifs/easy/11x54_sol.gif"
+            },
+            "4": {
+                "problem": "11 × 13",
+                "answer": 143,
+                "solution_gif": "static/data/mult11gifs/easy/11x13_sol.gif"
+            },
+            "5": {
+                "problem": "11 × 15",
+                "answer": 165,
+                "solution_gif": "static/data/mult11gifs/easy/11x15_sol.gif"
+            },
+            "6": {
+                "problem": "11 × 81",
+                "answer": 891,
+                "solution_gif": "static/data/mult11gifs/easy/11x81_sol.gif"
+            },
+            "7": {
+                "problem": "11 × 10",
+                "answer": 110,
+                "solution_gif": "static/data/mult11gifs/easy/11x10_sol.gif"
+            },
+            "8": {
+                "problem": "11 × 11",
+                "answer": 121,
+                "solution_gif": "static/data/mult11gifs/easy/11x11_sol.gif"
+            },
+            "9": {
+                "problem": "11 × 20",
+                "answer": 220,
+                "solution_gif": "static/data/mult11gifs/easy/11x20_sol.gif"
+            }
+        },
+        "medium": {
+            "10": {
+                "problem": "11 × 29",
+                "answer": 319,
+                "solution_gif": "static/data/mult11gifs/medium/11x29_sol.gif"
+            },
+            "11": {
+                "problem": "11 × 38",
+                "answer": 418,
+                "solution_gif": "static/data/mult11gifs/medium/11x38_sol.gif"
+            },
+            "12": {
+                "problem": "11 × 47",
+                "answer": 517,
+                "solution_gif": "static/data/mult11gifs/medium/11x47sol.gif"
+            },
+            "13": {
+                "problem": "11 × 56",
+                "answer": 616,
+                "solution_gif": "static/data/mult11gifs/medium/11x56_sol.gif"
+            },
+            "14": {
+                "problem": "11 × 39",
+                "answer": 429,
+                "solution_gif": "static/data/mult11gifs/medium/11x39_sol.gif"
+            },
+            "15": {
+                "problem": "11 × 48",
+                "answer": 528,
+                "solution_gif": "static/data/mult11gifs/medium/11x48_sol.gif"
+            },
+            "16": {
+                "problem": "11 × 59",
+                "answer": 649,
+                "solution_gif": "static/data/mult11gifs/medium/11x59_sol.gif"
+            },
+            "17": {
+                "problem": "11 × 67",
+                "answer": 737,
+                "solution_gif": "static/data/mult11gifs/medium/11x67_sol.gif"
+            },
+            "18": {
+                "problem": "11 × 75",
+                "answer": 825,
+                "solution_gif": "static/data/mult11gifs/medium/11x75_sol.gif"
+            },
+            "19": {
+                "problem": "11 × 89",
+                "answer": 979,
+                "solution_gif": "static/data/mult11gifs/medium/11x89_sol.gif"
+            }
+        },
+        "hard": {
+            "20": {
+                "problem": "11 × 101",
+                "answer": 1111,
+                "solution_gif": "static/data/mult11gifs/hard/11x101_sol.gif"
+            },
+            "21": {
+                "problem": "11 × 121",
+                "answer": 1331,
+                "solution_gif": "static/data/mult11gifs/hard/11x121_sol.gif"
+            },
+            "22": {
+                "problem": "11 × 130",
+                "answer": 1430,
+                "solution_gif": "static/data/mult11gifs/hard/11x130_sol.gif"
+            },
+            "23": {
+                "problem": "11 × 145",
+                "answer": 1595,
+                "solution_gif": "static/data/mult11gifs/hard/11x145_sol.gif"
+            },
+            "24": {
+                "problem": "11 × 212",
+                "answer": 2332,
+                "solution_gif": "static/data/mult11gifs/hard/11x212_sol.gif"
+            },
+            "25": {
+                "problem": "11 × 303",
+                "answer": 3333,
+                "solution_gif": "static/data/mult11gifs/hard/11x303_sol.gif"
+            },
+            "26": {
+                "problem": "11 × 410",
+                "answer": 4510,
+                "solution_gif": "static/data/mult11gifs/hard/11x410_sol.gif"
+            },
+            "27": {
+                "problem": "11 × 111",
+                "answer": 1221,
+                "solution_gif": "static/data/mult11gifs/hard/11x111_sol.gif"
+            },
+            "28": {
+                "problem": "11 × 123",
+                "answer": 1353,
+                "solution_gif": "static/data/mult11gifs/hard/11x123_sol.gif"
+            },
+            "29": {
+                "problem": "11 × 231",
+                "answer": 2541,
+                "solution_gif": "static/data/mult11gifs/hard/11x231_sol.gif"
+            }
+        },
+        "test": {
+            "30": {
+                "problem": "11 × 29",
+                "answer": 319,
+                "solution_gif": "static/data/mult11gifs/test/11x29_sol.gif"
+            },
+            "31": {
+                "problem": "11 × 38",
+                "answer": 418,
+                "solution_gif": "static/data/mult11gifs/test/11x38_sol.gif"
+            },
+            "32": {
+                "problem": "11 × 12",
+                "answer": 132,
+                "solution_gif": "static/data/mult11gifs/test/11x12_sol.gif"
+            },
+            "33": {
+                "problem": "11 × 67",
+                "answer": 737,
+                "solution_gif": "static/data/mult11gifs/test/11x67_sol.gif"
+            },
+            "34": {
+                "problem": "11 × 145",
+                "answer": 1595,
+                "solution_gif": "static/data/mult11gifs/test/11x145_sol.gif"
+            },
+            "35": {
+                "problem": "11 × 21",
+                "answer": 231,
+                "solution_gif": "static/data/mult11gifs/test/11x21_sol.gif"
+            },
+            "36": {
+                "problem": "11 × 56",
+                "answer": 616,
+                "solution_gif": "static/data/mult11gifs/test/11x56_sol.gif"
+            },
+            "37": {
+                "problem": "11 × 303",
+                "answer": 3333,
+                "solution_gif": "static/data/mult11gifs/test/11x303_sol.gif"
+            },
+            "38": {
+                "problem": "11 × 75",
+                "answer": 825,
+                "solution_gif": "static/data/mult11gifs/test/11x75_sol.gif"
+            },
+            "39": {
+                "problem": "11 × 121",
+                "answer": 1331,
+                "solution_gif": "static/data/mult11gifs/test/11x121_sol.gif"
+            }
+        }
+    },
+    "2": {
+        "easy": {
+            "40": {
+                "problem": "15²",
+                "answer": 225,
+                "solution_gif": "static/data/square5gifs/easy/15_sq.gif"
+            },
+            "41": {
+                "problem": "25²",
+                "answer": 625,
+                "solution_gif": "static/data/square5gifs/easy/25_sq.gif"
+            },
+            "42": {
+                "problem": "35²",
+                "answer": 1225,
+                "solution_gif": "static/data/square5gifs/easy/35_sq.gif"
+            },
+            "43": {
+                "problem": "45²",
+                "answer": 2025,
+                "solution_gif": "static/data/square5gifs/easy/45_sq.gif"
+            },
+            "44": {
+                "problem": "55²",
+                "answer": 3025,
+                "solution_gif": "static/data/square5gifs/easy/55_sq.gif"
+            },
+            "45": {
+                "problem": "65²",
+                "answer": 4225,
+                "solution_gif": "static/data/square5gifs/easy/65_sq.gif"
+            },
+            "46": {
+                "problem": "75²",
+                "answer": 5625,
+                "solution_gif": "static/data/square5gifs/easy/75_sq.gif"
+            },
+            "47": {
+                "problem": "85²",
+                "answer": 7225,
+                "solution_gif": "static/data/square5gifs/easy/85_sq.gif"
+            },
+            "48": {
+                "problem": "95²",
+                "answer": 9025,
+                "solution_gif": "static/data/square5gifs/easy/95_sq.gif"
+            },
+            "49": {
+                "problem": "105²",
+                "answer": 11025,
+                "solution_gif": "static/data/square5gifs/easy/105_sq.gif"
+            }
+        },
+        "medium": {
+            "50": {
+                "problem": "115²",
+                "answer": 13225,
+                "solution_gif": "static/data/square5gifs/medium/115_sq.gif"
+            },
+            "51": {
+                "problem": "125²",
+                "answer": 15625,
+                "solution_gif": "static/data/square5gifs/medium/125_sq.gif"
+            },
+            "52": {
+                "problem": "135²",
+                "answer": 18225,
+                "solution_gif": "static/data/square5gifs/medium/135_sq.gif"
+            },
+            "53": {
+                "problem": "145²",
+                "answer": 21025,
+                "solution_gif": "static/data/square5gifs/medium/145_sq.gif"
+            },
+            "54": {
+                "problem": "155²",
+                "answer": 24025,
+                "solution_gif": "static/data/square5gifs/medium/155_sq.gif"
+            },
+            "55": {
+                "problem": "165²",
+                "answer": 27225,
+                "solution_gif": "static/data/square5gifs/medium/165_sq.gif"
+            },
+            "56": {
+                "problem": "175²",
+                "answer": 30625,
+                "solution_gif": "static/data/square5gifs/medium/175_sq.gif"
+            },
+            "57": {
+                "problem": "185²",
+                "answer": 34225,
+                "solution_gif": "static/data/square5gifs/medium/185_sq.gif"
+            },
+            "58": {
+                "problem": "195²",
+                "answer": 38025,
+                "solution_gif": "static/data/square5gifs/medium/195_sq.gif"
+            },
+            "59": {
+                "problem": "205²",
+                "answer": 42025,
+                "solution_gif": "static/data/square5gifs/medium/205_sq.gif"
+            }
+        },
+        "hard": {
+            "60": {
+                "problem": "215²",
+                "answer": 46225,
+                "solution_gif": "static/data/square5gifs/hard/215_sq.gif"
+            },
+            "61": {
+                "problem": "225²",
+                "answer": 50625,
+                "solution_gif": "static/data/square5gifs/hard/225_sq.gif"
+            },
+            "62": {
+                "problem": "235²",
+                "answer": 55225,
+                "solution_gif": "static/data/square5gifs/hard/235_sq.gif"
+            },
+            "63": {
+                "problem": "245²",
+                "answer": 60025,
+                "solution_gif": "static/data/square5gifs/hard/245_sq.gif"
+            },
+            "64": {
+                "problem": "255²",
+                "answer": 65025,
+                "solution_gif": "static/data/square5gifs/hard/255_sq.gif"
+            },
+            "65": {
+                "problem": "265²",
+                "answer": 70225,
+                "solution_gif": "static/data/square5gifs/hard/265_sq.gif"
+            },
+            "66": {
+                "problem": "275²",
+                "answer": 75625,
+                "solution_gif": "static/data/square5gifs/hard/275_sq.gif"
+            },
+            "67": {
+                "problem": "285²",
+                "answer": 81225,
+                "solution_gif": "static/data/square5gifs/hard/285_sq.gif"
+            },
+            "68": {
+                "problem": "295²",
+                "answer": 87025,
+                "solution_gif": "static/data/square5gifs/hard/295_sq.gif"
+            },
+            "69": {
+                "problem": "305²",
+                "answer": 93025,
+                "solution_gif": "static/data/square5gifs/hard/305_sq.gif"
+            }
+        },
+        "test": {
+            "70": {
+                "problem": "35²",
+                "answer": 1225,
+                "solution_gif": "static/data/square5gifs/test/35_sq.gif"
+            },
+            "71": {
+                "problem": "65²",
+                "answer": 4225,
+                "solution_gif": "static/data/square5gifs/test/65_sq.gif"
+            },
+            "72": {
+                "problem": "85²",
+                "answer": 7225,
+                "solution_gif": "static/data/square5gifs/test/85_sq.gif"
+            },
+            "73": {
+                "problem": "125²",
+                "answer": 15625,
+                "solution_gif": "static/data/square5gifs/test/125_sq.gif"
+            },
+            "74": {
+                "problem": "155²",
+                "answer": 24025,
+                "solution_gif": "static/data/square5gifs/test/155_sq.gif"
+            },
+            "75": {
+                "problem": "185²",
+                "answer": 34225,
+                "solution_gif": "static/data/square5gifs/test/185_sq.gif"
+            },
+            "76": {
+                "problem": "215²",
+                "answer": 46225,
+                "solution_gif": "static/data/square5gifs/test/215_sq.gif"
+            },
+            "77": {
+                "problem": "245²",
+                "answer": 60025,
+                "solution_gif": "static/data/square5gifs/test/245_sq.gif"
+            },
+            "78": {
+                "problem": "275²",
+                "answer": 75625,
+                "solution_gif": "static/data/square5gifs/test/275_sq.gif"
+            },
+            "79": {
+                "problem": "305²",
+                "answer": 93025,
+                "solution_gif": "static/data/square5gifs/test/305_sq.gif"
+            }
+        }
+    },
+    "3": {
+        "easy": {
+            "80": {
+                "problem": "24 × 26",
+                "answer": 624,
+                "solution_gif": "static/data/midpointgifs/easy/24x26.gif"
+            },
+            "81": {
+                "problem": "34 × 36",
+                "answer": 1224,
+                "solution_gif": "static/data/midpointgifs/easy/34x36.gif"
+            },
+            "82": {
+                "problem": "44 × 46",
+                "answer": 2024,
+                "solution_gif": "static/data/midpointgifs/easy/44x46.gif"
+            },
+            "83": {
+                "problem": "54 × 56",
+                "answer": 3024,
+                "solution_gif": "static/data/midpointgifs/easy/54x56.gif"
+            },
+            "84": {
+                "problem": "64 × 66",
+                "answer": 4224,
+                "solution_gif": "static/data/midpointgifs/easy/64x66.gif"
+            },
+            "85": {
+                "problem": "74 × 76",
+                "answer": 5624,
+                "solution_gif": "static/data/midpointgifs/easy/74x76.gif"
+            },
+            "86": {
+                "problem": "84 × 86",
+                "answer": 7224,
+                "solution_gif": "static/data/midpointgifs/easy/84x86.gif"
+            },
+            "87": {
+                "problem": "94 × 96",
+                "answer": 9024,
+                "solution_gif": "static/data/midpointgifs/easy/94x96.gif"
+            },
+            "88": {
+                "problem": "14 × 16",
+                "answer": 224,
+                "solution_gif": "static/data/midpointgifs/easy/14x16.gif"
+            },
+            "89": {
+                "problem": "104 × 106",
+                "answer": 11024,
+                "solution_gif": "static/data/midpointgifs/easy/104x106.gif"
+            }
+        },
+        "medium": {
+            "90": {
+                "problem": "22 × 28",
+                "answer": 616,
+                "solution_gif": "static/data/midpointgifs/medium/22x28.gif"
+            },
+            "91": {
+                "problem": "18 × 32",
+                "answer": 576,
+                "solution_gif": "static/data/midpointgifs/medium/18x32.gif"
+            },
+            "92": {
+                "problem": "42 × 48",
+                "answer": 2016,
+                "solution_gif": "static/data/midpointgifs/medium/42x48.gif"
+            },
+            "93": {
+                "problem": "62 × 68",
+                "answer": 4216,
+                "solution_gif": "static/data/midpointgifs/medium/62x68.gif"
+            },
+            "94": {
+                "problem": "82 × 88",
+                "answer": 7216,
+                "solution_gif": "static/data/midpointgifs/medium/82x88.gif"
+            },
+            "95": {
+                "problem": "32 × 38",
+                "answer": 1216,
+                "solution_gif": "static/data/midpointgifs/medium/32x38.gif"
+            },
+            "96": {
+                "problem": "52 × 58",
+                "answer": 3016,
+                "solution_gif": "static/data/midpointgifs/medium/52x58.gif"
+            },
+            "97": {
+                "problem": "72 × 78",
+                "answer": 5616,
+                "solution_gif": "static/data/midpointgifs/medium/72x78.gif"
+            },
+            "98": {
+                "problem": "92 × 98",
+                "answer": 9016,
+                "solution_gif": "static/data/midpointgifs/medium/92x98.gif"
+            },
+            "99": {
+                "problem": "112 × 118",
+                "answer": 13216,
+                "solution_gif": "static/data/midpointgifs/medium/112x118.gif"
+            }
+        },
+        "hard": {
+            "100": {
+                "problem": "12 × 38",
+                "answer": 456,
+                "solution_gif": "static/data/midpointgifs/hard/12x38.gif"
+            },
+            "101": {
+                "problem": "62 × 88",
+                "answer": 5456,
+                "solution_gif": "static/data/midpointgifs/hard/62x88.gif"
+            },
+            "102": {
+                "problem": "102 × 108",
+                "answer": 11016,
+                "solution_gif": "static/data/midpointgifs/hard/102x108.gif"
+            },
+            "103": {
+                "problem": "152 × 158",
+                "answer": 24016,
+                "solution_gif": "static/data/midpointgifs/hard/152x158.gif"
+            },
+            "104": {
+                "problem": "122 × 128",
+                "answer": 15616,
+                "solution_gif": "static/data/midpointgifs/hard/122x128.gif"
+            },
+            "105": {
+                "problem": "182 × 188",
+                "answer": 34216,
+                "solution_gif": "static/data/midpointgifs/hard/182x188.gif"
+            },
+            "106": {
+                "problem": "202 × 208",
+                "answer": 42016,
+                "solution_gif": "static/data/midpointgifs/hard/202x208.gif"
+            },
+            "107": {
+                "problem": "222 × 228",
+                "answer": 49216,
+                "solution_gif": "static/data/midpointgifs/hard/222x228.gif"
+            },
+            "108": {
+                "problem": "242 × 248",
+                "answer": 60016,
+                "solution_gif": "static/data/midpointgifs/hard/242x248.gif"
+            },
+            "109": {
+                "problem": "262 × 268",
+                "answer": 72016,
+                "solution_gif": "static/data/midpointgifs/hard/262x268.gif"
+            }
+        },
+        "test": {
+            "110": {
+                "problem": "24 × 26",
+                "answer": 624,
+                "solution_gif": "static/data/midpointgifs/test/24x26.gif"
+            },
+            "111": {
+                "problem": "34 × 36",
+                "answer": 1224,
+                "solution_gif": "static/data/midpointgifs/test/34x36.gif"
+            },
+            "112": {
+                "problem": "44 × 46",
+                "answer": 2024,
+                "solution_gif": "static/data/midpointgifs/test/44x46.gif"
+            },
+            "113": {
+                "problem": "22 × 28",
+                "answer": 616,
+                "solution_gif": "static/data/midpointgifs/test/22x28.gif"
+            },
+            "114": {
+                "problem": "62 × 68",
+                "answer": 4216,
+                "solution_gif": "static/data/midpointgifs/test/62x68.gif"
+            },
+            "115": {
+                "problem": "32 × 38",
+                "answer": 1216,
+                "solution_gif": "static/data/midpointgifs/test/32x38.gif"
+            },
+            "116": {
+                "problem": "72 × 78",
+                "answer": 5616,
+                "solution_gif": "static/data/midpointgifs/test/72x78.gif"
+            },
+            "117": {
+                "problem": "92 × 98",
+                "answer": 9016,
+                "solution_gif": "static/data/midpointgifs/test/92x98.gif"
+            },
+            "118": {
+                "problem": "112 × 118",
+                "answer": 13216,
+                "solution_gif": "static/data/midpointgifs/test/112x118.gif"
+            },
+            "119": {
+                "problem": "122 × 128",
+                "answer": 15616,
+                "solution_gif": "static/data/midpointgifs/test/122x128.gif"
+            }
+        }
+    }
+}
