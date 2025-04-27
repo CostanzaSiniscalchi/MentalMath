@@ -207,12 +207,13 @@ def submit_answer():
 
     # Save user response
     data['responses'].append({
-        'question': data['all_questions'][q_id]['problem'],
-        'your_answer': user_answer,
-        'correct_answer': correct_answer,
-        'correct': is_correct,
-        'time_spent': time_spent.total_seconds()
-    })
+		'id': q_id,   # <- Save the question ID
+		'question': data['all_questions'][q_id]['problem'],
+		'your_answer': user_answer,
+		'correct_answer': correct_answer,
+		'correct': is_correct,
+		'time_spent': time_spent.total_seconds()
+	})
 
     session['quiz_data'] = data
 
@@ -290,14 +291,32 @@ def quiz_review_mistakes():
     for response in quiz_data['responses']:
         if not response['correct']:
             mistakes.append({
-                'user-response': response,
-                'problem-data': {
-                    'problem': response['question'],
-                    'correct_answer': response['correct_answer']
-                }
-            })
+			'user-response': response,
+			'problem-data': {
+				'id': response['id'],  # <- Add this!
+				'problem': response['question'],
+				'correct_answer': response['correct_answer']
+			}
+		})
 
     return render_template('quiz_review_mistakes.html', review_data=mistakes)
+
+@app.route('/quiz_problem_review/<qid>')
+def quiz_problem_review(qid):
+    if 'quiz_data' not in session:
+        return redirect(url_for('home'))  # Safety check
+
+    data = session['quiz_data']
+    all_questions = data['all_questions']
+
+    # Look for the specific question ID
+    if qid not in all_questions:
+        return "Question not found.", 404
+
+    question_data = all_questions[qid]
+    gif_url = question_data['solution_gif'][6:]  # Assuming you store path like 'static/data/...'
+
+    return render_template('quiz_problem_review.html', gif_url=gif_url)
 
 
 @app.route('/summary')
