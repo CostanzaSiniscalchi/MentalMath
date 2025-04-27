@@ -111,7 +111,7 @@ def submit_practice_answer():
     # Save response
     data['responses'].append({
         'question': all_questions[q_id]['problem'],
-        'your_answer': user_answer,
+        'user_answer': user_answer,
         'correct_answer': correct_answer,
         'correct': is_correct
     })
@@ -193,7 +193,8 @@ def quiz(unit_id):
             'current_index': 0,
             'responses': [],
             'score': 0,
-            'start_time': datetime.utcnow().isoformat()
+            'quiz_start_time': datetime.utcnow().isoformat(),     # overall quiz start
+            'question_start_time': datetime.utcnow().isoformat()  # first question start
         }
 
     data = session['quiz_data']
@@ -204,8 +205,8 @@ def quiz(unit_id):
     q_id = data['questions'][data['current_index']]
     question = data['all_questions'][q_id]['problem']
     progress = int(100 * data['current_index'] / len(data['questions']))
-    start_time = datetime.fromisoformat(data['start_time'])
-    elapsed = (datetime.utcnow() - start_time).total_seconds()
+    start_time = datetime.fromisoformat(data['quiz_start_time'])
+    elapsed = round((datetime.utcnow() - start_time).total_seconds(), 2)
     time_left = max(0, int(300 - elapsed))
 
     return render_template(
@@ -225,8 +226,10 @@ def submit_answer():
     idx = data['current_index']
     q_id = data['questions'][idx]
     correct_answer = data['all_questions'][q_id]['answer']
-    start_time = datetime.fromisoformat(data["start_time"])
-    time_spent = datetime.utcnow() - start_time
+
+    # Use question_start_time to measure time spent on current question
+    question_start_time = datetime.fromisoformat(data["question_start_time"])
+    time_spent = round((datetime.utcnow() - question_start_time).total_seconds(), 2)
 
     # Check if correct
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
@@ -235,17 +238,18 @@ def submit_answer():
 
     # Save user response
     data['responses'].append({
-		'id': q_id,   # <- Save the question ID
-		'question': data['all_questions'][q_id]['problem'],
-		'your_answer': user_answer,
-		'correct_answer': correct_answer,
-		'correct': is_correct,
-		'time_spent': time_spent.total_seconds()
-	})
+        'id': q_id,
+        'question': data['all_questions'][q_id]['problem'],
+        'user_answer': user_answer,
+        'correct_answer': correct_answer,
+        'correct': is_correct,
+        'time_spent': time_spent
+    })
 
     session['quiz_data'] = data
 
     return jsonify(correct=is_correct, message="Nice!" if is_correct else f"Oops! The correct answer was {correct_answer}")
+
 
 @app.route('/next_quiz')
 def next_quiz():
@@ -258,12 +262,17 @@ def next_quiz():
     if data['current_index'] >= len(data['questions']):
         return redirect(url_for('quiz_results'))
 
+    # Reset question_start_time for the new question
+    data['question_start_time'] = datetime.utcnow().isoformat()
+
     q_id = data['questions'][data['current_index']]
     question = data['all_questions'][q_id]['problem']
     print("next: ", q_id, question)
     progress = int(100 * data['current_index'] / len(data['questions']))
-    start_time = datetime.fromisoformat(data['start_time'])
-    elapsed = (datetime.utcnow() - start_time).total_seconds()
+    
+    # Still computing quiz elapsed for total timer
+    quiz_start_time = datetime.fromisoformat(data['quiz_start_time'])
+    elapsed = round((datetime.utcnow() - quiz_start_time).total_seconds(), 2)
     time_left = max(0, int(300 - elapsed))
 
     session['quiz_data'] = data
@@ -281,6 +290,8 @@ def quiz_results():
     data_ = session['quiz_data']
     score = data_['score']
     unit_id = data_['unit_id']
+    quiz_start_time = datetime.fromisoformat(data_['quiz_start_time'])
+    total_time = round((datetime.utcnow() - quiz_start_time).total_seconds(), 2)
 
     xp_earned = 3 if score >= 3 else 1
     unit_xp_gain = xp_earned * 5
@@ -300,7 +311,8 @@ def quiz_results():
         xp=xp_earned,
         unit_id=unit_id,
         xp_progress=session['unit_xp'][unit_id],
-        xp_total=session['xp_total']
+        xp_total=session['xp_total'],
+        total_time=total_time   # <-- NEW
     )
 
 
@@ -332,7 +344,9 @@ def quiz_review_mistakes():
 			'problem-data': {
 				'id': response['id'],  # <- Add this!
 				'problem': response['question'],
-				'correct_answer': response['correct_answer']
+				'correct_answer': response['correct_answer'],
+                'user_answer': response['user_answer'],
+                'time_spent': response['time_spent']
 			}
 		})
 
