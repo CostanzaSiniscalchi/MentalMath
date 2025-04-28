@@ -33,10 +33,41 @@
     ],
     "2": [
       {
-        "text": "Welcome to Unit 2! We'll show you another trick.",
-        "img": "unit2_step1.png",
+        "text": "Take the number you want to square and drop the last digit (the five).",
+        "img": "step1.png",
         "button": "Start"
+      },
+      {"text": "Multiply the remaining digits by their next counting number.",
+        "img": "step2.png",
+        "button": "Start"
+      },
+      {"text": "Take the product's digits and combine them with 25",
+        "img": "step3.png",
+        "button": "Now you try"
+      },
+      {"text": "Now you try",
+        "img": "sol.gif",
+        "button": "Let's Practice!"
       }
-    ]
+    ],
+  "3": [
+      {
+        "text": "Find the midpoint of the 2 numbers.",
+        "img": "step1.png",
+        "button": "Start"
+      },
+      {"text": "Find the distance between one of the numbers and the midpoint.",
+        "img": "step2.png",
+        "button": "Start"
+      },
+      {"text": "Subtract the distance squared from the midpoint squared.",
+        "img": "step3.png",
+        "button": "Now you try"
+      },
+      {"text": "Now you try",
+        "img": "sol.gif",
+        "button": "Let's Practice!"
+      }
+  ]
   }
   
