@@ -57,8 +57,8 @@
     <p class="fs-5 text-center mb-4">You gained +{{ xp }} XP!</p>
 
     <div class="d-flex justify-content-center gap-3 mb-4">
-      <a href="{{ url_for('home') }}" class="btn btn-outline-dark px-4 py-2">Back Home</a>
-      <a href="{{ url_for('unit', unit_id=unit_id) }}" class="btn btn-outline-dark px-4 py-2">Go Back to Unit Module</a>
+      <a href="{{ url_for('home.home') }}" class="btn btn-outline-dark px-4 py-2">Back Home</a>
+      <a href="{{ url_for('practice.unit', unit_id=unit_id) }}" class="btn btn-outline-dark px-4 py-2">Go Back to Unit Module</a>
     </div>
 
     <!-- XP Bar -->
