@@ -28,7 +28,12 @@
     <h3 id="question" class="fw-semibold mb-4">{{ question }}</h3>
 
     <!-- Answer Form -->
-    <form id="practice-form" method="POST">
+    <form id="practice-form" method="POST"
+      action="{% if unit_id == 'all' %}
+                {{ url_for('practice.submit_all_answer') }}
+              {% else %}
+                {{ url_for('practice.submit_practice_answer') }}
+              {% endif %}">
       <div class="mb-3">
         <input
           type="text"
@@ -50,9 +55,14 @@
 
   <!-- Next Button -->
   <div class="d-flex justify-content-end">
-    <form action="{{ url_for('practice.next_practice') }}" method="GET">
-        <button type="submit" class="btn btn-primary px-4 py-2" id="nextBtn" disabled>Next Question</button>
-
+    <form 
+      action="{% if unit_id == 'all' %}
+                {{ url_for('practice.next_all_practice') }}
+              {% else %}
+                {{ url_for('practice.next_practice') }}
+              {% endif %}" 
+      method="GET">
+      <button type="submit" class="btn btn-primary px-4 py-2" id="nextBtn" disabled>Next Question</button>
     </form>
   </div>
 
