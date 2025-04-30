@@ -3,9 +3,8 @@
 {% block title %}Home - Mental Math App{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=2">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=2">
 {% endblock %}
-
 
 {% block content %}
 
@@ -17,35 +16,44 @@
     <button class="btn btn-primary px-4 py-2 mt-2">Daily Challenge</button>
   </div>
 </section>
+
 <section class="container-lg my-5">
   <div class="row g-4 justify-content-center">
     
     <!-- Progress + Actions -->
     <div class="col-lg-6">
       <div class="p-3 panel-card h-100">
-      <!-- Item 1 -->
-      <a href="/unit/1" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
-        <h6 class="mb-1">Multiplication by 11</h6>
-        <div class="progress">
-        <div class="progress-bar bg-primary" style="width: 25%">Mastery</div>
-        </div>
-      </a>
-      
-      <!-- Item 2 -->
-      <a href="/unit/2" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
-        <h6 class="mb-1">Square Numbers Ending in 5</h6>
-        <div class="progress">
-        <div class="progress-bar bg-primary" style="width: 30%">Mastery</div>
-        </div>
-      </a>
-      
-      <!-- Item 3 -->
-      <a href="/unit/3" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
-        <h6 class="mb-1">Midpoint Square Multiplication</h6>
-        <div class="progress">
-        <div class="progress-bar bg-primary" style="width: 40%">Mastery</div>
-        </div>
-      </a>
+        
+        <!-- Item 1 -->
+        <a href="/unit/1" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
+          <h6 class="mb-1">{{ data['1']['unit'] }}</h6>
+          <div class="progress mb-1">
+            <div class="progress-bar bg-primary" style="width: {{ data['1']['progress'] }}%"></div>
+          </div>
+          <div class="text-secondary small text-end">{{ data['1']['progress'] }}% Mastery</div>
+        </a>
+        
+        
+        <!-- Item 2 -->
+        <a href="/unit/2" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
+          <h6 class="mb-1">{{ data['2']['unit'] }}</h6>
+          <div class="progress mb-1">
+            <div class="progress-bar bg-primary" style="width: {{ data['2']['progress'] }}%"></div>
+          </div>
+          <div class="text-secondary small text-end">{{ data['2']['progress'] }}% Mastery</div>
+        </a>
+        
+        
+        <!-- Item 3 -->
+        <a href="/unit/3" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
+          <h6 class="mb-1">{{ data['3']['unit'] }}</h6>
+          <div class="progress mb-1">
+            <div class="progress-bar bg-primary" style="width: {{ data['3']['progress'] }}%"></div>
+          </div>
+          <div class="text-secondary small text-end">{{ data['3']['progress'] }}% Mastery</div>
+        </a>
+        
+
       </div>
     </div>
 
@@ -60,17 +68,14 @@
   </div> <!-- closes .row -->
 </section>
 
-
 {% endblock %}
 
 {% block scripts %}
-    <!-- <script src="{{ url_for('static', filename='js/homepage.js') }}" defer></script> -->
-       <!-- Bootstrap JS -->
-  <script>
-    fetch('navbar.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('navbar-container').innerHTML = html;
-      });
-  </script>
+<script>
+  fetch('navbar.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('navbar-container').innerHTML = html;
+    });
+</script>
 {% endblock %}

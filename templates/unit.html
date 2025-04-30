@@ -15,7 +15,7 @@
       <!-- Progress Bar -->
       <div class="custom-progress bg-dark">
         <div class="custom-progress-fill bg-secondary" style="width: {{ xp_progress }}%">
-          <span class="progress-label">XP</span>
+          <span class="progress-label">{{ xp_progress }} XP</span>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
         <h5 class="fw-bold mb-3">Learn</h5>
         <div class="d-grid gap-2">
           <button class="btn btn-outline-dark" onclick="window.location.href='/learn/{{ unit_id }}'">Pretest and Tutorial</button>
-          <button class="btn btn-outline-dark" onclick="window.location.href='/quiz'">Test your Mastery</button>
+          <a href="{{ url_for('quiz', unit_id=unit_id) }}" class="btn btn-success px-4 py-2">Test Your Mastery</a>
         </div>
       </div>
     </div>

@@ -14,21 +14,71 @@
         <h4 class="fw-bold">{{ unit_name|capitalize }} – How Does it Work?</h4>
         <p id="instruction-text" class="text-secondary mt-2 mb-3"></p>
 
-        <div class="d-flex flex-wrap align-items-center justify-content-between">
-          <div class="learn-diagram mb-3">
+        <div class="row align-items-start" id="learn-content-row">
+          <!-- Diagram (left) -->
+          <div class="col-lg-6 learn-diagram mb-3 d-flex align-items-center justify-content-center" style="min-height: 350px;">
             <img id="diagram-img" src="" alt="Diagram" class="img-fluid rounded">
           </div>
-
-          <div class="text-end">
-            <button id="next-btn" class="btn btn-primary px-4 py-2 fw-bold">Next</button>
+        
+          <!-- Interaction Container (right) -->
+          <div class="col-lg-6 d-flex align-items-center justify-content-center">
+            <div id="you-try-interaction" style="display: none;">
+              <div class="p-4" style="border: 2px solid #ccc; border-radius: 40px; background: white; width: 100%; max-width: 400px;">
+                <!-- Top row -->
+                <div class="d-flex justify-content-center mb-2 gap-2">
+                  <div class="drop-box" data-box></div>
+                  <div class="drop-box" data-box></div>
+                </div>
+        
+                <!-- Expression row -->
+                <div class="d-flex justify-content-center mb-2 align-items-center gap-2">
+                  <div class="drop-box" data-box></div>
+                  <span class="fixed">(</span>
+                  <div class="drop-box" data-box></div>
+                  <span class="fixed">+</span>
+                  <div class="drop-box" data-box></div>
+                  <span class="fixed">)</span>
+                  <div class="drop-box" data-box></div>
+                </div>
+        
+                <!-- Result row -->
+                <div class="d-flex justify-content-center align-items-center mb-3 gap-2">
+                  <span class="fixed">=</span>
+                  <div class="drop-box" data-box></div>
+                  <div class="drop-box" data-box></div>
+                  <div class="drop-box" data-box></div>
+                </div>
+        
+                <!-- Numbers -->
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+                  <div class="number" draggable="true">0</div>
+                  <div class="number" draggable="true">1</div>
+                  <div class="number" draggable="true">2</div>
+                  <div class="number" draggable="true">3</div>
+                  <div class="number" draggable="true">4</div>
+                  <div class="number" draggable="true">5</div>
+                  <div class="number" draggable="true">6</div>
+                  <div class="number" draggable="true">7</div>
+                  <div class="number" draggable="true">8</div>
+                  <div class="number" draggable="true">9</div>
+                </div>
+        
+                <button id="clear-btn" class="btn btn-danger w-100">Clear All</button>
+              </div>
+            </div>
           </div>
+        </div>
+        
+
+        <div class="text-end">
+          <button id="next-btn" class="btn btn-primary px-4 py-2 fw-bold">Next</button>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Pass dynamic vars to JS -->
+<!-- Pass variables to JavaScript -->
 <script>
   const tutorialSteps = {{ steps | tojson }};
   const imgBaseUrl = "{{ img_base_url }}";
@@ -37,5 +87,6 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{{ url_for('static', filename='js/dragdrop.js') }}"></script>
 <script src="{{ url_for('static', filename='js/learn.js') }}"></script>
 {% endblock %}

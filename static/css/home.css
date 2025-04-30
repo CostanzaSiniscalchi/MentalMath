@@ -14,4 +14,7 @@ body {
     background-color: #f0f0f0; /* light gray highlight */
     text-decoration: none;
   }
+  .dark-gray {
+    color: #6c757d;
+}
   
