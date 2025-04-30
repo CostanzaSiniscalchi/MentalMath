@@ -1,0 +1,48 @@
+.summary-card {
+    border-radius: 20px;
+    background: white;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .result-box {
+    background-color: #dff0d8;
+    border-radius: 15px;
+    padding: 1rem 1.5rem;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .xp-bar {
+    height: 1.5rem;
+    border-radius: 999px;
+    overflow: hidden;
+    background-color: #555;
+  }
+  .xp-fill {
+    background-color: #3b82f6;
+    height: 100%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+  }
+  .btn-outline-dark {
+    border: 2px solid #444;
+    background-color: white;
+    color: #444;
+    font-weight: 600;
+  }
+  .btn-outline-dark:hover {
+    background-color: #f0f0f0;
+  }
+  .badge-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .badge-item {
+    text-align: center;
+  }
+  .badge-item img {
+    height: 100px;
+  }

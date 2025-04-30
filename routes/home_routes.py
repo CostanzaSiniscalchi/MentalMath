@@ -19,4 +19,6 @@ def home():
 
 @home_bp.route('/summary')
 def summary():
-    return render_template('summary.html')
+    badges = session.get('badges', [])  # fallback to [] if nothing stored
+    return render_template('summary.html', badges=badges)
+

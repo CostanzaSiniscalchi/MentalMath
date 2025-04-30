@@ -91,7 +91,7 @@ def next_quiz():
 @quiz_bp.route('/quiz_results')
 def quiz_results():
     if 'quiz_data' not in session:
-        return redirect(url_for('home.home'))  # or flash a message first
+        return redirect(url_for('home.home'))
 
     init_xp_tracking()
     data_ = session['quiz_data']
@@ -102,13 +102,26 @@ def quiz_results():
     xp_earned = 3 if score >= 3 else 1
     unit_xp_gain = xp_earned * 5
 
+    # Update XP
     session['unit_xp'][unit_id] = min(session['unit_xp'][unit_id] + unit_xp_gain, 100)
     session['xp_total'] = min(session['xp_total'] + unit_xp_gain, 100)
-
     session.modified = True
-	
-	
-	
+
+    # 🏅 Badge logic
+    badges = []
+
+    if score == 5:
+        badges.append('perfect_score.png')
+
+    if unit_id in ['1', '3']:  # Multiplication-based units
+        badges.append('multiplication_genius.png')
+
+    if all(xp == 100 for xp in session['unit_xp'].values()):
+        badges.append('all_levels_completed.png')
+
+    # ✅ Store badges in session for later display
+    session['badges'] = badges
+
     return render_template(
         'quiz_results.html',
         score=score,
@@ -116,7 +129,8 @@ def quiz_results():
         unit_id=unit_id,
         xp_progress=session['unit_xp'][unit_id],
         xp_total=session['xp_total'],
-        total_time=total_time
+        total_time=total_time,
+        badges=badges
     )
 
 @quiz_bp.route('/clear_quiz_session')

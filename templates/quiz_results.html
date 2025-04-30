@@ -5,43 +5,8 @@
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}">
-<style>
-  .summary-card {
-    border-radius: 20px;
-    background: white;
-    padding: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  .result-box {
-    background-color: #dff0d8;
-    border-radius: 15px;
-    padding: 1rem 1.5rem;
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-  }
-  .xp-bar {
-    height: 1.5rem;
-    border-radius: 999px;
-    overflow: hidden;
-    background-color: #555;
-  }
-  .xp-fill {
-    background-color: #3b82f6;
-    height: 100%;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-  }
-  .btn-outline-dark {
-    border: 2px solid #444;
-    background-color: white;
-    color: #444;
-    font-weight: 600;
-  }
-  .btn-outline-dark:hover {
-    background-color: #f0f0f0;
-  }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/quiz_results.css') }}">
+
 {% endblock %}
 
 {% block content %}
@@ -51,7 +16,7 @@
     <h2 class="fw-bold mb-4">Quiz Results</h2>
 
     <div class="result-box text-center">
-      You got {{ score }}/5 Questions Correct in {{total_time}} seconds!
+      You got {{ score }}/5 Questions Correct in {{ total_time }} seconds!
     </div>
 
     <p class="fs-5 text-center mb-4">You gained +{{ xp }} XP!</p>
@@ -62,9 +27,24 @@
     </div>
 
     <!-- XP Bar -->
-    <div class="xp-bar">
-      <div class="xp-fill" style="width: {{ xp_progress }}%;">XP</div>
+    <div class="xp-bar mb-4">
+      <div class="xp-fill" style="width: {{ xp_progress }}%">XP</div>
     </div>
+
+    <!-- Badge Section -->
+    {% if badges %}
+    <div class="text-center mt-5">
+      <h4 class="fw-bold mb-3">🏅 You earned the following badge{{ badges|length > 1 and 's' or '' }}:</h4>
+      <div class="badge-grid">
+        {% for badge in badges %}
+        <div class="badge-item">
+          <img src="{{ url_for('static', filename='img/badges/' ~ badge) }}" alt="{{ badge }}">
+          <p class="mt-2 text-center fw-bold">{{ badge.replace('_', ' ').replace('.png', '').title() }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
 
   </div>
 </div>
