@@ -4,6 +4,7 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=1">
 {% endblock %}
 
 {% block content %}
@@ -14,23 +15,23 @@
         <h4 class="fw-bold">{{ unit_name|capitalize }} – How Does it Work?</h4>
         <p id="instruction-text" class="text-secondary mt-2 mb-3"></p>
 
-        <div class="row align-items-start" id="learn-content-row">
-          <!-- Diagram (left) -->
-          <div class="col-lg-6 learn-diagram mb-3 d-flex align-items-center justify-content-center" style="min-height: 350px;">
+        <div class="row g-4 align-items-center" id="learn-content-row">
+          <!-- Diagram -->
+          <div class="col-lg-6 d-flex justify-content-center">
             <img id="diagram-img" src="" alt="Diagram" class="img-fluid rounded">
           </div>
-        
-          <!-- Interaction Container (right) -->
-          <div class="col-lg-6 d-flex align-items-center justify-content-center">
+
+          <!-- Drag & Drop Interaction -->
+          <div class="col-lg-6 d-flex justify-content-center">
             <div id="you-try-interaction" style="display: none;">
-              <div class="p-4" style="border: 2px solid #ccc; border-radius: 40px; background: white; width: 100%; max-width: 400px;">
-                <!-- Top row -->
+              <div class="interaction-wrapper">
+                <!-- Top Row -->
                 <div class="d-flex justify-content-center mb-2 gap-2">
                   <div class="drop-box" data-box></div>
                   <div class="drop-box" data-box></div>
                 </div>
-        
-                <!-- Expression row -->
+
+                <!-- Expression Row -->
                 <div class="d-flex justify-content-center mb-2 align-items-center gap-2">
                   <div class="drop-box" data-box></div>
                   <span class="fixed">(</span>
@@ -40,37 +41,30 @@
                   <span class="fixed">)</span>
                   <div class="drop-box" data-box></div>
                 </div>
-        
-                <!-- Result row -->
+
+                <!-- Result Row -->
                 <div class="d-flex justify-content-center align-items-center mb-3 gap-2">
                   <span class="fixed">=</span>
                   <div class="drop-box" data-box></div>
                   <div class="drop-box" data-box></div>
                   <div class="drop-box" data-box></div>
                 </div>
-        
-                <!-- Numbers -->
+
+                <!-- Number Bank -->
                 <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
-                  <div class="number" draggable="true">0</div>
-                  <div class="number" draggable="true">1</div>
-                  <div class="number" draggable="true">2</div>
-                  <div class="number" draggable="true">3</div>
-                  <div class="number" draggable="true">4</div>
-                  <div class="number" draggable="true">5</div>
-                  <div class="number" draggable="true">6</div>
-                  <div class="number" draggable="true">7</div>
-                  <div class="number" draggable="true">8</div>
-                  <div class="number" draggable="true">9</div>
+                  {% for num in range(10) %}
+                    <div class="number" draggable="true">{{ num }}</div>
+                  {% endfor %}
                 </div>
-        
+
                 <button id="clear-btn" class="btn btn-danger w-100">Clear All</button>
               </div>
             </div>
           </div>
         </div>
-        
 
-        <div class="text-end">
+        <!-- Next Button -->
+        <div class="text-end mt-4">
           <button id="next-btn" class="btn btn-primary px-4 py-2 fw-bold">Next</button>
         </div>
       </div>
@@ -78,7 +72,7 @@
   </div>
 </section>
 
-<!-- Pass variables to JavaScript -->
+<!-- Variables to JS -->
 <script>
   const tutorialSteps = {{ steps | tojson }};
   const imgBaseUrl = "{{ img_base_url }}";

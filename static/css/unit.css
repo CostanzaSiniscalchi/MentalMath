@@ -1,10 +1,3 @@
-:root {
-	--bs-primary: rgb(193, 216, 249);   /* Light Blue */
-	--bs-secondary: rgb(49, 111, 225);  /* Main Blue */
-	--bs-light-grey: rgb(255, 255, 255);
-	--bs-dark-grey: rgb(222, 229, 238);
-  }
-  
   body {
 	background-color: var(--bs-dark-grey);
   }
@@ -16,14 +9,14 @@
   .unit-card {
 	background-color: var(--bs-light-grey);
 	border-radius: 1.5rem;
-	box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+	box-shadow: 0 4px 8px --bs-dark-grey;
 	max-width: 700px;
   }
   
   /* Progress Bar */
   .custom-progress {
 	height: 2rem;
-	background-color: #ccc; /* Gray track */
+	background-color: --bs-light-grey; /* Gray track */
 	border-radius: 1rem;
 	overflow: hidden;
 	position: relative;
@@ -49,13 +42,13 @@
   .panel-card {
 	background-color: var(--bs-light-grey);
 	border-radius: 1.5rem;
-	box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+	box-shadow: 0 4px 8px --bs-dark-grey;
   }
   
   /* Buttons */
   .btn-outline-dark {
-	border-color: #333;
-	color: #111;
+	border-color: --bs-dark-grey;
+	color: --bs-dark-grey;
 	transition: background-color 0.3s ease;
   }
   
