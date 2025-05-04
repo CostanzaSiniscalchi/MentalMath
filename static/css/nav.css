@@ -1,5 +1,5 @@
 .navbar {
-    background-color: var(--bs-primary) !important; /* Dark base color */
+    background-color: var(--bs-secondary) !important; /* Dark base color */
     position: fixed; /* Keeps navbar at top */
     top: 0;
     width: 100%;
@@ -13,20 +13,22 @@ body {
 
 /* Navbar brand */
 .navbar-brand {
-    color: var(--bs-light-grey) !important;
-    font-size: 1.5rem;
-    font-weight: bold;
+    color: var(--bs-white) !important;
+    font-size: 10rem;
+    font-weight: 700;
+    font-family: 'Rubik', sans-serif;
 }
 
 /* Navbar links */
 .navbar-nav .nav-link {
-    color: var(--bs-light-grey) !important;
-    font-weight: 500;
-    transition: color 0.3s ease-in-out;
+    color: var(--bs-white) !important;
+    font-weight: 700;
+    font-size: 1.25rem; /* default size */
+    font-family: 'Rubik', sans-serif;
 }
 
 .navbar-nav .nav-link:hover {
-    color: var(--bs-secondary) !important;
+    color: var(--bs-primary) !important;
 }
 
 /* Navbar Toggle Icon */
@@ -53,17 +55,4 @@ body {
     background-color: var(--bs-secondary);
     color: white;
     border: none;
-}
-
-
-/* Add Museum Button */
-.btn-secondary {
-    background-color: var(--bs-secondary) !important;
-    border-color: var(--bs-secondary) !important;
-    color: var(--bs-light-grey) !important;
-}
-
-.btn-secondary:hover {
-    background-color: rgb(180, 0, 36) !important;
-    border-color: rgb(180, 0, 36) !important;
 }

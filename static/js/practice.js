@@ -4,16 +4,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtn = document.getElementById('nextBtn');
     const feedbackDiv = document.getElementById('feedback');
     const answerInput = document.querySelector('input[name="user-answer"]');
-    let submitted = false;
 
-    // Autofocus on the input when page loads
+    let submitted = false; // reset on page load
+
+    // Autofocus and reset input state
     if (answerInput) {
         answerInput.focus();
+        answerInput.readOnly = false;
     }
 
-    // When user submits an answer
+    submitBtn.disabled = false;
+    nextBtn.disabled = true;
+    feedbackDiv.style.display = 'none';
+
+    // Submit handler
     form.addEventListener('submit', function(e) {
-        e.preventDefault();  // prevent normal form submission
+        e.preventDefault();
 
         const formData = new FormData(form);
 
@@ -25,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             feedbackDiv.style.display = 'block';
             feedbackDiv.classList.remove('alert-success', 'alert-danger');
+
             if (data.correct) {
                 feedbackDiv.classList.add('alert-success');
                 feedbackDiv.textContent = data.message;
@@ -33,33 +40,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 feedbackDiv.textContent = data.message;
             }
 
-            // After submission, enable the Next button
-            nextBtn.disabled = false;
-            submitted = true;
-
-            // Disable submit button so user can't double-submit
+            // Lock form
+            answerInput.readOnly = true;
             submitBtn.disabled = true;
 
-            // Clear the input box and refocus for the next typing
-            if (answerInput) {
-                answerInput.blur();  // small trick to reset field
-                answerInput.focus();
-            }
+            // Enable next
+            nextBtn.disabled = false;
+            submitted = true;
         })
         .catch(error => {
             console.error('Error submitting answer:', error);
         });
     });
 
-    // Handle Enter key
+    // Enter key behavior
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             if (!submitted) {
-                // If not yet submitted, Enter triggers Submit
                 submitBtn.click();
             } else {
-                // If already submitted, Enter triggers Next
                 nextBtn.click();
             }
         }

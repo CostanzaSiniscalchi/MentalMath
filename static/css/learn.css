@@ -1,53 +1,47 @@
+
 .instruction-card {
-    background-color: var(--bs-light-grey);
-    border-radius: 1.5rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  border-radius: 20px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.learn-diagram img {
+  max-height: 300px;
+  width: auto;
+  object-fit: contain;
+}
+
+.interaction-wrapper {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  padding: 1.5rem;
+  border: 2px solid #ccc;
+  border-radius: 40px;
+}
+
+.drop-box {
+  width: 40px;
+  height: 40px;
+  border: 2px dashed #aaa;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+.number {
+  padding: 0.5rem 0.75rem;
+  background-color: #e7f1ff;
+  border: 1px solid --bs-secondary;
+  border-radius: 8px;
+  cursor: grab;
+  user-select: none;
+  font-weight: bold;
+}
+
+@media (max-width: 992px) {
+  #learn-content-row {
+    flex-direction: column;
   }
-  
-  .learn-diagram {
-    flex: 1 1 60%;
-    padding-right: 2rem;
-  }
-  
-  .learn-diagram img {
-    max-width: 100%;
-    border-radius: 1rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  }
-  
-  #instruction-text {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    max-width: 700px;
-  }
-  
-  #next-btn {
-    border-radius: 0.75rem;
-    font-size: 1.1rem;
-  }
-  .drop-box, .number {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 10px;
-    background-color: #e0e0e0;
-    border: 1px solid #aaa;
-    user-select: none;
-    cursor: grab;
-  }
-  
-  .number {
-    background-color: white;
-  }
-  
-  .fixed {
-    font-size: 24px;
-  }
-  
-  #you-try-interaction .d-flex {
-    align-items: center;
-  }
-  
+}
