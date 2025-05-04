@@ -1,20 +1,99 @@
+/* Global Styles */
 body {
-	background-color: #f2f6fa;
-  }
-  h5 {
-	font-weight: 600;
-  }
-  
-
-  .progress-row {
-    transition: background-color 0.2s ease;
-  }
-  
-  .progress-row:hover {
-    background-color: #f0f0f0; /* light gray highlight */
-    text-decoration: none;
-  }
-  .dark-gray {
-    color: #6c757d;
+  background-color: var(--bs-primary);
+  font-family: 'Rubik', sans-serif;
 }
-  
+
+/* Typography */
+h1 {
+  font-weight: 700;
+}
+
+h5, h6 {
+  font-weight: 500;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(to bottom, white 50%, var(--bs-primary) 100%);
+  padding: 4rem 1rem;
+}
+
+/* Panel Cards */
+.panel-card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  height: 100%;
+}
+
+/* Shorter panel override for small button groups */
+.short-panel {
+  padding: 1.25rem;
+  height: auto;
+}
+
+/* Unit Progress Rows */
+.progress-row {
+  display: block;
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.progress-row h6,
+.progress-row .text-secondary {
+  transition: color 0.2s ease;
+}
+
+.progress-row:hover {
+  background-color: var(--bs-secondary);
+  color: white !important;
+  /* box-shadow: 0 2px 6px rgba(49, 111, 225, 0.1); */
+}
+
+.progress-row:hover h6,
+.progress-row:hover .text-secondary {
+  color: white !important;
+}
+
+/* Progress Bars */
+.progress {
+  height: 0.75rem;
+  background-color: #e9ecef;
+  border-radius: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.progress-bar {
+  background-color: var(--bs-secondary);
+  border-radius: 0.5rem;
+}
+
+/* Buttons (Summary / Practice) */
+.btn-outline-dark {
+  font-weight: 500;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--bs-secondary);
+  color: white;
+}
+
+/* Utility */
+.text-secondary {
+  color: #6c757d;
+}
+
+/* Section spacing */
+section.container-lg {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}

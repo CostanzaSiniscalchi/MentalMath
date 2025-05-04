@@ -1,19 +1,22 @@
 :root {
-	--bs-primary: rgb(193, 216, 249);
+	--bs-primary: rgb(225, 237, 255);
 	--bs-secondary: rgb(49, 111, 225);
 	--bs-light-grey: rgb(255, 255, 255);
-	--bs-dark-grey: rgb(222, 229, 238);
+	--bs-dark-grey: rgb(90, 89, 89);
+  --bs-white: rgb(255, 255, 255);
   }
   
   /* Apply global background */
   body {
-	background-color: var(--bs-dark-grey);
-	color: #333;
+    background-color: var(--bs-primary);
+    font-family: 'Rubik', sans-serif;
   }
   
   /* Hero Section */
   .hero-section {
-	background-color: var(--bs-light-grey);
+    background: linear-gradient(to bottom, white 50%, var(--bs-primary) 100%);
+    padding-top: 4rem;
+    padding-bottom: 4rem;
   }
   
   .hero-section h1 span {
