@@ -21,46 +21,125 @@
             <img id="diagram-img" src="" alt="Diagram" class="img-fluid rounded">
           </div>
 
-          <!-- Drag & Drop Interaction -->
+          <!-- Interaction Box -->
           <div class="col-lg-6 d-flex justify-content-center">
-            <div id="you-try-interaction" style="display: none;">
-              <div class="interaction-wrapper">
-                <!-- Top Row -->
-                <div class="d-flex justify-content-center mb-2 gap-2">
-                  <div class="drop-box" data-box></div>
-                  <div class="drop-box" data-box></div>
+            <div class="text-center">
+              <div id="interaction-wrapper" class="d-inline-block">
+
+                <!-- Unit 1 -->
+                <div id="unit-1-interaction" class="question-interaction" style="display: none;">
+                  <div class="interaction-wrapper text-center">
+                    <div class="d-flex justify-content-center gap-2 mb-2">
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                    </div>
+                    <div class="d-flex justify-content-center gap-2 mb-2 align-items-center">
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">(</span>
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">+</span>
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">)</span>
+                      <div class="drop-box" data-box></div>
+                    </div>
+                    <div class="d-flex justify-content-center gap-2 mb-3 align-items-center">
+                      <span class="fixed">=</span>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Expression Row -->
-                <div class="d-flex justify-content-center mb-2 align-items-center gap-2">
-                  <div class="drop-box" data-box></div>
-                  <span class="fixed">(</span>
-                  <div class="drop-box" data-box></div>
-                  <span class="fixed">+</span>
-                  <div class="drop-box" data-box></div>
-                  <span class="fixed">)</span>
-                  <div class="drop-box" data-box></div>
+                <!-- Unit 2 -->
+                <div id="unit-2-interaction" class="question-interaction" style="display: none;">
+                  <div class="interaction-wrapper text-center">
+                    <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">x</span>
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">=</span>
+                      <div class="drop-box" data-box></div>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Result Row -->
-                <div class="d-flex justify-content-center align-items-center mb-3 gap-2">
-                  <span class="fixed">=</span>
-                  <div class="drop-box" data-box></div>
-                  <div class="drop-box" data-box></div>
-                  <div class="drop-box" data-box></div>
+                <!-- Unit 3 -->
+                <div id="unit-3-interaction" class="question-interaction" style="display: none;">
+                  <div class="interaction-wrapper text-center">
+                    <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+                      <span class="fixed">Midpoint:</span>
+                      <span class="fixed">½x(</span>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">+</span>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">)</span>
+                      <span class="fixed">=</span>
+                      <div class="drop-box output-box blue" data-box></div>
+                      <div class="drop-box output-box blue" data-box></div>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                      <span class="fixed">Distance:</span>
+                      <span class="fixed">½x|</span>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">-</span>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                      <span class="fixed">|</span>
+                      <span class="fixed">=</span>
+                      <div class="drop-box output-box red" data-box></div>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
+                      <div class="drop-box square-box blue" data-box></div>
+                      <div class="drop-box square-box blue" data-box></div>
+                      <sup>2</sup>
+                      <span class="fixed">-</span>
+                      <div class="drop-box square-box red" data-box></div>
+                      <sup>2</sup>
+                      <span class="fixed">=</span>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                      <div class="drop-box" data-box></div>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Number Bank -->
-                <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
-                  {% for num in range(10) %}
-                    <div class="number" draggable="true">{{ num }}</div>
-                  {% endfor %}
-                </div>
+                <!-- Number Bank + Buttons -->
+                <div id="interaction-controls" class="text-center mt-4" style="display: none;">
+                  <!-- Number Bank -->
+                  <div id="number-bank" class="mb-4">
+                    <div class="d-flex justify-content-center gap-2 mb-2 flex-wrap">
+                      {% for num in range(0, 5) %}
+                        <div class="number" draggable="true">{{ num }}</div>
+                      {% endfor %}
+                    </div>
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                      {% for num in range(5, 10) %}
+                        <div class="number" draggable="true">{{ num }}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
 
-                <button id="clear-btn" class="btn btn-danger w-100">Clear All</button>
-              </div>
-            </div>
-          </div>
+                  <!-- Buttons -->
+                  <div class="d-flex justify-content-center gap-3 mb-3">
+                    <button id="clear-btn" class="btn btn-danger px-4">Clear All</button>
+                    <button id="check-btn" class="btn btn-success px-4">Submit</button>
+                  </div>
+
+                  <!-- Feedback -->
+                  <div id="feedback" class="mt-2 fw-bold text-center"></div>
+                </div>
+              </div> <!-- /#interaction-wrapper -->
+            </div> <!-- /.text-center -->
+          </div> <!-- /.col -->
         </div>
 
         <!-- Next Button -->
@@ -72,7 +151,7 @@
   </div>
 </section>
 
-<!-- Variables to JS -->
+<!-- JS Variables -->
 <script>
   const tutorialSteps = {{ steps | tojson }};
   const imgBaseUrl = "{{ img_base_url }}";

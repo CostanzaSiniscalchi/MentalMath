@@ -13,7 +13,9 @@
       {
         "text": "Now you try:",
         "img": "you_try.png",
-        "button": "See answer"
+        "button": "See answer",
+        "interaction_id": "unit-1-interaction",
+        "answer": ["3", "6", "3", "3", "6", "6", "3", "9", "6"]
       },
       {
         "text": "Now you try:",
@@ -39,11 +41,17 @@
       },
       {"text": "Multiply the remaining digits by their next counting number.",
         "img": "step2.png",
-        "button": "Start"
+        "button": "Next"
       },
       {"text": "Take the product's digits and combine them with 25",
         "img": "step3.png",
         "button": "Now you try"
+      },
+      {"text": "Now you try",
+        "img": "you_try.png",
+        "interaction_id": "unit-2-interaction",
+        "button": "See answer",
+        "answer": ["2", "3", "6", "6", "2", "5"]
       },
       {"text": "Now you try",
         "img": "sol.gif",
@@ -63,6 +71,12 @@
       {"text": "Subtract the distance squared from the midpoint squared.",
         "img": "step3.png",
         "button": "Now you try"
+      },
+      {"text": "Now you try",
+        "img": "you_try.png",
+        "interaction_id": "unit-3-interaction",
+        "button": "See answer",
+        "answer": ["1", "4", "1", "6", "1", "5", "1", "4", "1", "6", "1", "1", "5", "1", "2", "2", "4"]
       },
       {"text": "Now you try",
         "img": "sol.gif",
