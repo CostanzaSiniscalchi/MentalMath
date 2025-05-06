@@ -1,0 +1,31 @@
+/* Multiple Choice Option Styling */
+#mc-options {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .mc-option {
+    min-width: 120px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    border-radius: 0.75rem;
+    border: 2px solid var(--bs-secondary);
+    background-color: white;
+    color: var(--bs-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .mc-option:hover {
+    background-color: var(--bs-secondary);
+    color: white;
+  }
+  
+  .mc-option.selected {
+    background-color: var(--bs-secondary);
+    color: white;
+    box-shadow: 0 0 0 3px rgba(49, 111, 225, 0.3);
+  }
+  
