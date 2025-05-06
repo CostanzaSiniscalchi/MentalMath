@@ -97,3 +97,18 @@ section.container-lg {
   margin-top: 3rem;
   margin-bottom: 3rem;
 }
+
+@keyframes swipeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.swipe-in {
+  animation: swipeIn 0.7s ease-out;
+}
