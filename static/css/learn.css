@@ -19,29 +19,55 @@
   border-radius: 40px;
 }
 
-.drop-box {
-  width: 40px;
-  height: 40px;
-  border: 2px dashed #aaa;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f8f9fa;
-}
-
-.number {
-  padding: 0.5rem 0.75rem;
-  background-color: #e7f1ff;
-  border: 1px solid --bs-secondary;
-  border-radius: 8px;
-  cursor: grab;
-  user-select: none;
-  font-weight: bold;
-}
-
 @media (max-width: 992px) {
   #learn-content-row {
     flex-direction: column;
   }
 }
+.drop-box.correct {
+  border: 2px solid green;
+}
+.drop-box.incorrect {
+  border: 2px solid red;
+}
+.output-box.blue {
+  border: 2px dashed blue;
+}
+
+.output-box.red {
+  border: 2px dashed red;
+}
+
+.square-box.blue {
+  border: 2px dashed blue;
+}
+
+.square-box.red {
+  border: 2px dashed red;
+}
+.drop-box {
+  width: 48px;
+  height: 48px;
+  border: 2px dashed #999;
+  background-color: #f8f8f8;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+.number {
+  width: 40px;
+  height: 40px;
+  background-color: #d0e5ff;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  cursor: grab;
+}
+.output-box.blue { border: 2px dashed blue; }
+.output-box.red { border: 2px dashed red; }
+.square-box.blue { border: 2px dashed blue; }
+.square-box.red { border: 2px dashed red; }
+
