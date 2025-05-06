@@ -1,0 +1,9 @@
+.log-entry {
+  background-color: #f9faff;
+  transition: transform 0.2s ease;
+}
+
+.log-entry:hover {
+  transform: translateX(4px);
+  background-color: #f1f6ff;
+}
