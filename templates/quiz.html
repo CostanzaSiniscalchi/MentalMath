@@ -10,24 +10,19 @@
 {% block content %}
 
 <div class="container-fluid pt-0 mt-4 px-4" style="margin-top: -16px;">
-  <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <!-- Left: Lightning Round -->
+  <div class="d-flex justify-content-between align-items-center">
+
+          <!-- Left: Lightning Round -->
     <div class="text-start">
       <h2 class="fw-bold mb-0">Lightning Round</h2>
-    </div>
-
-    <!-- Center: Timer and Question -->
-    <div class="text-center flex-grow-1">
-      <div id="timer" class="fs-4 text-danger fw-semibold mb-4">
-        {{ time_left // 60 }}:{{ '%02d' % (time_left % 60) }}
+      <div id="timer" class="fs-4 text-danger fw-semibold">
+        Time left: {{ time_left // 60 }}m {{ '%02d' % (time_left % 60) }}s
       </div>
-      <h3 id="question" class="fw-semibold mb-0">
-        {{ question }}
-      </h3>
     </div>
 
-    <!-- Right: Progress Bar -->
+
+          <!-- Right: Progress Bar -->
     <div class="text-end" style="min-width: 300px;">
       <div id='outerProgress' class="progress" style="height: 1.5rem;">
         <div id="quizProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
@@ -36,11 +31,20 @@
       </div>
     </div>
 
+
+
   </div>
 </div>
 
 <!-- Form Section -->
 <div class="text-center mb-5">
+      <!-- Center: Timer and Question -->
+    <div class="text-center flex-grow-1">
+
+      <h3 id="question" class="fw-semibold mb-4">
+        {{ question }}
+      </h3>
+    </div>
   <form id='quiz-form' method="POST">
     <div class="mb-3 px-4">
       <input
@@ -66,7 +70,7 @@
 <!-- Next Button -->
 <div class="d-flex justify-content-end">
   <form action="{{ url_for('next_quiz') }}" method="GET">
-    <button type="submit" id="nextBtn" class="btn btn-primary px-4 py-2" disabled>Next Question</button>
+    <button type="submit" id="nextBtn" class="btn btn-primary px-4 py-2 mx-4" disabled>Next Question</button>
   </form>      
 </div>
 
@@ -84,7 +88,7 @@ const timerInterval = setInterval(() => {
   timeLeft--;
   const minutes = Math.floor(timeLeft / 60);
   const seconds = String(timeLeft % 60).padStart(2, '0');
-  timerEl.textContent = `${minutes}:${seconds}`;
+  timerEl.textContent = `Time left: ${minutes}m ${seconds}s`;
 }, 1000);
 </script>
 
