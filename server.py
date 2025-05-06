@@ -361,7 +361,11 @@ def is_question_correct(question_datum, user_response): # takes in an element fr
 
 @app.route('/quiz_review_mistakes')
 def quiz_review_mistakes():
-    update_user_logs('User went to quiz review mistakes')
+    if 'quiz_data' not in session:
+        update_user_logs('User attempted to access quiz review mistakes, but quiz_data was not found in session, redirected to Home')
+        return redirect(url_for('home'))
+
+
     mistakes = []
     quiz_data = session['quiz_data']
 
@@ -377,7 +381,7 @@ def quiz_review_mistakes():
                 'time_spent': response['time_spent']
 			}
 		})
-
+    update_user_logs('User went to quiz review mistakes')
     return render_template('quiz_review_mistakes.html', review_data=mistakes)
 
 @app.route('/quiz_problem_review/<qid>')
