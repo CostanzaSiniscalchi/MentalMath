@@ -23,11 +23,26 @@ def init_xp_tracking():
     if 'unit_xp' not in session:
         session['unit_xp'] = {unit_id: 0 for unit_id in data.keys()}
 
+def update_user_logs(tracking_tag):
+    if 'user_logs' not in session:
+        session['user_logs'] = list()
+    temp = session['user_logs']
+
+    timestamp = datetime.utcnow().isoformat()
+    formatted = datetime.fromisoformat(timestamp).strftime("%H:%M:%S")
+
+    temp.append((tracking_tag, formatted))
+    session['user_logs'] = temp
+    print(session['user_logs'][-1])
+
+
+
 
 @app.route('/')
 def home():
     init_xp_tracking()
     updated_data = {}
+    update_user_logs('Home')
     for unit_id, unit_info in data.items():
         updated_data[unit_id] = {
             "unit": unit_info["unit"],
@@ -39,16 +54,19 @@ def home():
 
 @app.route('/learn/<unit_id>', methods=['GET'])
 def learn(unit_id):
-	with open(learn_path, encoding='utf-8') as f:
-		tutorial_data = json.load(f)
-		steps = tutorial_data.get(unit_id)
-		if not steps:
-			return "Unit not found", 404
-	if unit_id not in data:
-		return "Unit not found", 404
-	unit_name = data[unit_id]["unit"]
-	img_base_url = url_for('static', filename=f'data/learn/{unit_id}/')
-	return render_template('learn.html', unit_id=unit_id, unit_name = unit_name, steps=steps, img_base_url=img_base_url)
+    with open(learn_path, encoding='utf-8') as f:
+        tutorial_data = json.load(f)
+        steps = tutorial_data.get(unit_id)
+        if not steps:
+            update_user_logs(f'User attempted to visit Learn unit {unit_id}, but it was not found')
+            return "Unit not found", 404
+    if unit_id not in data:
+        update_user_logs(f'User attempted to visit Learn unit {unit_id}, but it was not found')
+        return "Unit not found", 404
+    unit_name = data[unit_id]["unit"]
+    img_base_url = url_for('static', filename=f'data/learn/{unit_id}/')
+    update_user_logs(f'Learn unit {unit_id}')
+    return render_template('learn.html', unit_id=unit_id, unit_name = unit_name, steps=steps, img_base_url=img_base_url)
 
 @app.route('/unit/<unit_id>')
 def unit(unit_id):
@@ -56,22 +74,26 @@ def unit(unit_id):
     unit = data[unit_id]
     unit_name = unit["unit"]
     xp_progress = session['unit_xp'].get(unit_id, 0)
+    update_user_logs(f'User went to unit {unit_id}')
     return render_template('unit.html', unit_id=unit_id, unit_name=unit_name, xp_progress=xp_progress)
 
 
 @app.route('/practice/<unit_id>/<mode>', methods=['GET'])
 def practice(unit_id, mode):
     unit_name = data[unit_id]['unit']
+    update_user_logs(f'User went to practice unit {unit_id} {mode}')
     with open(question_path, encoding='utf-8') as f:
         all_questions = json.load(f)[unit_id][mode]
-        print(all_questions.keys())
+        #print(all_questions.keys())
     
     # Sample 5 unique questions
     question_batch = sample(list(set(all_questions.keys()) - covered_questions), 5)
+
     # print(question_batch)
     q_id = question_batch[0]
     question = all_questions[q_id]['problem']
     # print("practice: ", q_id, question)
+
     # Store in session
     session['practice_data'] = {
         'unit_id': unit_id,
@@ -101,7 +123,7 @@ def submit_practice_answer():
     all_questions = data['all_questions']
     print("submit: current question: ", q_id, all_questions[q_id])
     correct_answer = all_questions[q_id]['answer']
-
+    update_user_logs(f'User submitted answer {user_answer} to question {all_questions[q_id]["problem"]}')
     # Track score
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
     if is_correct:
@@ -123,6 +145,7 @@ def submit_practice_answer():
 
 @app.route('/next_practice')
 def next_practice():
+    update_user_logs('User went to next_practice')
     data = session['practice_data']
     question_batch = data['questions']
     data['current_index'] += 1
@@ -148,6 +171,7 @@ def next_practice():
 
 @app.route('/practice_summary')
 def practice_summary():
+    update_user_logs('User went to practice summary')
     init_xp_tracking()
     data_ = session['practice_data']
     score = data_['score']
@@ -181,6 +205,7 @@ def practice_summary():
 
 @app.route('/quiz/<unit_id>')
 def quiz(unit_id):
+    update_user_logs(f'User went to quiz unit {unit_id}')
     with open(question_path, encoding='utf-8') as f:
         all_questions = json.load(f)[unit_id]['test']  # Use the passed-in unit_id
 
@@ -211,6 +236,10 @@ def quiz(unit_id):
     elapsed = round((datetime.utcnow() - start_time).total_seconds(), 2)
     time_left = max(0, int(300 - elapsed))
 
+    if time_left <= 0:
+        TLE_populate_responses()
+        return redirect(url_for('summary'))
+
     return render_template(
         'quiz.html',
         unit_id=unit_id,
@@ -223,6 +252,14 @@ def quiz(unit_id):
 
 @app.route('/submit_answer', methods=['POST'])
 def submit_answer():
+    data = session['quiz_data']
+    start_time = datetime.fromisoformat(data['quiz_start_time'])
+    elapsed = round((datetime.utcnow() - start_time).total_seconds(), 2)
+    if elapsed > 300:  # time limit exceeded; null out all inputs
+        TLE_populate_responses()
+        return jsonify({'redirect': url_for('summary')})
+
+
     user_answer = request.form['user-answer']
     data = session['quiz_data']
     idx = data['current_index']
@@ -232,7 +269,7 @@ def submit_answer():
     # Use question_start_time to measure time spent on current question
     question_start_time = datetime.fromisoformat(data["question_start_time"])
     time_spent = round((datetime.utcnow() - question_start_time).total_seconds(), 2)
-
+    update_user_logs(f'User submitted answer {user_answer}')
     # Check if correct
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
     if is_correct:
@@ -256,12 +293,14 @@ def submit_answer():
 @app.route('/next_quiz')
 def next_quiz():
     if 'quiz_data' not in session:
+        update_user_logs('User attempted to access quiz data, redirected to Home')
         return redirect(url_for('home'))
 
     data = session['quiz_data']
     data['current_index'] += 1
 
     if data['current_index'] >= len(data['questions']):
+        update_user_logs('User attempted to access quiz data, redirected to quiz results')
         return redirect(url_for('quiz_results'))
 
     # Reset question_start_time for the new question
@@ -277,6 +316,10 @@ def next_quiz():
     elapsed = round((datetime.utcnow() - quiz_start_time).total_seconds(), 2)
     time_left = max(0, int(300 - elapsed))
 
+    if time_left <= 0:
+        TLE_populate_responses()
+        return redirect(url_for('summary'))
+
     session['quiz_data'] = data
     return render_template(
         'quiz.html',
@@ -288,6 +331,7 @@ def next_quiz():
 
 @app.route('/quiz_results')
 def quiz_results():
+    update_user_logs('User went to quiz results')
     init_xp_tracking()
     data_ = session['quiz_data']
     score = data_['score']
@@ -322,6 +366,7 @@ def quiz_results():
 @app.route('/clear_quiz_session')
 def clear_quiz_session(redirect_url='home'):
     # can save data here, perhaps thru pickling so we dont need a DBMS
+    update_user_logs('Quiz session data cleared')
     session.pop('quiz_data')
     return redirect(url_for('home'))
 
@@ -336,27 +381,33 @@ def is_question_correct(question_datum, user_response): # takes in an element fr
 
 @app.route('/quiz_review_mistakes')
 def quiz_review_mistakes():
+    if 'quiz_data' not in session:
+        update_user_logs('User attempted to access quiz review mistakes, but quiz_data was not found in session, redirected to Home')
+        return redirect(url_for('home'))
+
+
     mistakes = []
     quiz_data = session['quiz_data']
 
     for response in quiz_data['responses']:
         if not response['correct']:
             mistakes.append({
-			'user-response': response,
-			'problem-data': {
-				'id': response['id'],  # <- Add this!
-				'problem': response['question'],
-				'correct_answer': response['correct_answer'],
-                'user_answer': response['user_answer'],
-                'time_spent': response['time_spent']
-			}
-		})
-
+                'user-response': response,
+                'problem-data': {
+                    'id': response['id'],  # <- Add this!
+                    'problem': response['question'],
+                    'correct_answer': response['correct_answer'],
+                    'user_answer': response['user_answer'],
+                    'time_spent': response['time_spent']
+                }
+            })
+    update_user_logs('User went to quiz review mistakes')
     return render_template('quiz_review_mistakes.html', review_data=mistakes)
 
 @app.route('/quiz_problem_review/<qid>')
 def quiz_problem_review(qid):
     if 'quiz_data' not in session:
+        update_user_logs('User attempted to visit quiz problem review, but no quiz data was found in session, so was redirected home')
         return redirect(url_for('home'))  # Safety check
 
     data = session['quiz_data']
@@ -364,17 +415,42 @@ def quiz_problem_review(qid):
 
     # Look for the specific question ID
     if qid not in all_questions:
+        update_user_logs(f'User attempted to visit quiz problem review, but question with qid={qid} was not found, so was redirected home')
         return "Question not found.", 404
 
     question_data = all_questions[qid]
     gif_url = question_data['solution_gif'][6:]  # Assuming you store path like 'static/data/...'
-
+    update_user_logs(f'User went to quiz problem review for question {question_data["problem"]}')
     return render_template('quiz_problem_review.html', gif_url=gif_url)
 
 
 @app.route('/summary')
 def summary():
-	return render_template('summary.html')
+    update_user_logs('User went to summary')
+    return render_template('summary.html')
+
+@app.route('/user-logs')
+def user_logs():
+    update_user_logs(f'User visited user logs')
+    return render_template('logs.html', user_logs=session['user_logs'])
+
+def TLE_populate_responses():
+    data = session['quiz_data']
+    idx = data['current_index']
+    while data['current_index'] < len(data['questions']):
+        q_id = data['questions'][idx]
+        correct_answer = data['all_questions'][q_id]['answer']
+        data['responses'].append({
+            'id': q_id,
+            'question': data['all_questions'][q_id]['problem'],
+            'user_answer': 'N/A',
+            'correct_answer': correct_answer,
+            'correct': False,
+            'time_spent': 'Time limit exceeded'
+        })
+        data['current_index'] += 1
+        idx = data['current_index']
+        session['quiz_data'] = data
 
 if __name__ == '__main__':
     app.secret_key = secrets.token_hex(16)

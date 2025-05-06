@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(response => response.json())
       .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+                return;
+            }
           feedbackDiv.style.display = 'block';
           feedbackDiv.classList.remove('alert-success', 'alert-warning');
           if (data.correct) {
