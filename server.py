@@ -14,7 +14,7 @@ data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 
 		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
 		}
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
-question_path = os.path.join('static', 'data', 'mc_full_data.json')
+question_path = os.path.join('static', 'data', 'full_data.json')
 covered_questions = set()
 
 def init_xp_tracking():
