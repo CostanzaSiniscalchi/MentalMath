@@ -232,6 +232,10 @@ def quiz(unit_id):
     elapsed = round((datetime.utcnow() - start_time).total_seconds(), 2)
     time_left = max(0, int(300 - elapsed))
 
+    if time_left <= 0:
+        TLE_populate_responses()
+        return redirect(url_for('summary'))
+
     return render_template(
         'quiz.html',
         unit_id=unit_id,
@@ -244,6 +248,14 @@ def quiz(unit_id):
 
 @app.route('/submit_answer', methods=['POST'])
 def submit_answer():
+    data = session['quiz_data']
+    start_time = datetime.fromisoformat(data['quiz_start_time'])
+    elapsed = round((datetime.utcnow() - start_time).total_seconds(), 2)
+    if elapsed > 300:  # time limit exceeded; null out all inputs
+        TLE_populate_responses()
+        return jsonify({'redirect': url_for('summary')})
+
+
     user_answer = request.form['user-answer']
     data = session['quiz_data']
     idx = data['current_index']
@@ -299,6 +311,10 @@ def next_quiz():
     quiz_start_time = datetime.fromisoformat(data['quiz_start_time'])
     elapsed = round((datetime.utcnow() - quiz_start_time).total_seconds(), 2)
     time_left = max(0, int(300 - elapsed))
+
+    if time_left <= 0:
+        TLE_populate_responses()
+        return redirect(url_for('summary'))
 
     session['quiz_data'] = data
     return render_template(
@@ -372,15 +388,15 @@ def quiz_review_mistakes():
     for response in quiz_data['responses']:
         if not response['correct']:
             mistakes.append({
-			'user-response': response,
-			'problem-data': {
-				'id': response['id'],  # <- Add this!
-				'problem': response['question'],
-				'correct_answer': response['correct_answer'],
-                'user_answer': response['user_answer'],
-                'time_spent': response['time_spent']
-			}
-		})
+                'user-response': response,
+                'problem-data': {
+                    'id': response['id'],  # <- Add this!
+                    'problem': response['question'],
+                    'correct_answer': response['correct_answer'],
+                    'user_answer': response['user_answer'],
+                    'time_spent': response['time_spent']
+                }
+            })
     update_user_logs('User went to quiz review mistakes')
     return render_template('quiz_review_mistakes.html', review_data=mistakes)
 
@@ -413,6 +429,24 @@ def summary():
 def user_logs():
     update_user_logs(f'User visited user logs')
     return render_template('logs.html', user_logs=session['user_logs'])
+
+def TLE_populate_responses():
+    data = session['quiz_data']
+    idx = data['current_index']
+    while data['current_index'] < len(data['questions']):
+        q_id = data['questions'][idx]
+        correct_answer = data['all_questions'][q_id]['answer']
+        data['responses'].append({
+            'id': q_id,
+            'question': data['all_questions'][q_id]['problem'],
+            'user_answer': 'N/A',
+            'correct_answer': correct_answer,
+            'correct': False,
+            'time_spent': 'Time limit exceeded'
+        })
+        data['current_index'] += 1
+        idx = data['current_index']
+        session['quiz_data'] = data
 
 if __name__ == '__main__':
     app.secret_key = secrets.token_hex(16)
