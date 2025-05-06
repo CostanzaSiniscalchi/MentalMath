@@ -14,7 +14,7 @@ data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 
 		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
 		}
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
-question_path = os.path.join('static', 'data', 'full_data.json')
+question_path = os.path.join('static', 'data', 'mc_full_data.json')
 covered_questions = set()
 
 def init_xp_tracking():
@@ -68,10 +68,10 @@ def practice(unit_id, mode):
     
     # Sample 5 unique questions
     question_batch = sample(list(set(all_questions.keys()) - covered_questions), 5)
-    print(question_batch)
+    # print(question_batch)
     q_id = question_batch[0]
     question = all_questions[q_id]['problem']
-    print("practice: ", q_id, question)
+    # print("practice: ", q_id, question)
     # Store in session
     session['practice_data'] = {
         'unit_id': unit_id,
@@ -89,6 +89,7 @@ def practice(unit_id, mode):
         unit_name=unit_name,
         mode=mode,
         question=question,
+        questionData=all_questions[q_id],
         progress=0
     )
 @app.route('/submit_practice_answer', methods=['POST'])
@@ -119,29 +120,30 @@ def submit_practice_answer():
     session['practice_data'] = data  # update
 
     return jsonify(correct=is_correct, message="Nice!" if is_correct else f"Oops! The correct answer was {correct_answer}")
+
 @app.route('/next_practice')
 def next_practice():
     data = session['practice_data']
     question_batch = data['questions']
     data['current_index'] += 1
-    
+
     if data['current_index'] >= len(question_batch):
-        # End of questions, redirect to summary
         return redirect(url_for('practice_summary'))
-	
+
     q_id = question_batch[data['current_index']]
+    question_data = data['all_questions'][q_id]
     session['practice_data'] = data
-    question = data['all_questions'][q_id]['problem']
-    print("next: ", q_id, question)
+
     progress = int(100 * data['current_index'] / len(question_batch))
-    
+
     return render_template(
         'practice.html',
         unit_id=data['unit_id'],
         unit_name=data['unit_name'],
         mode=data['mode'],
-        question=question,
-        progress=progress
+        question=question_data['problem'],
+        progress=progress,
+        questionData=question_data  # <-- Add this line
     )
 
 @app.route('/practice_summary')
