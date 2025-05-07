@@ -61,13 +61,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const isMC = window.questionData && window.questionData.type === 'mc';
         const answer = isMC ? hiddenAnswerInput.value : textAnswerInput.value;
 
-        if (isMC && !answer) {
+        if (!answer || (isMC && answer.trim() === '')) {
             feedbackDiv.style.display = 'block';
             feedbackDiv.classList.remove('alert-success');
             feedbackDiv.classList.add('alert-danger');
-            feedbackDiv.textContent = 'Please select an answer before submitting.';
+            feedbackDiv.textContent = isMC
+                ? 'Please select an answer before submitting.'
+                : 'Please type an answer before submitting.';
             return;
-        }
+        }        
 
         const formData = new FormData();
         formData.append('user-answer', answer);
@@ -80,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 feedbackDiv.style.display = 'block';
                 feedbackDiv.classList.remove('alert-success', 'alert-danger');
-
+            
                 if (data.correct) {
                     feedbackDiv.classList.add('alert-success');
                     feedbackDiv.textContent = data.message;
@@ -88,11 +90,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     feedbackDiv.classList.add('alert-danger');
                     feedbackDiv.textContent = data.message;
                 }
-
+            
                 // Lock inputs
-                if (textAnswerInput) textAnswerInput.readOnly = true;
+                if (textAnswerInput) {
+                    textAnswerInput.readOnly = true;
+                    textAnswerInput.classList.add('disabled'); // optional visual cue
+                }
+                hiddenAnswerInput.disabled = true;
                 document.querySelectorAll('.mc-option').forEach(btn => btn.disabled = true);
                 submitBtn.disabled = true;
+            
+                // Optional: disable all buttons in the form to be extra safe
+                form.querySelectorAll('button').forEach(btn => btn.disabled = true);
+            
                 nextBtn.disabled = false;
                 submitted = true;
             })

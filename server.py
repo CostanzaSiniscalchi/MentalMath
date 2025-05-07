@@ -9,19 +9,25 @@ import math_data
 
 app = Flask(__name__)
 
-data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0},
-		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0},
-		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
+data = {"1": {"unit": "Multiplication by 11",  "progress": 0},
+		"2": {"unit": "Square Numbers Ending in 5",  "progress": 0},
+		"3": {"unit": "Midpoint Square Multiplication", "progress": 0}
 		}
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 question_path = os.path.join('static', 'data', 'full_data.json')
-covered_questions = set()
 
 def init_xp_tracking():
-    if 'xp_total' not in session:
-        session['xp_total'] = 0
+    if 'unit_scores' not in session:
+        session['unit_scores'] = {
+            unit_id: {mode: 0 for mode in ['tutorial', 'easy', 'medium', 'hard', 'test']}
+            for unit_id in data.keys()
+        }
     if 'unit_xp' not in session:
         session['unit_xp'] = {unit_id: 0 for unit_id in data.keys()}
+    if 'xp_total' not in session:
+        session['xp_total'] = 0
+    if 'badges' not in session:
+        session['badges'] = {unit_id: False for unit_id in data.keys()}  # not earned yet
 
 def update_user_logs(tracking_tag):
     if 'user_logs' not in session:
@@ -35,21 +41,26 @@ def update_user_logs(tracking_tag):
     session['user_logs'] = temp
     print(session['user_logs'][-1])
 
-
-
-
 @app.route('/')
 def home():
     init_xp_tracking()
+    xp = session['unit_xp']
     updated_data = {}
     update_user_logs('Home')
     for unit_id, unit_info in data.items():
         updated_data[unit_id] = {
             "unit": unit_info["unit"],
-            "difficulty": unit_info["difficulty"],
-            "progress": session['unit_xp'].get(unit_id, 0)
+            "progress": xp.get(unit_id, 0)
         }
-    return render_template('home.html', data=updated_data, xp_total=session['xp_total'])
+    
+    # Define unlocks based on previous unit XP
+    unlock_requirements = {"2": ("1", 30), "3": ("2", 30)}
+    locked_units = set()
+    for unit_id, (prev_unit, min_xp) in unlock_requirements.items():
+        if xp.get(prev_unit, 0) < min_xp:
+            locked_units.add(unit_id)
+
+    return render_template('home.html', data=updated_data, xp_total=session['xp_total'], unit_xp=session['unit_xp'])
 
 
 @app.route('/learn/<unit_id>', methods=['GET'])
@@ -68,14 +79,28 @@ def learn(unit_id):
     update_user_logs(f'Learn unit {unit_id}')
     return render_template('learn.html', unit_id=unit_id, unit_name = unit_name, steps=steps, img_base_url=img_base_url)
 
+@app.route('/complete_tutorial_and_redirect/<unit_id>')
+def complete_tutorial_and_redirect(unit_id):
+    init_xp_tracking()
+    if unit_id not in session['unit_scores']:
+        session['unit_scores'][unit_id] = {mode: 0 for mode in ['tutorial', 'easy', 'medium', 'hard', 'test']}
+    
+    # Mark tutorial as complete (score of at least 1)
+    session['unit_scores'][unit_id]['tutorial'] = max(session['unit_scores'][unit_id]['tutorial'], 1)
+    update_user_logs(f'User completed tutorial for unit {unit_id}')
+    session.modified = True
+
+    return redirect(url_for('practice', unit_id=unit_id, mode='easy'))
+
 @app.route('/unit/<unit_id>')
 def unit(unit_id):
     init_xp_tracking()
     unit = data[unit_id]
     unit_name = unit["unit"]
     xp_progress = session['unit_xp'].get(unit_id, 0)
+    scores = session['unit_scores'][unit_id]
     update_user_logs(f'User went to unit {unit_id}')
-    return render_template('unit.html', unit_id=unit_id, unit_name=unit_name, xp_progress=xp_progress)
+    return render_template('unit.html', unit_id=unit_id, unit_name=unit_name, xp_progress=xp_progress, scores = scores)
 
 
 @app.route('/practice/<unit_id>/<mode>', methods=['GET'])
@@ -87,7 +112,7 @@ def practice(unit_id, mode):
         #print(all_questions.keys())
     
     # Sample 5 unique questions
-    question_batch = sample(list(set(all_questions.keys()) - covered_questions), 5)
+    question_batch = sample(list(set(all_questions.keys())), 5)
 
     # print(question_batch)
     q_id = question_batch[0]
@@ -128,8 +153,6 @@ def submit_practice_answer():
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
     if is_correct:
         data['score'] += 1
-        
-    covered_questions.add(q_id)  # Mark question as covered
 
     # Save response
     data['responses'].append({
@@ -166,17 +189,19 @@ def next_practice():
         mode=data['mode'],
         question=question_data['problem'],
         progress=progress,
-        questionData=question_data  # <-- Add this line
+        questionData=question_data
     )
 
 @app.route('/practice_summary')
 def practice_summary():
     update_user_logs('User went to practice summary')
-    init_xp_tracking()
+    if 'unit_scores' not in session:
+        init_xp_tracking()
+
     data_ = session['practice_data']
-    score = data_['score']
     unit_id = data_['unit_id']
     mode = data_['mode']
+    score = data_['score']
 
     # XP logic
     xp_earned = 3 if score >= 3 else 1
@@ -189,6 +214,8 @@ def practice_summary():
     # Update total XP
     old_total_xp = session['xp_total']
     session['xp_total'] = min(old_total_xp + unit_xp_gain, 100)
+    # Update best score if higher
+    session['unit_scores'][unit_id][mode] = max(session['unit_scores'][unit_id].get(mode, 0), score)
 
     session.modified = True
     return render_template(
@@ -201,18 +228,24 @@ def practice_summary():
         xp_total=session['xp_total']
     )
 
-
-
 @app.route('/quiz/<unit_id>')
 def quiz(unit_id):
     update_user_logs(f'User went to quiz unit {unit_id}')
     with open(question_path, encoding='utf-8') as f:
         all_questions = json.load(f)[unit_id]['test']  # Use the passed-in unit_id
 
-    if 'quiz_data' not in session or session['quiz_data'].get('unit_id') != unit_id:
-        # Sample 5 random questions
-        question_batch = sample(list(all_questions.keys()), 5)
+    # Initialize or reset quiz data if:
+    # - not already in session
+    # - unit has changed
+    # - quiz is finished
+    reset_quiz = (
+        'quiz_data' not in session or
+        not session['quiz_data'] or 
+        session['quiz_data'].get('unit_id') != unit_id
+    )
 
+    if reset_quiz:
+        question_batch = sample(list(all_questions.keys()), 5)
         session['quiz_data'] = {
             'unit_id': unit_id,
             'questions': question_batch,
@@ -220,8 +253,8 @@ def quiz(unit_id):
             'current_index': 0,
             'responses': [],
             'score': 0,
-            'quiz_start_time': datetime.utcnow().isoformat(),     # overall quiz start
-            'question_start_time': datetime.utcnow().isoformat()  # first question start
+            'quiz_start_time': datetime.utcnow().isoformat(),
+            'question_start_time': datetime.utcnow().isoformat()
         }
 
     data = session['quiz_data']
@@ -346,18 +379,28 @@ def quiz_results():
     old_unit_xp = session['unit_xp'].get(unit_id, 0)
     session['unit_xp'][unit_id] = min(old_unit_xp + unit_xp_gain, 100)
 
+     # Award mastery badge if unit XP at least 80
+    if session['unit_xp'][unit_id] >= 80:
+        session['badges'][unit_id] = True
+
     # Update total XP
     old_total_xp = session['xp_total']
     session['xp_total'] = min(old_total_xp + unit_xp_gain, 100)
 
+    session['unit_scores'][unit_id]['test'] = max(session['unit_scores'][unit_id]['test'], score)
     session.modified = True
+
+    # Reset quiz data
+    session['quiz_data'] = None
+
     return render_template(
         'quiz_results.html',
         score=score,
-        xp=xp_earned,
+        xp=unit_xp_gain,
         unit_id=unit_id,
         xp_progress=session['unit_xp'][unit_id],
         xp_total=session['xp_total'],
+        badges=session['badges'][unit_id],
         total_time=total_time   # <-- NEW
     )
 
@@ -426,8 +469,12 @@ def quiz_problem_review(qid):
 
 @app.route('/summary')
 def summary():
-    update_user_logs('User went to summary')
-    return render_template('summary.html')
+    update_user_logs('User went to summary (badges only)')
+    init_xp_tracking()
+    badges = session.get('badges', {})
+    xp_total = session.get('xp_total', 0)
+    return render_template('summary.html', badges=badges, xp_total=xp_total)
+
 
 @app.route('/user-logs')
 def user_logs():
