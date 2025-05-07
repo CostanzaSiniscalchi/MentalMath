@@ -102,6 +102,46 @@ def unit(unit_id):
     update_user_logs(f'User went to unit {unit_id}')
     return render_template('unit.html', unit_id=unit_id, unit_name=unit_name, xp_progress=xp_progress, scores = scores)
 
+@app.route('/practice/all')
+def practice_all():
+    update_user_logs("User started Practice All Units mode")
+    with open(question_path, encoding='utf-8') as f:
+        full_data = json.load(f)
+
+    flat_questions = {}
+    for unit_id, modes in full_data.items():
+        for mode, questions in modes.items():
+            for qid, q in questions.items():
+                key = f"{unit_id}|{mode}|{qid}"
+                flat_questions[key] = {
+                    **q,
+                    "unit_id": unit_id,
+                    "mode": mode
+                }
+
+    selected_keys = sample(list(flat_questions.keys()), min(10, len(flat_questions)))
+
+    session['practice_data'] = {
+        'unit_id': 'all',
+        'mode': 'mixed',
+        'unit_name': 'Mixed Practice',
+        'questions': selected_keys,
+        'current_index': 0,
+        'responses': [],
+        'score': 0
+    }
+
+    first = flat_questions[selected_keys[0]]
+    return render_template(
+        'practice.html',
+        unit_id='all',
+        unit_name='Mixed Practice',
+        mode='mixed',
+        question=first['problem'],
+        questionData=first,
+        progress=0
+    )
+
 
 @app.route('/practice/<unit_id>/<mode>', methods=['GET'])
 def practice(unit_id, mode):
@@ -144,19 +184,27 @@ def submit_practice_answer():
     user_answer = request.form['user-answer']
     data = session['practice_data']
     idx = data['current_index']
-    q_id = data['questions'][idx]
-    all_questions = data['all_questions']
-    print("submit: current question: ", q_id, all_questions[q_id])
-    correct_answer = all_questions[q_id]['answer']
-    update_user_logs(f'User submitted answer {user_answer} to question {all_questions[q_id]["problem"]}')
+    key = data['questions'][idx]
+    if '|' in key:
+        unit_id, mode, qid = key.split('|')
+        with open(question_path, encoding='utf-8') as f:
+            question = json.load(f)[unit_id][mode][qid]
+    else:
+        qid = key
+        question = data['all_questions'][qid]
+
+    correct_answer = question['answer']
+    update_user_logs(f'User submitted answer {user_answer} to question {question["problem"]}')
     # Track score
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
     if is_correct:
         data['score'] += 1
+        
+    # covered_questions.add(qid)  # Mark question as covered
 
     # Save response
     data['responses'].append({
-        'question': all_questions[q_id]['problem'],
+        'question': question['problem'],
         'user_answer': user_answer,
         'correct_answer': correct_answer,
         'correct': is_correct
@@ -175,22 +223,34 @@ def next_practice():
 
     if data['current_index'] >= len(question_batch):
         return redirect(url_for('practice_summary'))
+    
+    key = question_batch[data['current_index']]
+    if '|' in key:
+        unit_id, mode, qid = key.split('|')
+        with open(question_path, encoding='utf-8') as f:
+            question_data = json.load(f)[unit_id][mode][qid]
+        unit_name = 'Mixed Practice'
+    else:
+        qid = key
+        question_data = data['all_questions'][qid]
+        unit_id = data['unit_id']
+        mode = data['mode']
+        unit_name = data['unit_name']
 
-    q_id = question_batch[data['current_index']]
-    question_data = data['all_questions'][q_id]
     session['practice_data'] = data
 
     progress = int(100 * data['current_index'] / len(question_batch))
 
     return render_template(
         'practice.html',
-        unit_id=data['unit_id'],
-        unit_name=data['unit_name'],
-        mode=data['mode'],
+        unit_id=unit_id,
+        unit_name=unit_name,
+        mode=mode,
         question=question_data['problem'],
         progress=progress,
         questionData=question_data
     )
+
 
 @app.route('/practice_summary')
 def practice_summary():
