@@ -240,6 +240,7 @@ def quiz(unit_id):
     # - quiz is finished
     reset_quiz = (
         'quiz_data' not in session or
+        not session['quiz_data'] or 
         session['quiz_data'].get('unit_id') != unit_id
     )
 
@@ -388,6 +389,10 @@ def quiz_results():
 
     session['unit_scores'][unit_id]['test'] = max(session['unit_scores'][unit_id]['test'], score)
     session.modified = True
+
+    # Reset quiz data
+    session['quiz_data'] = None
+
     return render_template(
         'quiz_results.html',
         score=score,
