@@ -9,9 +9,9 @@ import math_data
 
 app = Flask(__name__)
 
-data = {"1": {"unit": "Multiplication by 11", "difficulty": "Easy", "progress": 0},
-		"2": {"unit": "Square Numbers Ending in 5", "difficulty": "Medium", "progress": 0},
-		"3": {"unit": "Midpoint Square Multiplication", "difficulty": "Hard", "progress": 0}
+data = {"1": {"unit": "Multiplication by 11",  "progress": 0},
+		"2": {"unit": "Square Numbers Ending in 5",  "progress": 0},
+		"3": {"unit": "Midpoint Square Multiplication", "progress": 0}
 		}
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 question_path = os.path.join('static', 'data', 'full_data.json')
@@ -43,14 +43,22 @@ def update_user_logs(tracking_tag):
 @app.route('/')
 def home():
     init_xp_tracking()
+    xp = session['unit_xp']
     updated_data = {}
     update_user_logs('Home')
     for unit_id, unit_info in data.items():
         updated_data[unit_id] = {
             "unit": unit_info["unit"],
-            "difficulty": unit_info["difficulty"],
-            "progress": session['unit_xp'].get(unit_id, 0)
+            "progress": xp.get(unit_id, 0)
         }
+    
+    # Define unlocks based on previous unit XP
+    unlock_requirements = {"2": ("1", 30), "3": ("2", 30)}
+    locked_units = set()
+    for unit_id, (prev_unit, min_xp) in unlock_requirements.items():
+        if xp.get(prev_unit, 0) < min_xp:
+            locked_units.add(unit_id)
+
     return render_template('home.html', data=updated_data, xp_total=session['xp_total'], unit_xp=session['unit_xp'])
 
 
