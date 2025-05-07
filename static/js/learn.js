@@ -68,4 +68,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Optional: focus next on load
   nextBtn.focus();
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      if (currentStep < tutorialSteps.length - 1) {
+        currentStep++;
+        renderStep(currentStep);
+      } else {
+        window.location.href = `/practice/${unitId}/easy`;
+      }
+    } else if (e.key === "ArrowLeft") {
+      if (currentStep > 0) {
+        currentStep--;
+        renderStep(currentStep);
+      }
+    }
+  });
+  
 });
