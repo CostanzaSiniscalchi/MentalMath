@@ -18,12 +18,13 @@
     <div class="unit-card p-4 mx-auto">
       <h2 class="fw-bold mb-4">{{ unit_name }}</h2>
 
-      <!-- Progress Bar -->
-      <div class="custom-progress bg-dark">
-        <div class="custom-progress-fill bg-secondary" style="width: {{ xp_progress }}%">
-          <span class="progress-label">{{ xp_progress }} XP</span>
-        </div>
+    <!-- Progress Bar -->
+    <div class="custom-progress bg-dark bg-opacity-25 rounded-pill">
+      <div class="custom-progress-fill bg-primary text-white rounded-pill" style="width: {{ xp_progress }}%">
+        <span class="progress-label">{{ xp_progress }} XP</span>
       </div>
+    </div>
+
     </div>
   </div>
 </section>
