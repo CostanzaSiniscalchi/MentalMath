@@ -7,6 +7,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=1">
 {% endblock %}
 
+{% set can_access_easy = scores['tutorial'] >= 1 %}
+{% set can_access_medium = scores['easy'] >= 3 %}
+{% set can_access_hard = scores['medium'] >= 3 %}
+{% set can_access_test = scores['medium'] >= 3 or scores['hard'] >= 3 %}
+
 {% block content %}
 <section class="hero-section py-5">
   <div class="container text-center">
@@ -27,28 +32,105 @@
 <!-- Action Panels -->
 <section class="container-lg my-1">
   <div class="row g-4 justify-content-center">
-    <!-- Practice -->
+
+    <!-- Practice Panel -->
     <div class="col-md-6 col-lg-4">
       <div class="panel-card p-4 h-100">
         <h5 class="fw-bold mb-3">Practice</h5>
         <div class="d-grid gap-2">
-          <button class="btn btn-outline-dark" onclick="window.location.href='/practice/{{ unit_id }}/easy'">Easy</button>
-          <button class="btn btn-outline-dark" onclick="window.location.href='/practice/{{ unit_id }}/medium'">Medium</button>
-          <button class="btn btn-outline-dark" onclick="window.location.href='/practice/{{ unit_id }}/hard'">Hard</button>
+
+          <!-- Easy -->
+          <button class="btn btn-outline-dark {% if not can_access_easy %}locked{% endif %}"
+                  onclick="window.location.href='/practice/{{ unit_id }}/easy'"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="{% if not can_access_easy %}Complete the tutorial to unlock Easy{% else %}Start Easy Practice{% endif %}">
+            Easy
+            {% if not can_access_easy %}
+              <i class="bi bi-lock-fill"></i>
+            {% elif scores['easy'] %}
+              <span class="custom-score-badge">{{ scores['easy'] }}/5</span>
+            {% endif %}
+          </button>
+
+          <!-- Medium -->
+          <button class="btn btn-outline-dark {% if not can_access_medium %}locked{% endif %}"
+                  onclick="window.location.href='/practice/{{ unit_id }}/medium'"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="{% if not can_access_medium %}Score 3/5 on Easy to unlock Medium{% else %}Start Medium Practice{% endif %}">
+            Medium
+            {% if not can_access_medium %}
+              <i class="bi bi-lock-fill"></i>
+            {% elif scores['medium'] %}
+              <span class="custom-score-badge">{{ scores['medium'] }}/5</span>
+            {% endif %}
+          </button>
+
+          <!-- Hard -->
+          <button class="btn btn-outline-dark {% if not can_access_hard %}locked{% endif %}"
+                  onclick="window.location.href='/practice/{{ unit_id }}/hard'"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="{% if not can_access_hard %}Score 3/5 on Medium to unlock Hard{% else %}Start Hard Practice{% endif %}">
+            Hard
+            {% if not can_access_hard %}
+              <i class="bi bi-lock-fill"></i>
+            {% elif scores['hard'] %}
+              <span class="custom-score-badge">{{ scores['hard'] }}/5</span>
+            {% endif %}
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Learn -->
+    <!-- Learn Panel -->
     <div class="col-md-6 col-lg-4">
       <div class="panel-card p-4 h-100">
         <h5 class="fw-bold mb-3">Learn</h5>
         <div class="d-grid gap-2">
-          <button class="btn btn-outline-dark" onclick="window.location.href='/learn/{{ unit_id }}'">Tutorial</button>
-          <button class="btn btn-outline-dark" onclick="window.location.href='{{ url_for('quiz', unit_id=unit_id) }}'">Test Your Mastery</button>
+
+          <!-- Tutorial -->
+          <button class="btn btn-outline-dark"
+                  onclick="window.location.href='/learn/{{ unit_id }}'"
+                  data-bs-toggle="tooltip"
+                  title="Start the tutorial for this unit">
+            Tutorial
+            {% if scores['tutorial'] >= 1 %}
+              <span class="badge bg-success">✓</span>
+            {% endif %}
+          </button>
+
+          <!-- Test -->
+          <button class="btn btn-outline-dark {% if not can_access_test %}locked{% endif %}"
+                  onclick="window.location.href='{{ url_for('quiz', unit_id=unit_id) }}'"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="{% if not can_access_test %}Score 3/5 on Medium or Hard to unlock Test{% else %}Take the Mastery Quiz{% endif %}">
+            Test Your Mastery
+            {% if not can_access_test %}
+              <i class="bi bi-lock-fill"></i>
+            {% elif scores['test'] %}
+              <span class="custom-score-badge">{{ scores['test'] }}/5</span>
+            {% endif %}
+          </button>
+
         </div>
       </div>
     </div>
+
   </div>
 </section>
 {% endblock %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.btn.locked').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
+  });
+</script>
+

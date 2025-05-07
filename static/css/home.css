@@ -98,6 +98,17 @@ section.container-lg {
   margin-top: 3rem;
   margin-bottom: 3rem;
 }
+.locked-row {
+  background-color: #f1f3f5;
+  color: #aaa;
+  cursor: not-allowed;
+  position: relative;
+}
+
+.locked-row i.bi-lock-fill {
+  font-size: 1rem;
+  color: #aaa;
+}
 
 @keyframes swipeIn {
   0% {

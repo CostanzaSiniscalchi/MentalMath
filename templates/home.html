@@ -18,40 +18,60 @@
 
 <section class="container-lg my-2">
   <div class="row g-4 justify-content-center">
-    
+
     <!-- Progress + Actions -->
     <div class="col-lg-6">
       <div class="p-3 panel-card h-100">
-        
-        <!-- Item 1 -->
-        <a href="/unit/1" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
-          <h6 class="mb-1">{{ data['1']['unit'] }}</h6>
+
+        {% set xp = unit_xp %}
+        {% set lock_unit_2 = xp['1'] < 30 %}
+        {% set lock_unit_3 = xp['2'] < 30 %}
+
+        <!-- Unit 1 -->
+        <a href="/unit/1"
+           class="progress-row text-decoration-none d-block p-3 mb-3 rounded">
+          <h6 class="mb-1 fw-bold">{{ data['1']['unit'] }}</h6>
           <div class="progress mb-1">
             <div class="progress-bar" style="width: {{ data['1']['progress'] }}%"></div>
           </div>
           <div class="text-secondary small text-end">{{ data['1']['progress'] }}% Mastery</div>
         </a>
-        
-        
-        <!-- Item 2 -->
-        <a href="/unit/2" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
-          <h6 class="mb-1">{{ data['2']['unit'] }}</h6>
+
+        <!-- Unit 2 -->
+        <a href="/unit/2"
+           class="progress-row text-decoration-none d-block p-3 mb-3 rounded {% if lock_unit_2 %}locked-row{% endif %}"
+           data-bs-toggle="tooltip"
+           data-bs-placement="top"
+           title="{% if lock_unit_2 %}Earn 30 XP in Unit 1 to unlock{% endif %}">
+          <h6 class="mb-1 fw-bold d-flex justify-content-between align-items-center">
+            {{ data['2']['unit'] }}
+            {% if lock_unit_2 %}
+              <i class="bi bi-lock-fill text-muted ms-2"></i>
+            {% endif %}
+          </h6>
           <div class="progress mb-1">
             <div class="progress-bar" style="width: {{ data['2']['progress'] }}%"></div>
           </div>
           <div class="text-secondary small text-end">{{ data['2']['progress'] }}% Mastery</div>
         </a>
-        
-        
-        <!-- Item 3 -->
-        <a href="/unit/3" class="progress-row text-decoration-none text-dark d-block p-2 mb-2 rounded">
-          <h6 class="mb-1">{{ data['3']['unit'] }}</h6>
+
+        <!-- Unit 3 -->
+        <a href="/unit/3"
+           class="progress-row text-decoration-none d-block p-3 mb-3 rounded {% if lock_unit_3 %}locked-row{% endif %}"
+           data-bs-toggle="tooltip"
+           data-bs-placement="top"
+           title="{% if lock_unit_3 %}Earn 30 XP in Unit 2 to unlock{% endif %}">
+          <h6 class="mb-1 fw-bold d-flex justify-content-between align-items-center">
+            {{ data['3']['unit'] }}
+            {% if lock_unit_3 %}
+              <i class="bi bi-lock-fill text-muted ms-2"></i>
+            {% endif %}
+          </h6>
           <div class="progress mb-1">
             <div class="progress-bar" style="width: {{ data['3']['progress'] }}%"></div>
           </div>
           <div class="text-secondary small text-end">{{ data['3']['progress'] }}% Mastery</div>
         </a>
-        
 
       </div>
     </div>
@@ -59,23 +79,31 @@
     <!-- Action Buttons -->
     <div class="col-lg-4">
       <div class="p-3 panel-card d-flex flex-column gap-3 align-items-stretch short-panel">
-        <button class="btn btn-outline-dark mt-2" onclick="window.location.href='/summary'">Summary Stats</button>
+        <button class="btn btn-outline-dark mt-2" onclick="window.location.href='/summary'">View Badges</button>
+        <button class="btn btn-outline-dark mt-2" onclick="window.location.href='/quiz_review_mistakes'">Review Mistakes</button>
         <button class="btn btn-outline-dark mt-2" onclick="window.location.href='/practice/all'">Practice All Units</button>
       </div>
     </div>
 
-  </div> <!-- closes .row -->
+  </div>
 </section>
 
 {% endblock %}
 
 {% block scripts %}
 <script>
-  fetch('navbar.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('navbar-container').innerHTML = html;
+  document.addEventListener("DOMContentLoaded", function () {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+
+    // Prevent click but allow hover/tooltips for locked rows
+    document.querySelectorAll('.locked-row').forEach(el => {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
     });
+  });
 </script>
 
 <script>

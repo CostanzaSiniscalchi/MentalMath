@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       currentStep++;
       renderStep(currentStep);
     } else {
-      window.location.href = `/practice/${unitId}/easy`;
+      window.location.href = `/complete_tutorial_and_redirect/${unitId}`;
     }
   });
 
