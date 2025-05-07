@@ -15,7 +15,6 @@ data = {"1": {"unit": "Multiplication by 11",  "progress": 0},
 		}
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 question_path = os.path.join('static', 'data', 'full_data.json')
-covered_questions = set()
 
 def init_xp_tracking():
     if 'unit_scores' not in session:
@@ -27,6 +26,8 @@ def init_xp_tracking():
         session['unit_xp'] = {unit_id: 0 for unit_id in data.keys()}
     if 'xp_total' not in session:
         session['xp_total'] = 0
+    if 'badges' not in session:
+        session['badges'] = {unit_id: False for unit_id in data.keys()}  # not earned yet
 
 def update_user_logs(tracking_tag):
     if 'user_logs' not in session:
@@ -111,7 +112,7 @@ def practice(unit_id, mode):
         #print(all_questions.keys())
     
     # Sample 5 unique questions
-    question_batch = sample(list(set(all_questions.keys()) - covered_questions), 5)
+    question_batch = sample(list(set(all_questions.keys())), 5)
 
     # print(question_batch)
     q_id = question_batch[0]
@@ -152,8 +153,6 @@ def submit_practice_answer():
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
     if is_correct:
         data['score'] += 1
-        
-    covered_questions.add(q_id)  # Mark question as covered
 
     # Save response
     data['responses'].append({
@@ -372,6 +371,10 @@ def quiz_results():
     old_unit_xp = session['unit_xp'].get(unit_id, 0)
     session['unit_xp'][unit_id] = min(old_unit_xp + unit_xp_gain, 100)
 
+     # Award mastery badge if unit XP at least 80
+    if session['unit_xp'][unit_id] >= 80:
+        session['badges'][unit_id] = True
+
     # Update total XP
     old_total_xp = session['xp_total']
     session['xp_total'] = min(old_total_xp + unit_xp_gain, 100)
@@ -453,8 +456,12 @@ def quiz_problem_review(qid):
 
 @app.route('/summary')
 def summary():
-    update_user_logs('User went to summary')
-    return render_template('summary.html')
+    update_user_logs('User went to summary (badges only)')
+    init_xp_tracking()
+    badges = session.get('badges', {})
+    xp_total = session.get('xp_total', 0)
+    return render_template('summary.html', badges=badges, xp_total=xp_total)
+
 
 @app.route('/user-logs')
 def user_logs():
