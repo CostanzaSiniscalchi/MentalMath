@@ -18,13 +18,12 @@
     <div class="unit-card p-4 mx-auto">
       <h2 class="fw-bold mb-4">{{ unit_name }}</h2>
 
-    <!-- Progress Bar -->
-    <div class="custom-progress bg-dark bg-opacity-25 rounded-pill">
-      <div class="custom-progress-fill bg-primary text-white rounded-pill" style="width: {{ xp_progress }}%">
-        <span class="progress-label">{{ xp_progress }} XP</span>
+      <!-- Progress Bar -->
+      <div class="custom-progress bg-dark bg-opacity-25 rounded-pill">
+        <div class="custom-progress-fill bg-primary text-white rounded-pill" style="width: {{ xp_progress }}%">
+          <span class="progress-label">{{ xp_progress }} XP</span>
+        </div>
       </div>
-    </div>
-
     </div>
   </div>
 </section>
@@ -41,7 +40,9 @@
 
           <!-- Easy -->
           <button class="btn btn-outline-dark {% if not can_access_easy %}locked{% endif %}"
+                  {% if can_access_easy %}
                   onclick="window.location.href='/practice/{{ unit_id }}/easy'"
+                  {% endif %}
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   title="{% if not can_access_easy %}Complete the tutorial to unlock Easy{% else %}Start Easy Practice{% endif %}">
@@ -55,7 +56,9 @@
 
           <!-- Medium -->
           <button class="btn btn-outline-dark {% if not can_access_medium %}locked{% endif %}"
+                  {% if can_access_medium %}
                   onclick="window.location.href='/practice/{{ unit_id }}/medium'"
+                  {% endif %}
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   title="{% if not can_access_medium %}Score 3/5 on Easy to unlock Medium{% else %}Start Medium Practice{% endif %}">
@@ -69,7 +72,9 @@
 
           <!-- Hard -->
           <button class="btn btn-outline-dark {% if not can_access_hard %}locked{% endif %}"
+                  {% if can_access_hard %}
                   onclick="window.location.href='/practice/{{ unit_id }}/hard'"
+                  {% endif %}
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   title="{% if not can_access_hard %}Score 3/5 on Medium to unlock Hard{% else %}Start Hard Practice{% endif %}">
@@ -103,7 +108,9 @@
 
           <!-- Test -->
           <button class="btn btn-outline-dark {% if not can_access_test %}locked{% endif %}"
+                  {% if can_access_test %}
                   onclick="window.location.href='{{ url_for('quiz', unit_id=unit_id) }}'"
+                  {% endif %}
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   title="{% if not can_access_test %}Score 3/5 on Medium or Hard to unlock Test{% else %}Take the Mastery Quiz{% endif %}">
@@ -133,4 +140,3 @@
     });
   });
 </script>
-
