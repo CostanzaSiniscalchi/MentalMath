@@ -61,13 +61,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const isMC = window.questionData && window.questionData.type === 'mc';
         const answer = isMC ? hiddenAnswerInput.value : textAnswerInput.value;
 
-        if (isMC && !answer) {
+        if (!answer || (isMC && answer.trim() === '')) {
             feedbackDiv.style.display = 'block';
             feedbackDiv.classList.remove('alert-success');
             feedbackDiv.classList.add('alert-danger');
-            feedbackDiv.textContent = 'Please select an answer before submitting.';
+            feedbackDiv.textContent = isMC
+                ? 'Please select an answer before submitting.'
+                : 'Please type an answer before submitting.';
             return;
-        }
+        }        
 
         const formData = new FormData();
         formData.append('user-answer', answer);
