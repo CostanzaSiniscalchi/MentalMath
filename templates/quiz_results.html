@@ -66,6 +66,14 @@
       <div class="xp-fill" style="width: {{ xp_progress }}%;">XP</div>
     </div>
 
+    <!-- Badges Earned -->
+    <h4 class="mt-5">Badges Earned</h4>
+    <div class="d-flex justify-content-center flex-wrap gap-4 mt-3">
+      {% if badges %}
+        <img src="{{ url_for('static', filename='img/mastery_' ~ unit_id ~ '.png') }}" alt="Badge for Unit {{ unit_id }}" class="badge-img">
+      {% endif %}
+    </div>
+
   </div>
 </div>
 {% endblock %}

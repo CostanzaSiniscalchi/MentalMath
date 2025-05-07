@@ -234,10 +234,17 @@ def quiz(unit_id):
     with open(question_path, encoding='utf-8') as f:
         all_questions = json.load(f)[unit_id]['test']  # Use the passed-in unit_id
 
-    if 'quiz_data' not in session or session['quiz_data'].get('unit_id') != unit_id:
-        # Sample 5 random questions
-        question_batch = sample(list(all_questions.keys()), 5)
+    # Initialize or reset quiz data if:
+    # - not already in session
+    # - unit has changed
+    # - quiz is finished
+    reset_quiz = (
+        'quiz_data' not in session or
+        session['quiz_data'].get('unit_id') != unit_id
+    )
 
+    if reset_quiz:
+        question_batch = sample(list(all_questions.keys()), 5)
         session['quiz_data'] = {
             'unit_id': unit_id,
             'questions': question_batch,
@@ -245,8 +252,8 @@ def quiz(unit_id):
             'current_index': 0,
             'responses': [],
             'score': 0,
-            'quiz_start_time': datetime.utcnow().isoformat(),     # overall quiz start
-            'question_start_time': datetime.utcnow().isoformat()  # first question start
+            'quiz_start_time': datetime.utcnow().isoformat(),
+            'question_start_time': datetime.utcnow().isoformat()
         }
 
     data = session['quiz_data']
@@ -384,10 +391,11 @@ def quiz_results():
     return render_template(
         'quiz_results.html',
         score=score,
-        xp=xp_earned,
+        xp=unit_xp_gain,
         unit_id=unit_id,
         xp_progress=session['unit_xp'][unit_id],
         xp_total=session['xp_total'],
+        badges=session['badges'][unit_id],
         total_time=total_time   # <-- NEW
     )
 
