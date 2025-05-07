@@ -11,8 +11,9 @@ app = Flask(__name__)
 
 data = {"1": {"unit": "Multiplication by 11",  "progress": 0},
 		"2": {"unit": "Square Numbers Ending in 5",  "progress": 0},
-		"3": {"unit": "Midpoint Square Multiplication", "progress": 0}
-		}
+		"3": {"unit": "Midpoint Square Multiplication", "progress": 0},
+		"all": {"unit": "Mixed Practice", "progress": 0}
+    }
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 question_path = os.path.join('static', 'data', 'full_data.json')
 
