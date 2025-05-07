@@ -18,10 +18,15 @@ question_path = os.path.join('static', 'data', 'full_data.json')
 covered_questions = set()
 
 def init_xp_tracking():
-    if 'xp_total' not in session:
-        session['xp_total'] = 0
+    if 'unit_scores' not in session:
+        session['unit_scores'] = {
+            unit_id: {mode: 0 for mode in ['tutorial', 'easy', 'medium', 'hard', 'test']}
+            for unit_id in data.keys()
+        }
     if 'unit_xp' not in session:
         session['unit_xp'] = {unit_id: 0 for unit_id in data.keys()}
+    if 'xp_total' not in session:
+        session['xp_total'] = 0
 
 def update_user_logs(tracking_tag):
     if 'user_logs' not in session:
@@ -35,9 +40,6 @@ def update_user_logs(tracking_tag):
     session['user_logs'] = temp
     print(session['user_logs'][-1])
 
-
-
-
 @app.route('/')
 def home():
     init_xp_tracking()
@@ -49,7 +51,7 @@ def home():
             "difficulty": unit_info["difficulty"],
             "progress": session['unit_xp'].get(unit_id, 0)
         }
-    return render_template('home.html', data=updated_data, xp_total=session['xp_total'])
+    return render_template('home.html', data=updated_data, xp_total=session['xp_total'], unit_xp=session['unit_xp'])
 
 
 @app.route('/learn/<unit_id>', methods=['GET'])
@@ -68,14 +70,28 @@ def learn(unit_id):
     update_user_logs(f'Learn unit {unit_id}')
     return render_template('learn.html', unit_id=unit_id, unit_name = unit_name, steps=steps, img_base_url=img_base_url)
 
+@app.route('/complete_tutorial_and_redirect/<unit_id>')
+def complete_tutorial_and_redirect(unit_id):
+    init_xp_tracking()
+    if unit_id not in session['unit_scores']:
+        session['unit_scores'][unit_id] = {mode: 0 for mode in ['tutorial', 'easy', 'medium', 'hard', 'test']}
+    
+    # Mark tutorial as complete (score of at least 1)
+    session['unit_scores'][unit_id]['tutorial'] = max(session['unit_scores'][unit_id]['tutorial'], 1)
+    update_user_logs(f'User completed tutorial for unit {unit_id}')
+    session.modified = True
+
+    return redirect(url_for('practice', unit_id=unit_id, mode='easy'))
+
 @app.route('/unit/<unit_id>')
 def unit(unit_id):
     init_xp_tracking()
     unit = data[unit_id]
     unit_name = unit["unit"]
     xp_progress = session['unit_xp'].get(unit_id, 0)
+    scores = session['unit_scores'][unit_id]
     update_user_logs(f'User went to unit {unit_id}')
-    return render_template('unit.html', unit_id=unit_id, unit_name=unit_name, xp_progress=xp_progress)
+    return render_template('unit.html', unit_id=unit_id, unit_name=unit_name, xp_progress=xp_progress, scores = scores)
 
 
 @app.route('/practice/<unit_id>/<mode>', methods=['GET'])
@@ -166,17 +182,19 @@ def next_practice():
         mode=data['mode'],
         question=question_data['problem'],
         progress=progress,
-        questionData=question_data  # <-- Add this line
+        questionData=question_data
     )
 
 @app.route('/practice_summary')
 def practice_summary():
     update_user_logs('User went to practice summary')
-    init_xp_tracking()
+    if 'unit_scores' not in session:
+        init_xp_tracking()
+
     data_ = session['practice_data']
-    score = data_['score']
     unit_id = data_['unit_id']
     mode = data_['mode']
+    score = data_['score']
 
     # XP logic
     xp_earned = 3 if score >= 3 else 1
@@ -189,6 +207,8 @@ def practice_summary():
     # Update total XP
     old_total_xp = session['xp_total']
     session['xp_total'] = min(old_total_xp + unit_xp_gain, 100)
+    # Update best score if higher
+    session['unit_scores'][unit_id][mode] = max(session['unit_scores'][unit_id].get(mode, 0), score)
 
     session.modified = True
     return render_template(
@@ -200,8 +220,6 @@ def practice_summary():
         xp_progress=session['unit_xp'][unit_id],
         xp_total=session['xp_total']
     )
-
-
 
 @app.route('/quiz/<unit_id>')
 def quiz(unit_id):
@@ -350,6 +368,7 @@ def quiz_results():
     old_total_xp = session['xp_total']
     session['xp_total'] = min(old_total_xp + unit_xp_gain, 100)
 
+    session['unit_scores'][unit_id]['test'] = max(session['unit_scores'][unit_id]['test'], score)
     session.modified = True
     return render_template(
         'quiz_results.html',
