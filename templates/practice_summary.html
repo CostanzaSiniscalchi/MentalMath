@@ -58,8 +58,12 @@
 
     <div class="d-flex justify-content-center gap-3 mb-4">
       <a href="{{ url_for('home') }}" class="btn btn-outline-dark px-4 py-2">Back Home</a>
-      <a href="{{ url_for('unit', unit_id=unit_id) }}" class="btn btn-outline-dark px-4 py-2">Go Back to Unit Module</a>
+    
+      {% if unit_id != 'all' %}
+        <a href="{{ url_for('unit', unit_id=unit_id) }}" class="btn btn-outline-dark px-4 py-2">Go Back to Unit Module</a>
+      {% endif %}
     </div>
+    
 
     <!-- XP Bar -->
     <div class="xp-bar">
