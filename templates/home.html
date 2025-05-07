@@ -60,7 +60,7 @@
     <div class="col-lg-4">
       <div class="p-3 panel-card d-flex flex-column gap-3 align-items-stretch short-panel">
         <button class="btn btn-outline-dark mt-2" onclick="window.location.href='/summary'">Summary Stats</button>
-        <button class="btn btn-outline-dark mt-2">Practice All Units</button>
+        <button class="btn btn-outline-dark mt-2" onclick="window.location.href='/practice/all'">Practice All Units</button>
       </div>
     </div>
 
@@ -77,4 +77,32 @@
       document.getElementById('navbar-container').innerHTML = html;
     });
 </script>
+
+<script>
+  // Run animation only if session flag is set
+  document.addEventListener("DOMContentLoaded", function () {
+    const hero = document.querySelector(".swipe-in");
+    const fromOtherPage = sessionStorage.getItem("fromOtherPage");
+
+    if (fromOtherPage === "true") {
+      hero.classList.add("animate");
+    }
+
+    // Always reset so animation doesn't repeat on refresh or home-to-home clicks
+    sessionStorage.setItem("fromOtherPage", "false");
+  });
+
+  // Set session flag when clicking any non-home link
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("a[href]").forEach(link => {
+      link.addEventListener("click", function (e) {
+        const target = link.getAttribute("href");
+        if (target !== "/" && !target.startsWith("#")) {
+          sessionStorage.setItem("fromOtherPage", "true");
+        }
+      });
+    });
+  });
+</script>
+
 {% endblock %}
