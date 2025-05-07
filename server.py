@@ -200,7 +200,7 @@ def submit_practice_answer():
     if is_correct:
         data['score'] += 1
         
-    covered_questions.add(qid)  # Mark question as covered
+    # covered_questions.add(qid)  # Mark question as covered
 
     # Save response
     data['responses'].append({
