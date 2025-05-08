@@ -43,7 +43,7 @@ def update_user_logs(tracking_tag):
 
     temp.append((tracking_tag, formatted))
     session['user_logs'] = temp
-    print(session['user_logs'][-1])
+    # print(session['user_logs'][-1])
 
 @app.route('/')
 def home():
