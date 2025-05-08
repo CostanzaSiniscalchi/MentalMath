@@ -30,6 +30,8 @@ def init_xp_tracking():
         session['xp_total'] = 0
     if 'badges' not in session:
         session['badges'] = {unit_id: False for unit_id in data.keys()}  # not earned yet
+    if 'perfect_badges' not in session:
+        session['perfect_badges'] = {unit_id: False for unit_id in data.keys()}
 
 def update_user_logs(tracking_tag):
     if 'user_logs' not in session:
@@ -445,22 +447,19 @@ def quiz_results():
     xp_earned = 3 if score >= 3 else 1
     unit_xp_gain = xp_earned * 5
 
-    # Update unit XP
-    old_unit_xp = session['unit_xp'].get(unit_id, 0)
-    session['unit_xp'][unit_id] = min(old_unit_xp + unit_xp_gain, 100)
+    session['unit_xp'][unit_id] = min(session['unit_xp'].get(unit_id, 0) + unit_xp_gain, 100)
 
-     # Award mastery badge if unit XP at least 80
+    # Award mastery badge if XP high enough
     if session['unit_xp'][unit_id] >= 80:
         session['badges'][unit_id] = True
 
-    # Update total XP
-    old_total_xp = session['xp_total']
-    session['xp_total'] = min(old_total_xp + unit_xp_gain, 100)
+    # Award perfect score badge if score == 5
+    if score == 5:
+        session['perfect_badges'][unit_id] = True
 
+    session['xp_total'] = min(session['xp_total'] + unit_xp_gain, 100)
     session['unit_scores'][unit_id]['test'] = max(session['unit_scores'][unit_id]['test'], score)
     session.modified = True
-
-    # Reset quiz data
     session['quiz_data'] = None
 
     return render_template(
@@ -471,8 +470,10 @@ def quiz_results():
         xp_progress=session['unit_xp'][unit_id],
         xp_total=session['xp_total'],
         badges=session['badges'][unit_id],
-        total_time=total_time   # <-- NEW
+        perfect=session['perfect_badges'][unit_id],  # NEW
+        total_time=total_time
     )
+
 
 
 
@@ -535,8 +536,10 @@ def summary():
     update_user_logs('User went to summary (badges only)')
     init_xp_tracking()
     badges = session.get('badges', {})
+    perfect_badges = session.get('perfect_badges', {})
     xp_total = session.get('xp_total', 0)
-    return render_template('summary.html', badges=badges, xp_total=xp_total)
+    return render_template('summary.html', badges=badges, perfect_badges=perfect_badges, xp_total=xp_total)
+
 
 
 @app.route('/user-logs')
