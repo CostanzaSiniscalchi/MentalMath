@@ -80,6 +80,12 @@
       {% if badges %}
         <img src="{{ url_for('static', filename='img/mastery_' ~ unit_id ~ '.png') }}" alt="Badge for Unit {{ unit_id }}" class="badge-img">
       {% endif %}
+      {% if perfect %}
+      <div class="text-center mt-4">
+        <p class="mb-2">🏅 Perfect Score Badge Earned!</p>
+        <img src="{{ url_for('static', filename='img/perfect_' ~ unit_id ~ '.png') }}" class="badge-img" alt="Perfect Score Badge">
+      </div>
+    {% endif %}
     </div>
 
   </div>

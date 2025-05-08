@@ -1,8 +1,42 @@
+/* Update for the badges */
 .badge-img {
-	height: 100px;
-	transition: transform 0.2s ease-in-out;
-  }
-  .badge-img:hover {
-	transform: scale(1.1);
-  }
-  
+  width: 100px; /* Increased size for badges */
+  height: 100px; /* Increased size for badges */
+  object-fit: cover; /* Ensures the image fits inside the box */
+  border-radius: 10px; /* Add rounded corners to the badges */
+  transition: transform 0.3s ease;
+}
+
+.badge-img:hover {
+  transform: scale(1.1); /* Scale effect on hover for badges */
+}
+
+/* Centering the Review Mistakes button */
+.btn-outline-info {
+  display: block;
+  margin: 0 auto;
+  max-width: 200px;
+}
+
+/* Adjusting the XP bar */
+.custom-progress {
+  height: 2rem;
+}
+
+.custom-progress-fill {
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Needed for centering text */
+}
+
+.progress-label {
+  position: absolute; /* Position text absolutely to center */
+  left: 50%;
+  transform: translateX(-50%); /* Center text horizontally */
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}

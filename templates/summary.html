@@ -5,14 +5,18 @@
 {% endblock %}
 {% block content %}
 <div class="container my-5">
-  <div class="card shadow-lg rounded-4 p-5 text-center" style="background-color: #ffffff;">
+  <div class="card shadow-lg rounded-4 p-5 text-center" style="background-color: #ffffff; max-width: 700px; margin: 0 auto;">
     <h2 class="mb-4">Badges & Progress</h2>
 
-    <div class="alert alert-primary fs-5 w-50 mx-auto rounded-pill">
-      🧠 Total XP: {{ xp_total }}
+    <!-- XP Progress Bar -->
+    <div class="custom-progress bg-dark bg-opacity-25 rounded-pill mb-4" style="height: 2rem;">
+      <div class="custom-progress-fill bg-primary text-white rounded-pill" style="height: 2rem; width: {{ xp_total }}%;">
+        <span class="progress-label">{{ xp_total }} / 300 XP</span>
+      </div>
     </div>
 
-        <button class="btn btn-outline-info my-4 px-4 py-2 rounded-pill" onclick="window.location.href='{{ url_for('quiz_review_mistakes') }}'">
+    <!-- Updated Button Style -->
+    <button class="btn btn-primary my-4 px-4 py-2 rounded-pill" onclick="window.location.href='{{ url_for('quiz_review_mistakes') }}'" style="max-width: 200px; display: block; margin: 0 auto;">
       Review Mistakes
     </button>
 
@@ -20,7 +24,12 @@
     <div class="d-flex justify-content-center flex-wrap gap-4 mt-3">
       {% for unit_id, earned in badges.items() %}
         {% if earned %}
-          <img src="{{ url_for('static', filename='img/mastery_' ~ unit_id ~ '.png') }}" alt="Badge for Unit {{ unit_id }}" class="badge-img">
+          <img src="{{ url_for('static', filename='img/mastery_' ~ unit_id ~ '.png') }}" alt="Badge for Unit {{ unit_id }}" class="badge-img" style="width: 100px; height: 100px;">
+        {% endif %}
+      {% endfor %}
+      {% for unit_id, earned in perfect_badges.items() %}
+        {% if earned %}
+          <img src="{{ url_for('static', filename='img/perfect_' ~ unit_id ~ '.png') }}" alt="Perfect Badge" class="badge-img" style="width: 100px; height: 100px;">
         {% endif %}
       {% endfor %}
     </div>
