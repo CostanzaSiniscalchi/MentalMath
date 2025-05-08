@@ -9,22 +9,33 @@
 
 {% block content %}
 
+
+
 <div class="container py-5">
-    <div class="d-flex justify-content-center">
-      <div class="rounded-4 p-4 shadow" style="background-color: white; width: 100%; max-width: 500px;">
-        <h2 class="text-center mb-4">Review Mistakes</h2>
-          
-{% for item in review_data %}
-  <div class="d-flex justify-content-between align-items-center border rounded-3 p-3 mb-3 shadow-sm unit-box">
-    <div>
-      <div class="fw-semibold text-primary fs-4">
-        {{ item['problem-data']['problem'] }}
+  <div class="d-flex justify-content-center">
+    <div class="rounded-4 p-4 shadow bg-white w-100" style="max-width: 600px;">
+      <h2 class="text-center text-primary mb-4 fw-bold">Review Your Mistakes</h2>
+
+      {% for item in review_data %}
+      <div class="border-start border-4 border-danger rounded-3 p-3 mb-4 bg-light shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="fw-bold text-dark fs-5">
+            {{ item['problem-data']['problem'] }}
+          </div>
+          <a href="/quiz_problem_review/{{ item['problem-data']['id'] }}" class="btn btn-outline-primary btn-sm">🔍 View</a>
+        </div>
+        <div class="mt-2">
+          <div class="text-muted small">⏳ Time: <span class="fw-semibold">{{ item['user-response']['time_spent'] }}s</span></div>
+          <div class="text-danger small mt-1">❌ Your Answer: <span class="fw-semibold">{{ item['user-response']['user_answer'] }}</span></div>
+        </div>
       </div>
-    </div>
-    <div class="text-end">
-        <div class="text-info fw-semibold"> You spent ⏳ {{item['user-response']['time_spent']}} seconds</div>
-      <div class="text-danger fw-semibold">You answered ❌ {{item['user-response']['user_answer']}}</div>
-      <a href="/quiz_problem_review/{{item['problem-data']['id']}}" class="btn btn-outline-info btn-sm mt-1">View Question</a>
+      {% endfor %}
+
+      <div class="text-center mt-5">
+        <a href="{{ url_for('home') }}" class="btn btn-success fw-bold px-4 py-2">
+          Finish Review
+        </a>
+      </div>
     </div>
   </div>
 {% endfor %}
@@ -34,11 +45,6 @@
     Finish Review
   </a>
 </div>
-
-
-      </div>
-    </div>
-  </div>
   
 
 {% endblock %}
