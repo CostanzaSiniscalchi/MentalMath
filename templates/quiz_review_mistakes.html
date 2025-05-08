@@ -9,27 +9,29 @@
 
 {% block content %}
 
-
-
 <div class="container py-5">
   <div class="d-flex justify-content-center">
     <div class="rounded-4 p-4 shadow bg-white w-100" style="max-width: 600px;">
       <h2 class="text-center text-primary mb-4 fw-bold">Review Your Mistakes</h2>
 
-      {% for item in review_data %}
-      <div class="border-start border-4 border-danger rounded-3 p-3 mb-4 bg-light shadow-sm">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="fw-bold text-dark fs-5">
-            {{ item['problem-data']['problem'] }}
+      {% if review_data|length == 0 %}
+        <div class="text-center text-muted">No mistakes to see here</div>
+      {% else %}
+        {% for item in review_data %}
+          <div class="border-start border-4 border-danger rounded-3 p-3 mb-4 bg-light shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="fw-bold text-dark fs-5">
+                {{ item['problem-data']['problem'] }}
+              </div>
+              <a href="/quiz_problem_review/{{ item['problem-data']['id'] }}" class="btn btn-outline-primary btn-sm">🔍 View</a>
+            </div>
+            <div class="mt-2">
+              <div class="text-muted small">⏳ Time: <span class="fw-semibold">{{ item['user-response']['time_spent'] }}s</span></div>
+              <div class="text-danger small mt-1">❌ Your Answer: <span class="fw-semibold">{{ item['user-response']['user_answer'] }}</span></div>
+            </div>
           </div>
-          <a href="/quiz_problem_review/{{ item['problem-data']['id'] }}" class="btn btn-outline-primary btn-sm">🔍 View</a>
-        </div>
-        <div class="mt-2">
-          <div class="text-muted small">⏳ Time: <span class="fw-semibold">{{ item['user-response']['time_spent'] }}s</span></div>
-          <div class="text-danger small mt-1">❌ Your Answer: <span class="fw-semibold">{{ item['user-response']['user_answer'] }}</span></div>
-        </div>
-      </div>
-      {% endfor %}
+        {% endfor %}
+      {% endif %}
       
     </div>
   </div>
@@ -40,7 +42,6 @@
     Finish Review
   </a>
 </div>
-  
 
 {% endblock %}
 
