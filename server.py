@@ -16,6 +16,7 @@ data = {"1": {"unit": "Multiplication by 11",  "progress": 0},
     }
 learn_path = os.path.join('static', 'data', 'learn', 'learn_units.json')
 question_path = os.path.join('static', 'data', 'full_data.json')
+questions_missed = {}
 
 def init_xp_tracking():
     if 'unit_scores' not in session:
@@ -368,6 +369,14 @@ def submit_answer():
     is_correct = str(user_answer).strip() == str(correct_answer).strip()
     if is_correct:
         data['score'] += 1
+        if q_id in questions_missed:
+            del questions_missed[q_id]
+    else:
+        questions_missed[q_id] = {"problem": data['all_questions'][q_id]['problem'],
+                'user_answer': user_answer,
+                'correct_answer': correct_answer,
+                'time_spent': time_spent,
+                'solution_gif': data['all_questions'][q_id].get('solution_gif', '')}
 
     # Save user response
     data['responses'].append({
@@ -485,47 +494,40 @@ def is_question_correct(question_datum, user_response): # takes in an element fr
 
 @app.route('/quiz_review_mistakes')
 def quiz_review_mistakes():
-    if 'quiz_data' not in session:
-        update_user_logs('User attempted to access quiz review mistakes, but quiz_data was not found in session, redirected to Home')
-        return redirect(url_for('home'))
-
-
-    mistakes = []
-    quiz_data = session['quiz_data']
-
-    for response in quiz_data['responses']:
-        if not response['correct']:
-            mistakes.append({
-                'user-response': response,
-                'problem-data': {
-                    'id': response['id'],  # <- Add this!
-                    'problem': response['question'],
-                    'correct_answer': response['correct_answer'],
-                    'user_answer': response['user_answer'],
-                    'time_spent': response['time_spent']
-                }
-            })
     update_user_logs('User went to quiz review mistakes')
-    return render_template('quiz_review_mistakes.html', review_data=mistakes)
+    
+    # Transform questions_missed into expected format
+    review_data = []
+    for qid, details in questions_missed.items():
+        review_data.append({
+            'problem-data': {
+                'id': qid,
+                'problem': details['problem']
+            },
+            'user-response': {
+                'user_answer': details['user_answer'],
+                'correct_answer': details['correct_answer'],
+                'time_spent': details['time_spent']
+            }
+        })
+
+    return render_template('quiz_review_mistakes.html', review_data=review_data)
 
 @app.route('/quiz_problem_review/<qid>')
 def quiz_problem_review(qid):
-    if 'quiz_data' not in session:
-        update_user_logs('User attempted to visit quiz problem review, but no quiz data was found in session, so was redirected home')
-        return redirect(url_for('home'))  # Safety check
-
-    data = session['quiz_data']
-    all_questions = data['all_questions']
-
-    # Look for the specific question ID
-    if qid not in all_questions:
-        update_user_logs(f'User attempted to visit quiz problem review, but question with qid={qid} was not found, so was redirected home')
+    if qid not in questions_missed:
+        update_user_logs(f'User attempted to review quiz problem {qid}, but it was not found')
         return "Question not found.", 404
 
-    question_data = all_questions[qid]
-    gif_url = question_data['solution_gif'][6:]  # Assuming you store path like 'static/data/...'
+    question_data = questions_missed[qid]
+
+    # Get relative path to gif (strip 'static/' from beginning)
+    gif_path = question_data.get('solution_gif', '')
+    gif_url = gif_path[6:] if gif_path.startswith("static/") else gif_path
+
     update_user_logs(f'User went to quiz problem review for question {question_data["problem"]}')
     return render_template('quiz_problem_review.html', gif_url=gif_url)
+
 
 
 @app.route('/summary')
