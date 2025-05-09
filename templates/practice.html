@@ -91,11 +91,60 @@
   window.questionData = {{ questionData | tojson }};
 
   document.getElementById("practice-form").addEventListener("submit", function (e) {
-  gifurl = "{{ url_for('static', filename='') }}" + window.questionData["solution_gif"].slice(7);
-  document.getElementById("solution-content").innerHTML = "<img src='" + gifurl + "' class='img-fluid'>";
+  const gifurl = "{{ url_for('static', filename='') }}" + window.questionData["solution_gif"].slice(7);
+  document.getElementById("solution-content").innerHTML = `
+    <img src="${gifurl}" class="img-fluid solution-gif" alt="Solution GIF"
+         style="max-height: 350px; cursor: zoom-in;" onclick="openFullscreen(this)">
+  `;
 });
+
+
+
+
 
 
 </script>
 <script src="{{ url_for('static', filename='js/practice.js') }}"></script>
+
+<style>
+  #gif-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+  }
+
+  #gif-modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 1rem;
+  }
+
+  #gif-modal:target {
+    display: flex;
+  }
+</style>
+
+<div id="gif-modal" onclick="closeFullscreen()">
+  <img id="gif-fullscreen" src="" alt="Expanded Solution GIF">
+</div>
+
+<script>
+  function openFullscreen(imgElement) {
+    const modal = document.getElementById('gif-modal');
+    const fullImg = document.getElementById('gif-fullscreen');
+    fullImg.src = imgElement.src;
+    modal.style.display = 'flex';
+  }
+
+  function closeFullscreen() {
+    document.getElementById('gif-modal').style.display = 'none';
+  }
+
+</script>
+
 {% endblock %}
