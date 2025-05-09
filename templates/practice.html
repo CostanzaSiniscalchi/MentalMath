@@ -9,6 +9,10 @@
 {% endblock %}
 
 {% block content %}
+<div class="container-fluid p-4">
+  <div class="row">
+    <!-- Left: Quiz Interaction Area -->
+    <div class="col-lg-6" id="quiz-panel">
 <div class="p-4">
 
   <!-- Header -->
@@ -67,11 +71,32 @@
   </div>
 
 </div>
+
+      </div>
+
+    <!-- Right: Solution Panel -->
+    <div class="col-lg-6" id="solution-panel">
+      <div class="border rounded-3 p-4 bg-light h-100">
+        <h4 class="fw-bold mb-3">Solution</h4>
+        <div id="solution-content" class="text-muted">
+          <!-- Injected solution will appear here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
   window.questionData = {{ questionData | tojson }};
+
+  document.getElementById("practice-form").addEventListener("submit", function (e) {
+  gifurl = "{{ url_for('static', filename='') }}" + window.questionData["solution_gif"].slice(7);
+  document.getElementById("solution-content").innerHTML = "<img src='" + gifurl + "' class='img-fluid'>";
+});
+
+
 </script>
 <script src="{{ url_for('static', filename='js/practice.js') }}"></script>
 {% endblock %}

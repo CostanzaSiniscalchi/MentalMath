@@ -28,4 +28,21 @@
     color: white;
     box-shadow: 0 0 0 3px rgba(49, 111, 225, 0.3);
   }
-  
+
+  #quiz-panel {
+    border-right: 1px solid #ccc;
+    padding-right: 2rem;
+}
+
+#solution-panel {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+#solution-content {
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 1rem;
+}
