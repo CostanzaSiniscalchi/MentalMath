@@ -38,5 +38,5 @@
   transform: translateX(-50%); /* Center text horizontally */
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--bs-dark-grey);
 }
