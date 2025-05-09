@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=1">
 {% endblock %}
 
-{% set can_access_easy = scores['tutorial'] >= 1 %}
+{% set can_access_easy = True %}
 {% set can_access_medium = scores['easy'] >= 3 %}
 {% set can_access_hard = scores['medium'] >= 3 %}
 {% set can_access_test = scores['medium'] >= 3 or scores['hard'] >= 3 %}

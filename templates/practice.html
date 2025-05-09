@@ -18,14 +18,13 @@
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold mb-0">{{ unit_name }} – Practice Mode – {{ mode }}</h2>
-    <div class="flex-grow-1 ms-4" style="max-width: 300px;">
-      <div class="progress" style="height: 1.5rem;">
-        <div id="pracProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
-          {{ progress }}%
-        </div>
-      </div>
+    <div class="ms-4">
+      <span class="badge bg-primary fs-6 px-3 py-2" style="border-radius: 1rem;">
+        {{ progress }}%
+      </span>
     </div>
   </div>
+  
 
   <!-- Question Section -->
   <div class="text-center mb-5">
@@ -89,14 +88,109 @@
 
 {% block scripts %}
 <script>
+
+
+
   window.questionData = {{ questionData | tojson }};
 
-  document.getElementById("practice-form").addEventListener("submit", function (e) {
-  gifurl = "{{ url_for('static', filename='') }}" + window.questionData["solution_gif"].slice(7);
-  document.getElementById("solution-content").innerHTML = "<img src='" + gifurl + "' class='img-fluid'>";
+  const unitId = "{{ unit_id }}";
+
+document.getElementById("practice-form").addEventListener("submit", function (e) {
+  const gifurl = "{{ url_for('static', filename='') }}" + window.questionData["solution_gif"].slice(7);
+
+  // Default image style
+  let imgStyle = `
+    max-height: 350px;
+    cursor: zoom-in;
+  `;
+
+  let wrapperStart = '';
+  let wrapperEnd = '';
+
+  // Apply zoom depending on unit
+  if (unitId === "1") {
+    imgStyle += `
+      transform: scale(1.5);
+      transform-origin: left center;
+      width: 100%;
+    `;
+    wrapperStart = `<div style="width: 100%; max-height: 350px; overflow: hidden;">`;
+    wrapperEnd = `</div>`;
+  } else if (unitId === "2") {
+    imgStyle += `
+      transform: scale(1.75);
+      transform-origin: center center;
+      width: 100%;
+    `;
+    wrapperStart = `<div style="width: 100%; max-height: 350px; overflow: hidden;">`;
+    wrapperEnd = `</div>`;
+  } else if (unitId === "3") {
+    imgStyle += `
+      transform: scale(1.25);
+      transform-origin: top center;
+      width: 100%;
+    `;
+    wrapperStart = `<div style="width: 100%; max-height: 350px; overflow: hidden;">`;
+    wrapperEnd = `</div>`;
+  }
+
+  document.getElementById("solution-content").innerHTML = `
+    ${wrapperStart}
+      <img src="${gifurl}" class="img-fluid solution-gif" alt="Solution GIF"
+           style="${imgStyle}" onclick="openFullscreen(this)">
+    ${wrapperEnd}
+  `;
 });
+
+
+
+
+
+
 
 
 </script>
 <script src="{{ url_for('static', filename='js/practice.js') }}"></script>
+
+<style>
+  #gif-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+  }
+
+  #gif-modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 1rem;
+  }
+
+  #gif-modal:target {
+    display: flex;
+  }
+</style>
+
+<div id="gif-modal" onclick="closeFullscreen()">
+  <img id="gif-fullscreen" src="" alt="Expanded Solution GIF">
+</div>
+
+<script>
+  function openFullscreen(imgElement) {
+    const modal = document.getElementById('gif-modal');
+    const fullImg = document.getElementById('gif-fullscreen');
+    fullImg.src = imgElement.src;
+    modal.style.display = 'flex';
+  }
+
+  function closeFullscreen() {
+    document.getElementById('gif-modal').style.display = 'none';
+  }
+
+</script>
+
 {% endblock %}

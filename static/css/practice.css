@@ -1,22 +1,40 @@
 /* Multiple Choice Option Styling */
 #mc-options {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: nowrap; /* keep them on the same row */
+  width: 100%;
+  overflow-x: auto;  /* scroll on small screens instead of wrapping */
+}
+
+
   
-  .mc-option {
-    min-width: 120px;
-    padding: 0.6rem 1.2rem;
-    font-size: 1.1rem;
-    border-radius: 0.75rem;
-    border: 2px solid var(--bs-secondary);
-    background-color: white;
-    color: var(--bs-secondary);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
+.mc-option {
+  flex: 1 1 0;
+  min-width: 100px;
+  max-width: 150px;
+  height: 60px; /* set fixed height */
+  padding: 0.6rem 1.2rem;
+  font-size: 1.1rem;
+  font-weight: normal; /* prevent font bolding from shifting size */
+  border-radius: 0.75rem;
+  border: 2px solid var(--bs-secondary);
+  background-color: white;
+  color: var(--bs-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  box-sizing: border-box; /* ensure padding/border doesn't increase size */
+  text-align: center;
+}
+
+.mc-option.selected {
+  background-color: var(--bs-secondary);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(49, 111, 225, 0.3);
+  font-weight: normal; /* prevent font-weight change */
+}
+
   
   .mc-option:hover {
     background-color: var(--bs-secondary);
@@ -45,4 +63,23 @@
     white-space: pre-wrap;
     font-family: monospace;
     font-size: 1rem;
+}
+
+.progress {
+  background-color: #e9ecef;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 1.5rem;
+  position: relative;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: white;
+  white-space: nowrap;
+  transition: width 0.4s ease;
 }
