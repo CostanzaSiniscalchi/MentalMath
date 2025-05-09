@@ -88,15 +88,61 @@
 
 {% block scripts %}
 <script>
+
+
+
   window.questionData = {{ questionData | tojson }};
 
-  document.getElementById("practice-form").addEventListener("submit", function (e) {
+  const unitId = "{{ unit_id }}";
+
+document.getElementById("practice-form").addEventListener("submit", function (e) {
   const gifurl = "{{ url_for('static', filename='') }}" + window.questionData["solution_gif"].slice(7);
+
+  // Default image style
+  let imgStyle = `
+    max-height: 350px;
+    cursor: zoom-in;
+  `;
+
+  let wrapperStart = '';
+  let wrapperEnd = '';
+
+  // Apply zoom depending on unit
+  if (unitId === "1") {
+    imgStyle += `
+      transform: scale(1.5);
+      transform-origin: left center;
+      width: 100%;
+    `;
+    wrapperStart = `<div style="width: 100%; max-height: 350px; overflow: hidden;">`;
+    wrapperEnd = `</div>`;
+  } else if (unitId === "2") {
+    imgStyle += `
+      transform: scale(1.75);
+      transform-origin: center center;
+      width: 100%;
+    `;
+    wrapperStart = `<div style="width: 100%; max-height: 350px; overflow: hidden;">`;
+    wrapperEnd = `</div>`;
+  } else if (unitId === "3") {
+    imgStyle += `
+      transform: scale(1.25);
+      transform-origin: top center;
+      width: 100%;
+    `;
+    wrapperStart = `<div style="width: 100%; max-height: 350px; overflow: hidden;">`;
+    wrapperEnd = `</div>`;
+  }
+
   document.getElementById("solution-content").innerHTML = `
-    <img src="${gifurl}" class="img-fluid solution-gif" alt="Solution GIF"
-         style="max-height: 350px; cursor: zoom-in;" onclick="openFullscreen(this)">
+    ${wrapperStart}
+      <img src="${gifurl}" class="img-fluid solution-gif" alt="Solution GIF"
+           style="${imgStyle}" onclick="openFullscreen(this)">
+    ${wrapperEnd}
   `;
 });
+
+
 
 
 
