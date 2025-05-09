@@ -18,14 +18,13 @@
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold mb-0">{{ unit_name }} – Practice Mode – {{ mode }}</h2>
-    <div class="flex-grow-1 ms-4" style="max-width: 300px;">
-      <div class="progress" style="height: 1.5rem;">
-        <div id="pracProgress" class="progress-bar bg-primary" style="width: {{ progress }}%;">
-          {{ progress }}%
-        </div>
-      </div>
+    <div class="ms-4">
+      <span class="badge bg-primary fs-6 px-3 py-2" style="border-radius: 1rem;">
+        {{ progress }}%
+      </span>
     </div>
   </div>
+  
 
   <!-- Question Section -->
   <div class="text-center mb-5">
