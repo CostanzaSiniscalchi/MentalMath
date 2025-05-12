@@ -16,7 +16,17 @@ source venv/bin/activate
 To automatically install everything listed in requirements.txt, just run:
 
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
+```
+
+Run the program
+```
+python3 server.py
+```
+
+Access the program
+```
+http://127.0.0.1:5001
 ```
 
 # Organization
